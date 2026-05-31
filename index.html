@@ -74,7 +74,11 @@ async function getGoldPrice() {
             }
         );
 
-        const data = await response.json();
+        if (!response.ok) {
+    throw new Error("API Error: " + response.status);
+}
+
+const data = await response.json();
 
         document.getElementById("goldPrice").innerText =
             "$ " + Number(data.price).toFixed(2);
