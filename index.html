@@ -5,97 +5,177 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>سعر الذهب</title>
 <style>
- @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
- * { margin:0; padding:0; box-sizing:border-box; }
- body { min-height:100vh; background:#07090f; display:flex; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:20px; }
- .card { width:100%; max-width:380px; border:1px solid rgba(255,215,0,0.15); border-radius:28px; padding:32px 26px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
- .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; }
- .title { font-size:22px; font-weight:900; color:#FFD700; }
- .subtitle { font-size:11px; color:#334155; margin-top:3px; }
- #ring { width:56px; height:56px; }
- #ring-track { fill:none; stroke:rgba(255,215,0,0.1); stroke-width:3.5; }
- #ring-fill { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; transform:rotate(-90deg); transform-origin:28px 28px; transition:stroke-dashoffset 1s linear; }
- #ring-text { fill:#FFD700; font-size:13px; font-family:monospace; font-weight:bold; }
- #ring-spin { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:22 116; transform-origin:28px 28px; animation:spin 1s linear infinite; display:none; }
- @keyframes spin { to { transform:rotate(270deg); } }
- #price-val { font-size:62px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1.05; font-family:monospace; animation:glow 3s ease infinite; transition:opacity 0.3s; }
- #price-val.dim { opacity:0.6; }
- @keyframes glow { 0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)} 50%{text-shadow:0 0 58px rgba(255,215,0,0.9)} }
- .unit { color:#475569; font-size:13px; margin-top:5px; }
- #loading { text-align:center; padding:28px 0; color:#FFD700; font-size:15px; font-weight:700; }
- #error-box { display:none; text-align:center; padding:20px 0; }
- #error-msg { color:#f87171; font-size:13px; margin-bottom:12px; }
- #retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
- .footer { margin-top:22px; padding-top:13px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; }
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { min-height:100vh; background:#07090f; display:flex; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:20px; }
+  .card { width:100%; max-width:380px; border:1px solid rgba(255,215,0,0.15); border-radius:28px; padding:32px 26px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
+  .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; }
+  .title { font-size:22px; font-weight:900; color:#FFD700; }
+  .subtitle { font-size:11px; color:#334155; margin-top:3px; }
+  #ring { width:56px; height:56px; }
+  #ring-track { fill:none; stroke:rgba(255,215,0,0.1); stroke-width:3.5; }
+  #ring-fill { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; transform:rotate(-90deg); transform-origin:28px 28px; transition:stroke-dashoffset 1s linear; }
+  #ring-text { fill:#FFD700; font-size:13px; font-family:monospace; font-weight:bold; }
+  #ring-spin { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:22 116; transform-origin:28px 28px; animation:spin 1s linear infinite; display:none; }
+  @keyframes spin { to { transform:rotate(270deg); } }
+  #price-val { font-size:62px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1.05; font-family:monospace; animation:glow 3s ease infinite; transition:opacity 0.3s; }
+  #price-val.dim { opacity:0.6; }
+  @keyframes glow { 0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)} 50%{text-shadow:0 0 58px rgba(255,215,0,0.9)} }
+  .unit { color:#475569; font-size:13px; margin-top:5px; }
+  #loading { text-align:center; padding:28px 0; color:#FFD700; font-size:15px; font-weight:700; }
+  #error-box { display:none; text-align:center; padding:20px 0; }
+  #error-msg { color:#f87171; font-size:13px; margin-bottom:12px; }
+  #retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
+  .footer { margin-top:22px; padding-top:13px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
+
+  /* أسعار الخليج */
+  .gulf-box { margin-top:22px; border-top:1px solid rgba(255,215,0,0.08); padding-top:18px; display:none; }
+  .gulf-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .gulf-label { color:#64748b; font-size:13px; }
+  .gulf-val { color:#FFD700; font-size:18px; font-weight:900; font-family:monospace; }
+  .gulf-unit { color:#334155; font-size:11px; margin-top:2px; text-align:left; }
+
+  /* إعدادات */
+  #settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 10px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
+  #settings-panel { display:none; margin-top:18px; border-top:1px solid rgba(255,215,0,0.08); padding-top:16px; }
+  .setting-row { margin-bottom:14px; }
+  .setting-label { color:#64748b; font-size:12px; margin-bottom:5px; }
+  .setting-inputs { display:flex; gap:8px; align-items:center; }
+  .setting-inputs select, .setting-inputs input { background:rgba(255,255,255,0.04); border:1px solid rgba(255,215,0,0.15); color:#FFD700; border-radius:10px; padding:7px 10px; font-size:14px; font-family:'Cairo',sans-serif; width:100%; outline:none; }
+  .setting-inputs select { width:80px; flex-shrink:0; }
+  #apply-btn { width:100%; background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:10px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; font-weight:700; margin-top:4px; }
 </style>
 </head>
 <body>
 <div class="card">
- <div class="header">
-   <div>
-     <div class="title">🥇 الذهب / دولار</div>
-     <div class="subtitle">XAU / USD · Spot Price</div>
-   </div>
-   <svg id="ring" viewBox="0 0 56 56">
-     <circle id="ring-track" cx="28" cy="28" r="22"/>
-     <circle id="ring-spin"  cx="28" cy="28" r="22"/>
-     <circle id="ring-fill"  cx="28" cy="28" r="22"/>
-     <text   id="ring-text"  x="28" y="33" text-anchor="middle">20</text>
-   </svg>
- </div>
- <div id="loading">جارٍ جلب السعر…</div>
- <div id="error-box">
-   <div id="error-msg">تعذّر جلب السعر</div>
-   <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
- </div>
- <div id="price-area" style="display:none">
-   <div id="price-val">—</div>
-   <div class="unit">دولار أمريكي / أوقية ترويّة</div>
- </div>
- <div class="footer">
-   <span id="count-label">كل 20 ثانية · 0 تحديث</span>
-   <span id="status">—</span>
- </div>
+  <div class="header">
+    <div>
+      <div class="title">🥇 الذهب / دولار</div>
+      <div class="subtitle">XAU / USD · Spot Price</div>
+    </div>
+    <svg id="ring" viewBox="0 0 56 56">
+      <circle id="ring-track" cx="28" cy="28" r="22"/>
+      <circle id="ring-spin"  cx="28" cy="28" r="22"/>
+      <circle id="ring-fill"  cx="28" cy="28" r="22"/>
+      <text   id="ring-text"  x="28" y="33" text-anchor="middle">20</text>
+    </svg>
+  </div>
+
+  <div id="loading">جارٍ جلب السعر…</div>
+  <div id="error-box">
+    <div id="error-msg">تعذّر جلب السعر</div>
+    <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
+  </div>
+  <div id="price-area" style="display:none">
+    <div id="price-val">—</div>
+    <div class="unit">دولار أمريكي / أوقية ترويّة</div>
+  </div>
+
+  <!-- أسعار الخليج -->
+  <div class="gulf-box" id="gulf-box">
+    <div class="gulf-row">
+      <div>
+        <div class="gulf-label">سعر الغرام</div>
+        <div class="gulf-unit">ريال سعودي</div>
+      </div>
+      <div id="gram-val" class="gulf-val">—</div>
+    </div>
+    <div class="gulf-row">
+      <div>
+        <div class="gulf-label">سعر المثقال</div>
+        <div class="gulf-unit">ريال سعودي</div>
+      </div>
+      <div id="mithqal-val" class="gulf-val">—</div>
+    </div>
+  </div>
+
+  <!-- إعدادات -->
+  <div id="settings-panel">
+    <div class="setting-row">
+      <div class="setting-label">تعديل على سعر الأونصة (+ أو -)</div>
+      <div class="setting-inputs">
+        <select id="adj-sign">
+          <option value="1">+</option>
+          <option value="-1">-</option>
+        </select>
+        <input type="number" id="adj-val" placeholder="0" value="0" min="0"/>
+      </div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">سعر الورق (ريال)</div>
+      <input type="number" id="paper-rate" placeholder="مثال: 1530" value="1530" min="1"/>
+    </div>
+    <button id="apply-btn" onclick="applySettings()">✅ تطبيق</button>
+  </div>
+
+  <div class="footer">
+    <span id="count-label">كل 20 ثانية · 0 تحديث</span>
+    <button id="settings-btn" onclick="toggleSettings()">⚙️ إعدادات</button>
+  </div>
 </div>
 <script>
 const CIRCUMFERENCE=2*Math.PI*22;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=CIRCUMFERENCE;
 let price=null,count=0,sec=20;
+let adjSign=1, adjVal=0, paperRate=1530;
 
 async function fetchGoldPrice(){
- const sources=[
-   ()=>fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).then(d=>{const p=Array.isArray(d)?d[0]?.price:d?.price;if(p>100)return+p;throw 0;}),
-   ()=>fetch('https://api.gold-api.com/price/XAU').then(r=>r.json()).then(d=>{if(d?.price>100)return+d.price;throw 0;}),
-   ()=>fetch('https://data-asg.goldprice.org/dbXRates/USD').then(r=>r.json()).then(d=>{const p=d?.items?.[0]?.xauPrice;if(p>100)return+p;throw 0;}),
-   ()=>fetch('https://api.frankfurter.app/latest?from=XAU&to=USD').then(r=>r.json()).then(d=>{const p=d?.rates?.USD;if(p>100)return+p;throw 0;}),
- ];
- for(const src of sources){try{const p=await Promise.race([src(),new Promise((_,r)=>setTimeout(()=>r(0),6000))]);if(p&&p>100)return p;}catch{}}
- throw new Error('failed');
+  const sources=[
+    ()=>fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).then(d=>{const p=Array.isArray(d)?d[0]?.price:d?.price;if(p>100)return+p;throw 0;}),
+    ()=>fetch('https://api.gold-api.com/price/XAU').then(r=>r.json()).then(d=>{if(d?.price>100)return+d.price;throw 0;}),
+    ()=>fetch('https://data-asg.goldprice.org/dbXRates/USD').then(r=>r.json()).then(d=>{const p=d?.items?.[0]?.xauPrice;if(p>100)return+p;throw 0;}),
+    ()=>fetch('https://api.frankfurter.app/latest?from=XAU&to=USD').then(r=>r.json()).then(d=>{const p=d?.rates?.USD;if(p>100)return+p;throw 0;}),
+  ];
+  for(const src of sources){try{const p=await Promise.race([src(),new Promise((_,r)=>setTimeout(()=>r(0),6000))]);if(p&&p>100)return p;}catch{}}
+  throw new Error('failed');
 }
 
 async function fetchNow(){
- setBusy(true);
- try{
-   const p=await fetchGoldPrice();
-   price=p; count++;
-   document.getElementById('loading').style.display='none';
-   document.getElementById('price-area').style.display='block';
-   document.getElementById('price-val').textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-   document.getElementById('count-label').textContent=`كل 20 ثانية · ${count} تحديث`;
-   document.getElementById('error-box').style.display='none';
- }catch{
-   if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
- }
- finally{setBusy(false);sec=20;updateRing();}
+  setBusy(true);
+  try{
+    const p=await fetchGoldPrice();
+    price=p; count++;
+    document.getElementById('loading').style.display='none';
+    document.getElementById('price-area').style.display='block';
+    document.getElementById('price-val').textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('count-label').textContent=`كل 20 ثانية · ${count} تحديث`;
+    document.getElementById('error-box').style.display='none';
+    calcGulf();
+  }catch{
+    if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
+  }
+  finally{setBusy(false);sec=20;updateRing();}
+}
+
+function calcGulf(){
+  if(!price) return;
+  const adjusted = price + (adjSign * adjVal);
+  const gram = (adjusted / 31.1) * 0.88 * paperRate;
+  const mithqal = gram * 5;
+  document.getElementById('gulf-box').style.display='block';
+  document.getElementById('gram-val').textContent = Math.round(gram).toLocaleString('ar-SA');
+  document.getElementById('mithqal-val').textContent = Math.round(mithqal).toLocaleString('ar-SA');
+}
+
+function applySettings(){
+  adjSign = parseInt(document.getElementById('adj-sign').value);
+  adjVal = parseFloat(document.getElementById('adj-val').value) || 0;
+  paperRate = parseFloat(document.getElementById('paper-rate').value) || 1530;
+  calcGulf();
+  toggleSettings();
+}
+
+function toggleSettings(){
+  const p=document.getElementById('settings-panel');
+  p.style.display = p.style.display==='block' ? 'none' : 'block';
 }
 
 function setBusy(b){
- ringSpin.style.display=b?'block':'none';
- ringFill.style.display=b?'none':'block';
- ringText.style.display=b?'none':'block';
- document.getElementById('status').textContent=b?'⟳ يحدّث…':'✓';
- document.getElementById('price-val').classList.toggle('dim',b);
+  ringSpin.style.display=b?'block':'none';
+  ringFill.style.display=b?'none':'block';
+  ringText.style.display=b?'none':'block';
+  document.getElementById('price-val').classList.toggle('dim',b);
 }
 
 function updateRing(){ringFill.style.strokeDashoffset=CIRCUMFERENCE*(1-sec/20);ringText.textContent=sec;}
