@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>سعر الذهب</title>
+<title>زمزم - سعر الذهب</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
-body { min-height:100vh; background:#07090f; display:flex; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:16px; }
+body { min-height:100vh; background:#07090f; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:16px; }
+
+.company-header { text-align:center; padding:20px 16px; margin-bottom:20px; border-bottom:1px solid rgba(255,215,0,0.1); }
+.company-name { font-size:28px; font-weight:900; color:#FFD700; letter-spacing:1px; margin-bottom:4px; }
+.company-address { font-size:12px; color:#a3a3a3; margin-bottom:2px; }
+.company-tagline { font-size:11px; color:#FFD700; font-weight:700; }
+
 .card { width:100%; max-width:400px; border:1px solid rgba(255,215,0,0.15); border-radius:24px; padding:24px 20px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
 .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
 .title { font-size:20px; font-weight:900; color:#FFD700; }
@@ -25,7 +31,8 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 #loading { text-align:center; padding:24px 0; color:#FFD700; font-size:15px; font-weight:700; }
 #error-box { display:none; text-align:center; padding:16px 0; }
 #error-msg { color:#f87171; font-size:13px; margin-bottom:10px; }
-#retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
+#retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; transition:all 0.3s; }
+#retry-btn:hover { background:rgba(255,215,0,0.2); }
 .masagh-box { margin-top:20px; display:none; }
 .section-wrap { border-radius:18px; padding:14px 10px; margin-bottom:12px; }
 .section-wrap.sell  { background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.25); }
@@ -53,7 +60,24 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 .section-wrap.gulf  .masagh-currency { color:#7ab8e8; }
 .section-wrap.iraqi .masagh-currency { color:#70c88a; }
 .footer { margin-top:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
-#settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
+#settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; transition:all 0.3s; }
+#settings-btn:hover { background:rgba(255,215,0,0.15); }
+
+#password-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; align-items:center; justify-content:center; padding:20px; }
+#password-modal.show { display:flex; }
+.password-box { background:#0f1420; border:1px solid rgba(255,215,0,0.3); border-radius:20px; padding:24px; width:100%; max-width:320px; box-shadow:0 20px 60px rgba(0,0,0,0.9); }
+.password-box h3 { color:#FFD700; font-size:16px; font-weight:900; margin-bottom:6px; text-align:center; }
+.password-box p { color:#a3a3a3; font-size:12px; text-align:center; margin-bottom:16px; }
+.password-input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:10px 12px; font-size:15px; font-family:'Cairo',sans-serif; width:100%; margin-bottom:12px; outline:none; }
+.password-input:focus { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.08); }
+.password-error { color:#f87171; font-size:12px; text-align:center; margin-bottom:12px; display:none; }
+.password-btns { display:flex; gap:8px; }
+.password-btns button { flex:1; padding:10px; border-radius:10px; border:1px solid; font-size:13px; font-family:'Cairo',sans-serif; font-weight:700; cursor:pointer; transition:all 0.3s; }
+#confirm-pass-btn { background:rgba(255,215,0,0.15); border-color:rgba(255,215,0,0.4); color:#FFD700; }
+#confirm-pass-btn:hover { background:rgba(255,215,0,0.25); }
+#cancel-pass-btn { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1); color:#a3a3a3; }
+#cancel-pass-btn:hover { background:rgba(255,255,255,0.1); }
+
 #modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
 #modal-overlay.show { display:flex; }
 #modal { background:#0f1420; border:1px solid rgba(255,215,0,0.2); border-radius:24px; padding:24px; width:100%; max-width:340px; }
@@ -69,11 +93,20 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 .setting-inputs select, .setting-inputs input, .setting-row input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.15); color:#FFD700; border-radius:10px; padding:9px 12px; font-size:15px; font-family:'Cairo',sans-serif; width:100%; outline:none; }
 .setting-inputs select { width:75px; flex-shrink:0; }
 .modal-btns { display:flex; gap:10px; margin-top:8px; }
-#apply-btn { flex:1; background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:11px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; font-weight:700; }
-#cancel-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:#475569; padding:11px 16px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; }
+#apply-btn { flex:1; background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:11px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; font-weight:700; transition:all 0.3s; }
+#apply-btn:hover { background:rgba(255,215,0,0.2); }
+#cancel-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:#475569; padding:11px 16px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; transition:all 0.3s; }
+#cancel-btn:hover { background:rgba(255,255,255,0.1); }
 </style>
 </head>
 <body>
+
+<div class="company-header">
+  <div class="company-name">✨ زمزم ✨</div>
+  <div class="company-address">📍 الانبار - الرمادي - شارع الصياغ</div>
+  <div class="company-tagline">🥇 متخصصون في تجارة الذهب</div>
+</div>
+
 <div class="card">
 <div class="header">
   <div>
@@ -88,7 +121,7 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
   </svg>
 </div>
 
-<div id="loading">جارٍ جلب السعر…</div>
+<div id="loading">جار جلب السعر…</div>
 <div id="error-box">
   <div id="error-msg">تعذّر جلب السعر</div>
   <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
@@ -100,7 +133,6 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 
 <div class="masagh-box" id="masagh-box">
 
-  <!-- سعر بيع المصاغ -->
   <div class="section-wrap sell">
     <div class="section-title">🔶 سعر بيع المصاغ</div>
     <div class="masagh-row">
@@ -117,7 +149,6 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
     </div>
   </div>
 
-  <!-- شراء كسر خليجي -->
   <div class="section-wrap gulf">
     <div class="section-title">🔷 شراء كسر خليجي</div>
     <div class="masagh-row">
@@ -134,7 +165,6 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
     </div>
   </div>
 
-  <!-- شراء كسر عراقي -->
   <div class="section-wrap iraqi">
     <div class="section-title">🔸 شراء كسر عراقي</div>
     <div class="masagh-row">
@@ -155,11 +185,25 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 
 <div class="footer">
   <span id="count-label">كل 20 ثانية · 0 تحديث</span>
-  <button id="settings-btn" onclick="openSettings()">⚙️ إعدادات</button>
+  <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
 </div>
 </div>
 
-<!-- المودال -->
+<!-- نافذة كلمة المرور -->
+<div id="password-modal">
+  <div class="password-box">
+    <h3>🔐 الإعدادات المحمية</h3>
+    <p>أدخل كلمة المرور</p>
+    <input type="password" id="password-input" class="password-input" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')confirmPassword()"/>
+    <div class="password-error" id="password-error">❌ كلمة المرور غير صحيحة</div>
+    <div class="password-btns">
+      <button id="cancel-pass-btn" onclick="closePasswordModal()">إلغاء</button>
+      <button id="confirm-pass-btn" onclick="confirmPassword()">✅ تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة الإعدادات -->
 <div id="modal-overlay" onclick="closeIfOutside(event)">
 <div id="modal">
   <h3>⚙️ إعدادات السعر</h3>
@@ -205,6 +249,7 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 </div>
 
 <script>
+const PASSWORD = 'sa12345IF';
 const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
@@ -281,24 +326,43 @@ function calcAll(){
  if(!price) return;
  document.getElementById('masagh-box').style.display='block';
 
- // سعر بيع المصاغ
  const adjusted = price + (adjSign * adjVal);
  const gram = (adjusted / 31.1) * 0.88 * paperRate;
  const mithqal = gram * 5;
  document.getElementById('gram-val').textContent = toArabicNum(gram);
  document.getElementById('mithqal-val').textContent = toArabicNum(mithqal);
 
- // شراء كسر خليجي
  const gulfGram = ((price / 31.1) + (gulfSign * gulfVal)) * 0.875 * paperRate;
  const gulfMithqal = gulfGram * 5;
  document.getElementById('gulf-gram-val').textContent = toArabicNum(gulfGram);
  document.getElementById('gulf-mithqal-val').textContent = toArabicNum(gulfMithqal);
 
- // شراء كسر عراقي: نفس غرام الخليجي + أو - الفرق بالدينار
  const iraqiGram = gulfGram + (iraqiSign * iraqiVal * 1000);
  const iraqiMithqal = iraqiGram * 5;
  document.getElementById('iraqi-gram-val').textContent = toArabicNum(iraqiGram);
  document.getElementById('iraqi-mithqal-val').textContent = toArabicNum(iraqiMithqal);
+}
+
+function openPasswordModal(){
+  document.getElementById('password-modal').classList.add('show');
+  document.getElementById('password-input').value='';
+  document.getElementById('password-error').style.display='none';
+  document.getElementById('password-input').focus();
+}
+
+function closePasswordModal(){
+  document.getElementById('password-modal').classList.remove('show');
+}
+
+function confirmPassword(){
+  const pass=document.getElementById('password-input').value;
+  if(pass===PASSWORD){
+    closePasswordModal();
+    openSettings();
+  }else{
+    document.getElementById('password-error').style.display='block';
+    document.getElementById('password-input').value='';
+  }
 }
 
 function applySettings(){
