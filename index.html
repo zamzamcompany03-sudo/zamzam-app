@@ -8,7 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
   body { min-height:100vh; background:#07090f; display:flex; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:20px; }
-  .card { width:100%; max-width:380px; border:1px solid rgba(255,215,0,0.15); border-radius:28px; padding:32px 26px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
+  .card { width:100%; max-width:420px; border:1px solid rgba(255,215,0,0.15); border-radius:28px; padding:32px 26px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
   .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; }
   .title { font-size:22px; font-weight:900; color:#FFD700; }
   .subtitle { font-size:11px; color:#334155; margin-top:3px; }
@@ -26,11 +26,15 @@
   #error-box { display:none; text-align:center; padding:20px 0; }
   #error-msg { color:#f87171; font-size:13px; margin-bottom:12px; }
   #retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
+
+  /* صف الأسعار الثلاثة */
   .gulf-box { margin-top:22px; border-top:1px solid rgba(255,215,0,0.08); padding-top:18px; display:none; }
-  .gulf-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-  .gulf-label { color:#64748b; font-size:13px; }
-  .gulf-val { color:#FFD700; font-size:18px; font-weight:900; font-family:monospace; }
-  .gulf-unit { color:#334155; font-size:11px; margin-top:2px; text-align:left; }
+  .gulf-row { display:flex; justify-content:space-between; gap:8px; }
+  .gulf-cell { flex:1; background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:12px 8px; text-align:center; }
+  .gulf-label { color:#64748b; font-size:11px; margin-bottom:6px; }
+  .gulf-val { color:#FFD700; font-size:16px; font-weight:900; font-family:monospace; }
+  .gulf-currency { color:#334155; font-size:10px; margin-top:3px; }
+
   .footer { margin-top:22px; padding-top:13px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
   #settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
 
@@ -74,20 +78,24 @@
     <div class="unit">دولار أمريكي / أوقية ترويّة</div>
   </div>
 
+  <!-- الأسعار الثلاثة -->
   <div class="gulf-box" id="gulf-box">
     <div class="gulf-row">
-      <div>
+      <div class="gulf-cell">
+        <div class="gulf-label">سعر بيع المصاغ</div>
+        <div class="gulf-val" id="sell-val">—</div>
+        <div class="gulf-currency">دينار عراقي</div>
+      </div>
+      <div class="gulf-cell">
         <div class="gulf-label">سعر الغرام</div>
-        <div class="gulf-unit">ريال سعودي</div>
+        <div class="gulf-val" id="gram-val">—</div>
+        <div class="gulf-currency">دينار عراقي</div>
       </div>
-      <div id="gram-val" class="gulf-val">—</div>
-    </div>
-    <div class="gulf-row">
-      <div>
+      <div class="gulf-cell">
         <div class="gulf-label">سعر المثقال</div>
-        <div class="gulf-unit">ريال سعودي</div>
+        <div class="gulf-val" id="mithqal-val">—</div>
+        <div class="gulf-currency">دينار عراقي</div>
       </div>
-      <div id="mithqal-val" class="gulf-val">—</div>
     </div>
   </div>
 
@@ -112,8 +120,8 @@
       </div>
     </div>
     <div class="setting-row">
-      <div class="setting-label">سعر الورق (ريال)</div>
-      <input type="number" id="paper-rate" placeholder="مثال: 1530" value="1530" min="1"/>
+      <div class="setting-label">سعر الورق (دينار عراقي)</div>
+      <input type="number" id="paper-rate" placeholder="مثال: 1530000" value="1530000" min="1"/>
     </div>
     <div class="modal-btns">
       <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
@@ -127,7 +135,7 @@ const CIRCUMFERENCE=2*Math.PI*22;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=CIRCUMFERENCE;
 let price=null,count=0,sec=20;
-let adjSign=1,adjVal=0,paperRate=1530;
+let adjSign=1,adjVal=0,paperRate=1530000;
 
 async function fetchGoldPrice(){
   const sources=[
@@ -163,14 +171,15 @@ function calcGulf(){
   const gram=(adjusted/31.1)*0.88*paperRate;
   const mithqal=gram*5;
   document.getElementById('gulf-box').style.display='block';
-  document.getElementById('gram-val').textContent=Math.round(gram).toLocaleString('ar-SA');
-  document.getElementById('mithqal-val').textContent=Math.round(mithqal).toLocaleString('ar-SA');
+  document.getElementById('sell-val').textContent=Math.round(adjusted*paperRate).toLocaleString('ar-IQ');
+  document.getElementById('gram-val').textContent=Math.round(gram).toLocaleString('ar-IQ');
+  document.getElementById('mithqal-val').textContent=Math.round(mithqal).toLocaleString('ar-IQ');
 }
 
 function applySettings(){
   adjSign=parseInt(document.getElementById('adj-sign').value);
   adjVal=parseFloat(document.getElementById('adj-val').value)||0;
-  paperRate=parseFloat(document.getElementById('paper-rate').value)||1530;
+  paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;
   calcGulf();
   closeSettings();
 }
