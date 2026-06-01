@@ -18,7 +18,7 @@
  #ring-text { fill:#FFD700; font-size:12px; font-family:monospace; font-weight:bold; }
  #ring-spin { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:20 104; transform-origin:26px 26px; animation:spin 1s linear infinite; display:none; }
  @keyframes spin { to { transform:rotate(270deg); } }
- #price-val { font-size:56px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1; font-family:monospace; animation:glow 3s ease infinite; transition:opacity 0.3s; }
+ #price-val { font-size:56px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1; font-family:'Amiri',serif; animation:glow 3s ease infinite; transition:opacity 0.3s; }
  #price-val.dim { opacity:0.5; }
  @keyframes glow { 0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)} 50%{text-shadow:0 0 58px rgba(255,215,0,0.9)} }
  .unit { color:#475569; font-size:12px; margin-top:4px; }
@@ -149,11 +149,20 @@ function saveSettings(){
 }
 
 function toArabicNum(n){
-  const arabicDigits=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-  return Math.floor(n/1000)
-    .toLocaleString('en-US')
-    .replace(/,/g,'،')
-    .replace(/[0-9]/g, d => arabicDigits[d]);
+  // حول الرقم لـ string وأضف فاصلة كل 3 أرقام يدوياً
+  const num = Math.floor(n / 1000);
+  const str = num.toString();
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  
+  // أضف فاصلة ، كل 3 أرقام
+  let withComma = '';
+  for(let i = 0; i < str.length; i++){
+    if(i > 0 && (str.length - i) % 3 === 0) withComma += '\u060C'; // ، فاصلة عربية
+    withComma += str[i];
+  }
+  
+  // حول الأرقام اللاتينية لعربية
+  return withComma.replace(/[0-9]/g, d => arabicDigits[parseInt(d)]);
 }
 
 async function fetchGoldPrice(){
