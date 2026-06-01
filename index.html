@@ -26,51 +26,34 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 #error-box { display:none; text-align:center; padding:16px 0; }
 #error-msg { color:#f87171; font-size:13px; margin-bottom:10px; }
 #retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
-
-/* الأقسام */
 .masagh-box { margin-top:20px; display:none; }
-
 .section-wrap { border-radius:18px; padding:14px 10px; margin-bottom:12px; }
 .section-wrap.sell  { background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.25); }
 .section-wrap.gulf  { background:rgba(100,180,255,0.04); border:1px solid rgba(100,180,255,0.25); }
 .section-wrap.iraqi { background:rgba(100,255,160,0.04); border:1px solid rgba(100,255,160,0.25); }
-
 .section-title { font-size:12px; font-weight:900; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid; font-family:'Cairo',sans-serif; text-align:center; letter-spacing:0.5px; }
 .section-wrap.sell  .section-title { color:#FFD700; border-color:rgba(255,215,0,0.2); }
 .section-wrap.gulf  .section-title { color:#64b4ff; border-color:rgba(100,180,255,0.2); }
 .section-wrap.iraqi .section-title { color:#64ffa0; border-color:rgba(100,255,160,0.2); }
-
 .masagh-row { display:flex; gap:8px; }
 .masagh-cell { flex:1; border-radius:12px; padding:10px 6px; text-align:center; }
 .section-wrap.sell  .masagh-cell { background:rgba(255,215,0,0.05); border:1px solid rgba(255,215,0,0.12); }
 .section-wrap.gulf  .masagh-cell { background:rgba(100,180,255,0.05); border:1px solid rgba(100,180,255,0.12); }
 .section-wrap.iraqi .masagh-cell { background:rgba(100,255,160,0.05); border:1px solid rgba(100,255,160,0.12); }
-
-.masagh-cell.title-only { display:flex; align-items:center; justify-content:center; }
 .masagh-label { font-size:13px; font-weight:700; margin-bottom:6px; font-family:'Cairo',sans-serif; }
 .section-wrap.sell  .masagh-label { color:#a89060; }
 .section-wrap.gulf  .masagh-label { color:#7ab8e8; }
 .section-wrap.iraqi .masagh-label { color:#70c88a; }
-
-.masagh-title-text { font-size:13px; font-weight:900; line-height:1.5; font-family:'Cairo',sans-serif; }
-.section-wrap.sell  .masagh-title-text { color:#FFD700; }
-.section-wrap.gulf  .masagh-title-text { color:#64b4ff; }
-.section-wrap.iraqi .masagh-title-text { color:#64ffa0; }
-
 .masagh-val { font-size:22px; font-weight:700; font-family:'Amiri',serif; line-height:1.3; }
 .section-wrap.sell  .masagh-val { color:#FFD700; }
 .section-wrap.gulf  .masagh-val { color:#64b4ff; }
 .section-wrap.iraqi .masagh-val { color:#64ffa0; }
-
 .masagh-currency { font-size:11px; font-weight:700; margin-top:4px; font-family:'Cairo',sans-serif; }
 .section-wrap.sell  .masagh-currency { color:#a89060; }
 .section-wrap.gulf  .masagh-currency { color:#7ab8e8; }
 .section-wrap.iraqi .masagh-currency { color:#70c88a; }
-
 .footer { margin-top:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
 #settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
-
-/* المودال */
 #modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
 #modal-overlay.show { display:flex; }
 #modal { background:#0f1420; border:1px solid rgba(255,215,0,0.2); border-radius:24px; padding:24px; width:100%; max-width:340px; }
@@ -121,9 +104,6 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
   <div class="section-wrap sell">
     <div class="section-title">🔶 سعر بيع المصاغ</div>
     <div class="masagh-row">
-      <div class="masagh-cell title-only">
-        <div class="masagh-title-text">سعر بيع<br/>المصاغ</div>
-      </div>
       <div class="masagh-cell">
         <div class="masagh-label">سعر الغرام</div>
         <div class="masagh-val" id="gram-val">—</div>
@@ -141,9 +121,6 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
   <div class="section-wrap gulf">
     <div class="section-title">🔷 شراء كسر خليجي</div>
     <div class="masagh-row">
-      <div class="masagh-cell title-only">
-        <div class="masagh-title-text">شراء كسر<br/>خليجي</div>
-      </div>
       <div class="masagh-cell">
         <div class="masagh-label">سعر الغرام</div>
         <div class="masagh-val" id="gulf-gram-val">—</div>
@@ -161,9 +138,6 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
   <div class="section-wrap iraqi">
     <div class="section-title">🔸 شراء كسر عراقي</div>
     <div class="masagh-row">
-      <div class="masagh-cell title-only">
-        <div class="masagh-title-text">شراء كسر<br/>عراقي</div>
-      </div>
       <div class="masagh-cell">
         <div class="masagh-label">سعر الغرام</div>
         <div class="masagh-val" id="iraqi-gram-val">—</div>
@@ -210,7 +184,7 @@ body { min-height:100vh; background:#07090f; display:flex; align-items:center; j
 
   <div class="setting-section-title iraqi">🔸 شراء كسر عراقي</div>
   <div class="setting-row">
-    <div class="setting-label">فرق عن غرام الخليجي (+/-)</div>
+    <div class="setting-label">فرق عن غرام الخليجي بالدينار (+/-)</div>
     <div class="setting-inputs">
       <select id="iraqi-sign"><option value="1">+</option><option value="-1">-</option></select>
       <input type="number" id="iraqi-val" placeholder="0" value="0" min="0"/>
@@ -314,14 +288,14 @@ function calcAll(){
  document.getElementById('gram-val').textContent = toArabicNum(gram);
  document.getElementById('mithqal-val').textContent = toArabicNum(mithqal);
 
- // شراء كسر خليجي: (سعر / 31.1 +/- كسري) × 0.875 × سعر الورق
+ // شراء كسر خليجي
  const gulfGram = ((price / 31.1) + (gulfSign * gulfVal)) * 0.875 * paperRate;
  const gulfMithqal = gulfGram * 5;
  document.getElementById('gulf-gram-val').textContent = toArabicNum(gulfGram);
  document.getElementById('gulf-mithqal-val').textContent = toArabicNum(gulfMithqal);
 
- // شراء كسر عراقي: غرام خليجي +/- رقم عراقي
- const iraqiGram = gulfGram + (iraqiSign * iraqiVal);
+ // شراء كسر عراقي: نفس غرام الخليجي + أو - الفرق بالدينار
+ const iraqiGram = gulfGram + (iraqiSign * iraqiVal * 1000);
  const iraqiMithqal = iraqiGram * 5;
  document.getElementById('iraqi-gram-val').textContent = toArabicNum(iraqiGram);
  document.getElementById('iraqi-mithqal-val').textContent = toArabicNum(iraqiMithqal);
