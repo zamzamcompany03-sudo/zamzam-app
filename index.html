@@ -132,7 +132,6 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
 </div>
 
 <div class="masagh-box" id="masagh-box">
-
   <div class="section-wrap sell">
     <div class="section-title">🔶 سعر بيع المصاغ</div>
     <div class="masagh-row">
@@ -180,7 +179,6 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="footer">
@@ -258,28 +256,41 @@ let adjSign=1,adjVal=0,paperRate=1530000;
 let gulfSign=1,gulfVal=0;
 let iraqiSign=1,iraqiVal=0;
 
-function loadSettings(){
- const s=localStorage.getItem('goldSettings3');
- if(s){
-   try{
-     const o=JSON.parse(s);
-     adjSign=o.adjSign??1; adjVal=o.adjVal??0;
-     paperRate=o.paperRate??1530000;
-     gulfSign=o.gulfSign??1; gulfVal=o.gulfVal??0;
-     iraqiSign=o.iraqiSign??1; iraqiVal=o.iraqiVal??0;
-     document.getElementById('adj-sign').value=adjSign;
-     document.getElementById('adj-val').value=adjVal;
-     document.getElementById('paper-rate').value=paperRate;
-     document.getElementById('gulf-sign').value=gulfSign;
-     document.getElementById('gulf-val').value=gulfVal;
-     document.getElementById('iraqi-sign').value=iraqiSign;
-     document.getElementById('iraqi-val').value=iraqiVal;
-   }catch{}
- }
+// ✅ حفظ الإعدادات في URL hash + localStorage معاً
+function saveSettings(){
+  const o={adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal};
+  const encoded = btoa(JSON.stringify(o));
+  history.replaceState(null,null,'#'+encoded);
+  localStorage.setItem('goldSettings3', JSON.stringify(o));
 }
 
-function saveSettings(){
- localStorage.setItem('goldSettings3',JSON.stringify({adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal}));
+// ✅ تحميل من URL hash أولاً، وإن ما في يرجع للـ localStorage
+function loadSettings(){
+  let o = null;
+  // حاول من الـ hash أولاً
+  if(location.hash && location.hash.length > 1){
+    try{
+      o = JSON.parse(atob(location.hash.slice(1)));
+    }catch{}
+  }
+  // إن ما في hash، جرب localStorage
+  if(!o){
+    const s = localStorage.getItem('goldSettings3');
+    if(s){ try{ o=JSON.parse(s); }catch{} }
+  }
+  if(o){
+    adjSign=o.adjSign??1; adjVal=o.adjVal??0;
+    paperRate=o.paperRate??1530000;
+    gulfSign=o.gulfSign??1; gulfVal=o.gulfVal??0;
+    iraqiSign=o.iraqiSign??1; iraqiVal=o.iraqiVal??0;
+    document.getElementById('adj-sign').value=adjSign;
+    document.getElementById('adj-val').value=adjVal;
+    document.getElementById('paper-rate').value=paperRate;
+    document.getElementById('gulf-sign').value=gulfSign;
+    document.getElementById('gulf-val').value=gulfVal;
+    document.getElementById('iraqi-sign').value=iraqiSign;
+    document.getElementById('iraqi-val').value=iraqiVal;
+  }
 }
 
 function toArabicNum(n){
@@ -325,18 +336,15 @@ finally{setBusy(false);sec=20;updateRing();}
 function calcAll(){
  if(!price) return;
  document.getElementById('masagh-box').style.display='block';
-
  const adjusted = price + (adjSign * adjVal);
  const gram = (adjusted / 31.1) * 0.88 * paperRate;
  const mithqal = gram * 5;
  document.getElementById('gram-val').textContent = toArabicNum(gram);
  document.getElementById('mithqal-val').textContent = toArabicNum(mithqal);
-
  const gulfGram = ((price / 31.1) + (gulfSign * gulfVal)) * 0.875 * paperRate;
  const gulfMithqal = gulfGram * 5;
  document.getElementById('gulf-gram-val').textContent = toArabicNum(gulfGram);
  document.getElementById('gulf-mithqal-val').textContent = toArabicNum(gulfMithqal);
-
  const iraqiGram = gulfGram + (iraqiSign * iraqiVal * 1000);
  const iraqiMithqal = iraqiGram * 5;
  document.getElementById('iraqi-gram-val').textContent = toArabicNum(iraqiGram);
@@ -349,20 +357,11 @@ function openPasswordModal(){
   document.getElementById('password-error').style.display='none';
   document.getElementById('password-input').focus();
 }
-
-function closePasswordModal(){
-  document.getElementById('password-modal').classList.remove('show');
-}
-
+function closePasswordModal(){ document.getElementById('password-modal').classList.remove('show'); }
 function confirmPassword(){
   const pass=document.getElementById('password-input').value;
-  if(pass===PASSWORD){
-    closePasswordModal();
-    openSettings();
-  }else{
-    document.getElementById('password-error').style.display='block';
-    document.getElementById('password-input').value='';
-  }
+  if(pass===PASSWORD){ closePasswordModal(); openSettings(); }
+  else{ document.getElementById('password-error').style.display='block'; document.getElementById('password-input').value=''; }
 }
 
 function applySettings(){
