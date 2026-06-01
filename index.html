@@ -5,206 +5,305 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>سعر الذهب</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
-* { margin:0; padding:0; box-sizing:border-box; }
-body { min-height:100vh; background:#07090f; display:flex; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:16px; }
-.card { width:100%; max-width:400px; border:1px solid rgba(255,215,0,0.15); border-radius:24px; padding:24px 20px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
-.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-.title { font-size:20px; font-weight:900; color:#FFD700; }
-.subtitle { font-size:11px; color:#334155; margin-top:2px; }
-#ring { width:52px; height:52px; }
-#ring-track { fill:none; stroke:rgba(255,215,0,0.1); stroke-width:3.5; }
-#ring-fill { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; transform:rotate(-90deg); transform-origin:26px 26px; transition:stroke-dashoffset 1s linear; }
-#ring-text { fill:#FFD700; font-size:12px; font-family:monospace; font-weight:bold; }
-#ring-spin { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:20 104; transform-origin:26px 26px; animation:spin 1s linear infinite; display:none; }
-@keyframes spin { to { transform:rotate(270deg); } }
-#price-val { font-size:56px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1; font-family:'Amiri',serif; animation:glow 3s ease infinite; transition:opacity 0.3s; }
-#price-val.dim { opacity:0.5; }
-@keyframes glow { 0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)} 50%{text-shadow:0 0 58px rgba(255,215,0,0.9)} }
-.unit { color:#475569; font-size:12px; margin-top:4px; }
-#loading { text-align:center; padding:24px 0; color:#FFD700; font-size:15px; font-weight:700; }
-#error-box { display:none; text-align:center; padding:16px 0; }
-#error-msg { color:#f87171; font-size:13px; margin-bottom:10px; }
-#retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
-.masagh-box { margin-top:20px; border-top:1px solid rgba(255,215,0,0.08); padding-top:16px; display:none; }
-.masagh-row { display:flex; gap:8px; }
-.masagh-cell { flex:1; background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:12px 6px; text-align:center; }
-.masagh-cell.title-only { display:flex; align-items:center; justify-content:center; }
-.masagh-label { color:#a89060; font-size:14px; font-weight:700; margin-bottom:6px; font-family:'Cairo',sans-serif; }
-.masagh-title-text { color:#FFD700; font-size:13px; font-weight:900; line-height:1.4; font-family:'Cairo',sans-serif; }
-.masagh-val { color:#FFD700; font-size:22px; font-weight:700; font-family:'Amiri',serif; line-height:1.3; }
-.masagh-currency { color:#a89060; font-size:12px; font-weight:700; margin-top:4px; font-family:'Cairo',sans-serif; }
-.footer { margin-top:20px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
-#settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
-#modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px; }
-#modal-overlay.show { display:flex; }
-#modal { background:#0f1420; border:1px solid rgba(255,215,0,0.2); border-radius:24px; padding:24px; width:100%; max-width:340px; }
-#modal h3 { color:#FFD700; font-size:16px; font-weight:900; margin-bottom:16px; }
-.setting-row { margin-bottom:14px; }
-.setting-label { color:#64748b; font-size:12px; margin-bottom:6px; }
-.setting-inputs { display:flex; gap:8px; }
-.setting-inputs select, .setting-inputs input, .setting-row input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.15); color:#FFD700; border-radius:10px; padding:9px 12px; font-size:15px; font-family:'Cairo',sans-serif; width:100%; outline:none; }
-.setting-inputs select { width:75px; flex-shrink:0; }
-.modal-btns { display:flex; gap:10px; margin-top:8px; }
-#apply-btn { flex:1; background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:11px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; font-weight:700; }
-#cancel-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:#475569; padding:11px 16px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; }
+ @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
+ * { margin:0; padding:0; box-sizing:border-box; }
+ body { min-height:100vh; background:#07090f; display:flex; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:16px; }
+ .card { width:100%; max-width:400px; border:1px solid rgba(255,215,0,0.15); border-radius:24px; padding:24px 20px; background:rgba(255,255,255,0.02); box-shadow:0 40px 90px rgba(0,0,0,0.8); }
+ .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+ .title { font-size:20px; font-weight:900; color:#FFD700; }
+ .subtitle { font-size:11px; color:#334155; margin-top:2px; }
+ #ring { width:52px; height:52px; }
+ #ring-track { fill:none; stroke:rgba(255,215,0,0.1); stroke-width:3.5; }
+ #ring-fill { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; transform:rotate(-90deg); transform-origin:26px 26px; transition:stroke-dashoffset 1s linear; }
+ #ring-text { fill:#FFD700; font-size:12px; font-family:monospace; font-weight:bold; }
+ #ring-spin { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:20 104; transform-origin:26px 26px; animation:spin 1s linear infinite; display:none; }
+ @keyframes spin { to { transform:rotate(270deg); } }
+ #price-val { font-size:56px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1; font-family:'Amiri',serif; animation:glow 3s ease infinite; transition:opacity 0.3s; }
+ #price-val.dim { opacity:0.5; }
+ @keyframes glow { 0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)} 50%{text-shadow:0 0 58px rgba(255,215,0,0.9)} }
+ .unit { color:#475569; font-size:12px; margin-top:4px; }
+ #loading { text-align:center; padding:24px 0; color:#FFD700; font-size:15px; font-weight:700; }
+ #error-box { display:none; text-align:center; padding:16px 0; }
+ #error-msg { color:#f87171; font-size:13px; margin-bottom:10px; }
+ #retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
+
+ /* صناديق الأسعار */
+ .masagh-box { margin-top:20px; border-top:1px solid rgba(255,215,0,0.08); padding-top:16px; display:none; }
+ .masagh-section { margin-bottom:10px; }
+ .masagh-row { display:flex; gap:8px; }
+ .masagh-cell { flex:1; background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:12px 6px; text-align:center; }
+ .masagh-cell.title-only { display:flex; align-items:center; justify-content:center; }
+ .masagh-label { color:#a89060; font-size:14px; font-weight:700; margin-bottom:6px; font-family:'Cairo',sans-serif; }
+ .masagh-title-text { color:#FFD700; font-size:13px; font-weight:900; line-height:1.4; font-family:'Cairo',sans-serif; }
+ .masagh-val { color:#FFD700; font-size:22px; font-weight:700; font-family:'Amiri',serif; line-height:1.3; }
+ .masagh-currency { color:#a89060; font-size:12px; font-weight:700; margin-top:4px; font-family:'Cairo',sans-serif; }
+
+ .footer { margin-top:20px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
+ #settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
+
+ /* المودال */
+ #modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
+ #modal-overlay.show { display:flex; }
+ #modal { background:#0f1420; border:1px solid rgba(255,215,0,0.2); border-radius:24px; padding:24px; width:100%; max-width:340px; }
+ #modal h3 { color:#FFD700; font-size:16px; font-weight:900; margin-bottom:16px; }
+ .setting-section-title { color:#FFD700; font-size:12px; font-weight:900; margin:14px 0 8px; border-bottom:1px solid rgba(255,215,0,0.1); padding-bottom:4px; }
+ .setting-row { margin-bottom:14px; }
+ .setting-label { color:#64748b; font-size:12px; margin-bottom:6px; }
+ .setting-inputs { display:flex; gap:8px; }
+ .setting-inputs select, .setting-inputs input, .setting-row input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.15); color:#FFD700; border-radius:10px; padding:9px 12px; font-size:15px; font-family:'Cairo',sans-serif; width:100%; outline:none; }
+ .setting-inputs select { width:75px; flex-shrink:0; }
+ .modal-btns { display:flex; gap:10px; margin-top:8px; }
+ #apply-btn { flex:1; background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:11px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; font-weight:700; }
+ #cancel-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:#475569; padding:11px 16px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; }
 </style>
 </head>
 <body>
 <div class="card">
-<div class="header">
-  <div>
-    <div class="title">🥇 الذهب / دولار</div>
-    <div class="subtitle">XAU / USD · Spot Price</div>
-  </div>
-  <svg id="ring" viewBox="0 0 52 52">
-    <circle id="ring-track" cx="26" cy="26" r="21"/>
-    <circle id="ring-spin"  cx="26" cy="26" r="21"/>
-    <circle id="ring-fill"  cx="26" cy="26" r="21"/>
-    <text   id="ring-text"  x="26" y="31" text-anchor="middle">20</text>
-  </svg>
+ <div class="header">
+   <div>
+     <div class="title">🥇 الذهب / دولار</div>
+     <div class="subtitle">XAU / USD · Spot Price</div>
+   </div>
+   <svg id="ring" viewBox="0 0 52 52">
+     <circle id="ring-track" cx="26" cy="26" r="21"/>
+     <circle id="ring-spin"  cx="26" cy="26" r="21"/>
+     <circle id="ring-fill"  cx="26" cy="26" r="21"/>
+     <text   id="ring-text"  x="26" y="31" text-anchor="middle">20</text>
+   </svg>
+ </div>
+
+ <div id="loading">جار جلب السعر…</div>
+ <div id="error-box">
+   <div id="error-msg">تعذّر جلب السعر</div>
+   <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
+ </div>
+ <div id="price-area" style="display:none">
+   <div id="price-val">—</div>
+   <div class="unit">دولار أمريكي / أوقية ترويّة</div>
+ </div>
+
+ <div class="masagh-box" id="masagh-box">
+
+   <!-- سعر بيع المصاغ -->
+   <div class="masagh-section">
+     <div class="masagh-row">
+       <div class="masagh-cell title-only">
+         <div class="masagh-title-text">سعر بيع<br/>المصاغ</div>
+       </div>
+       <div class="masagh-cell">
+         <div class="masagh-label">سعر الغرام</div>
+         <div class="masagh-val" id="gram-val">—</div>
+         <div class="masagh-currency">دينار عراقي</div>
+       </div>
+       <div class="masagh-cell">
+         <div class="masagh-label">سعر المثقال</div>
+         <div class="masagh-val" id="mithqal-val">—</div>
+         <div class="masagh-currency">دينار عراقي</div>
+       </div>
+     </div>
+   </div>
+
+   <!-- سعر شراء كسر خليجي -->
+   <div class="masagh-section">
+     <div class="masagh-row">
+       <div class="masagh-cell title-only">
+         <div class="masagh-title-text">شراء كسر<br/>خليجي</div>
+       </div>
+       <div class="masagh-cell">
+         <div class="masagh-label">سعر الغرام</div>
+         <div class="masagh-val" id="gulf-gram-val">—</div>
+         <div class="masagh-currency">دينار عراقي</div>
+       </div>
+       <div class="masagh-cell">
+         <div class="masagh-label">سعر المثقال</div>
+         <div class="masagh-val" id="gulf-mithqal-val">—</div>
+         <div class="masagh-currency">دينار عراقي</div>
+       </div>
+     </div>
+   </div>
+
+   <!-- سعر شراء كسر عراقي -->
+   <div class="masagh-section">
+     <div class="masagh-row">
+       <div class="masagh-cell title-only">
+         <div class="masagh-title-text">شراء كسر<br/>عراقي</div>
+       </div>
+       <div class="masagh-cell">
+         <div class="masagh-label">سعر الغرام</div>
+         <div class="masagh-val" id="iraqi-gram-val">—</div>
+         <div class="masagh-currency">دينار عراقي</div>
+       </div>
+       <div class="masagh-cell">
+         <div class="masagh-label">سعر المثقال</div>
+         <div class="masagh-val" id="iraqi-mithqal-val">—</div>
+         <div class="masagh-currency">دينار عراقي</div>
+       </div>
+     </div>
+   </div>
+
+ </div>
+
+ <div class="footer">
+   <span id="count-label">كل 20 ثانية · 0 تحديث</span>
+   <button id="settings-btn" onclick="openSettings()">⚙️ إعدادات</button>
+ </div>
 </div>
 
-<div id="loading">جارٍ جلب السعر…</div>
-<div id="error-box">
-  <div id="error-msg">تعذّر جلب السعر</div>
-  <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
-</div>
-<div id="price-area" style="display:none">
-  <div id="price-val">—</div>
-  <div class="unit">دولار أمريكي / أوقية ترويّة</div>
-</div>
-
-<div class="masagh-box" id="masagh-box">
-  <div class="masagh-row">
-    <div class="masagh-cell title-only">
-      <div class="masagh-title-text">سعر بيع<br/>المصاغ</div>
-    </div>
-    <div class="masagh-cell">
-      <div class="masagh-label">سعر الغرام</div>
-      <div class="masagh-val" id="gram-val">—</div>
-      <div class="masagh-currency">دينار عراقي</div>
-    </div>
-    <div class="masagh-cell">
-      <div class="masagh-label">سعر المثقال</div>
-      <div class="masagh-val" id="mithqal-val">—</div>
-      <div class="masagh-currency">دينار عراقي</div>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  <span id="count-label">كل 20 ثانية · 0 تحديث</span>
-  <button id="settings-btn" onclick="openSettings()">⚙️ إعدادات</button>
-</div>
-</div>
-
+<!-- المودال -->
 <div id="modal-overlay" onclick="closeIfOutside(event)">
-<div id="modal">
-  <h3>⚙️ إعدادات السعر</h3>
-  <div class="setting-row">
-    <div class="setting-label">تعديل على سعر الأونصة</div>
-    <div class="setting-inputs">
-      <select id="adj-sign">
-        <option value="1">+</option>
-        <option value="-1">-</option>
-      </select>
-      <input type="number" id="adj-val" placeholder="0" value="0" min="0"/>
-    </div>
-  </div>
-  <div class="setting-row">
-    <div class="setting-label">سعر الورق (دينار عراقي)</div>
-    <input type="number" id="paper-rate" placeholder="مثال: 1530000" value="1530000" min="1"/>
-  </div>
-  <div class="modal-btns">
-    <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
-    <button id="apply-btn" onclick="applySettings()">✅ تطبيق</button>
-  </div>
-</div>
+ <div id="modal">
+   <h3>⚙️ إعدادات السعر</h3>
+
+   <div class="setting-section-title">🔶 سعر بيع المصاغ</div>
+   <div class="setting-row">
+     <div class="setting-label">تعديل على سعر الأونصة</div>
+     <div class="setting-inputs">
+       <select id="adj-sign"><option value="1">+</option><option value="-1">-</option></select>
+       <input type="number" id="adj-val" placeholder="0" value="0" min="0"/>
+     </div>
+   </div>
+
+   <div class="setting-section-title">🔷 شراء كسر خليجي</div>
+   <div class="setting-row">
+     <div class="setting-label">رقم كسري (+/-)</div>
+     <div class="setting-inputs">
+       <select id="gulf-sign"><option value="1">+</option><option value="-1">-</option></select>
+       <input type="number" id="gulf-val" placeholder="0" value="0" min="0" step="0.01"/>
+     </div>
+   </div>
+
+   <div class="setting-section-title">🔸 شراء كسر عراقي</div>
+   <div class="setting-row">
+     <div class="setting-label">فرق عن سعر الغرام الخليجي (+/-)</div>
+     <div class="setting-inputs">
+       <select id="iraqi-sign"><option value="1">+</option><option value="-1">-</option></select>
+       <input type="number" id="iraqi-val" placeholder="0" value="0" min="0"/>
+     </div>
+   </div>
+
+   <div class="setting-section-title">💵 عام</div>
+   <div class="setting-row">
+     <div class="setting-label">سعر الورق (دينار عراقي)</div>
+     <input type="number" id="paper-rate" placeholder="مثال: 1530000" value="1530000" min="1"/>
+   </div>
+
+   <div class="modal-btns">
+     <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
+     <button id="apply-btn" onclick="applySettings()">✅ تطبيق</button>
+   </div>
+ </div>
 </div>
 
 <script>
 const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
-let price=null,count=0,sec=20,adjSign=1,adjVal=0,paperRate=1530000;
+let price=null,count=0,sec=20;
+let adjSign=1,adjVal=0,paperRate=1530000;
+let gulfSign=1,gulfVal=0;
+let iraqiSign=1,iraqiVal=0;
 
 function loadSettings(){
- const s=localStorage.getItem('goldSettings');
- if(s){
-   try{
-     const o=JSON.parse(s);
-     adjSign=o.adjSign??1;
-     adjVal=o.adjVal??0;
-     paperRate=o.paperRate??1530000;
-     document.getElementById('adj-sign').value=adjSign;
-     document.getElementById('adj-val').value=adjVal;
-     document.getElementById('paper-rate').value=paperRate;
-   }catch{}
- }
+  const s=localStorage.getItem('goldSettings2');
+  if(s){
+    try{
+      const o=JSON.parse(s);
+      adjSign=o.adjSign??1; adjVal=o.adjVal??0;
+      paperRate=o.paperRate??1530000;
+      gulfSign=o.gulfSign??1; gulfVal=o.gulfVal??0;
+      iraqiSign=o.iraqiSign??1; iraqiVal=o.iraqiVal??0;
+      document.getElementById('adj-sign').value=adjSign;
+      document.getElementById('adj-val').value=adjVal;
+      document.getElementById('paper-rate').value=paperRate;
+      document.getElementById('gulf-sign').value=gulfSign;
+      document.getElementById('gulf-val').value=gulfVal;
+      document.getElementById('iraqi-sign').value=iraqiSign;
+      document.getElementById('iraqi-val').value=iraqiVal;
+    }catch{}
+  }
 }
 
 function saveSettings(){
- localStorage.setItem('goldSettings',JSON.stringify({adjSign,adjVal,paperRate}));
+  localStorage.setItem('goldSettings2',JSON.stringify({adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal}));
 }
 
 function toArabicNum(n){
- const num = Math.floor(n / 1000);
- const str = num.toString();
- const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
- let withComma = '';
- for(let i = 0; i < str.length; i++){
-   if(i > 0 && (str.length - i) % 3 === 0) withComma += ',';
-   withComma += str[i];
- }
- return withComma.replace(/[0-9]/g, d => arabicDigits[parseInt(d)]);
+  const num=Math.floor(n/1000);
+  const str=num.toString();
+  const d=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  let w='';
+  for(let i=0;i<str.length;i++){
+    if(i>0&&(str.length-i)%3===0) w+=',';
+    w+=str[i];
+  }
+  return w.replace(/[0-9]/g,x=>d[parseInt(x)]);
 }
 
 async function fetchGoldPrice(){
-const sources=[
-  ()=>fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).then(d=>{const p=Array.isArray(d)?d[0]?.price:d?.price;if(p>100)return+p;throw 0;}),
-  ()=>fetch('https://api.gold-api.com/price/XAU').then(r=>r.json()).then(d=>{if(d?.price>100)return+d.price;throw 0;}),
-  ()=>fetch('https://data-asg.goldprice.org/dbXRates/USD').then(r=>r.json()).then(d=>{const p=d?.items?.[0]?.xauPrice;if(p>100)return+p;throw 0;}),
-  ()=>fetch('https://api.frankfurter.app/latest?from=XAU&to=USD').then(r=>r.json()).then(d=>{const p=d?.rates?.USD;if(p>100)return+p;throw 0;}),
-];
-for(const src of sources){try{const p=await Promise.race([src(),new Promise((_,r)=>setTimeout(()=>r(0),6000))]);if(p&&p>100)return p;}catch{}}
-throw new Error('failed');
+ const sources=[
+   ()=>fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).then(d=>{const p=Array.isArray(d)?d[0]?.price:d?.price;if(p>100)return+p;throw 0;}),
+   ()=>fetch('https://api.gold-api.com/price/XAU').then(r=>r.json()).then(d=>{if(d?.price>100)return+d.price;throw 0;}),
+   ()=>fetch('https://data-asg.goldprice.org/dbXRates/USD').then(r=>r.json()).then(d=>{const p=d?.items?.[0]?.xauPrice;if(p>100)return+p;throw 0;}),
+   ()=>fetch('https://api.frankfurter.app/latest?from=XAU&to=USD').then(r=>r.json()).then(d=>{const p=d?.rates?.USD;if(p>100)return+p;throw 0;}),
+ ];
+ for(const src of sources){try{const p=await Promise.race([src(),new Promise((_,r)=>setTimeout(()=>r(0),6000))]);if(p&&p>100)return p;}catch{}}
+ throw new Error('failed');
 }
 
 async function fetchNow(){
-setBusy(true);
-try{
-  const p=await fetchGoldPrice();
-  price=p;count++;
-  document.getElementById('loading').style.display='none';
-  document.getElementById('price-area').style.display='block';
-  document.getElementById('price-val').textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('count-label').textContent=`كل 20 ثانية · ${count} تحديث`;
-  document.getElementById('error-box').style.display='none';
-  calcMasagh();
-}catch{
-  if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
-}
-finally{setBusy(false);sec=20;updateRing();}
+ setBusy(true);
+ try{
+   const p=await fetchGoldPrice();
+   price=p; count++;
+   document.getElementById('loading').style.display='none';
+   document.getElementById('price-area').style.display='block';
+   document.getElementById('price-val').textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+   document.getElementById('count-label').textContent=`كل 20 ثانية · ${count} تحديث`;
+   document.getElementById('error-box').style.display='none';
+   calcAll();
+ }catch{
+   if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
+ }
+ finally{setBusy(false);sec=20;updateRing();}
 }
 
-function calcMasagh(){
-if(!price)return;
-const adjusted=price+(adjSign*adjVal);
-const gram=(adjusted/31.1)*0.88*paperRate;
-const mithqal=gram*5;
-document.getElementById('masagh-box').style.display='block';
-document.getElementById('gram-val').textContent=toArabicNum(gram);
-document.getElementById('mithqal-val').textContent=toArabicNum(mithqal);
+function calcAll(){
+  if(!price) return;
+  document.getElementById('masagh-box').style.display='block';
+
+  // سعر بيع المصاغ
+  const adjusted = price + (adjSign * adjVal);
+  const gram = (adjusted / 31.1) * 0.88 * paperRate;
+  const mithqal = gram * 5;
+  document.getElementById('gram-val').textContent = toArabicNum(gram);
+  document.getElementById('mithqal-val').textContent = toArabicNum(mithqal);
+
+  // شراء كسر خليجي
+  // (سعر الأونصة / 31.1) +/- رقم كسري × 0.875 × سعر الورق
+  const gulfGram = ((price / 31.1) + (gulfSign * gulfVal)) * 0.875 * paperRate;
+  const gulfMithqal = gulfGram * 5;
+  document.getElementById('gulf-gram-val').textContent = toArabicNum(gulfGram);
+  document.getElementById('gulf-mithqal-val').textContent = toArabicNum(gulfMithqal);
+
+  // شراء كسر عراقي
+  // سعر غرام خليجي +/- رقم عراقي
+  const iraqiGram = gulfGram + (iraqiSign * iraqiVal);
+  const iraqiMithqal = iraqiGram * 5;
+  document.getElementById('iraqi-gram-val').textContent = toArabicNum(iraqiGram);
+  document.getElementById('iraqi-mithqal-val').textContent = toArabicNum(iraqiMithqal);
 }
 
 function applySettings(){
-adjSign=parseInt(document.getElementById('adj-sign').value);
-adjVal=parseFloat(document.getElementById('adj-val').value)||0;
-paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;
-saveSettings();
-calcMasagh();
-closeSettings();
+  adjSign=parseInt(document.getElementById('adj-sign').value);
+  adjVal=parseFloat(document.getElementById('adj-val').value)||0;
+  paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;
+  gulfSign=parseInt(document.getElementById('gulf-sign').value);
+  gulfVal=parseFloat(document.getElementById('gulf-val').value)||0;
+  iraqiSign=parseInt(document.getElementById('iraqi-sign').value);
+  iraqiVal=parseFloat(document.getElementById('iraqi-val').value)||0;
+  saveSettings();
+  calcAll();
+  closeSettings();
 }
 
 function openSettings(){ document.getElementById('modal-overlay').classList.add('show'); }
@@ -212,10 +311,10 @@ function closeSettings(){ document.getElementById('modal-overlay').classList.rem
 function closeIfOutside(e){ if(e.target===document.getElementById('modal-overlay'))closeSettings(); }
 
 function setBusy(b){
-ringSpin.style.display=b?'block':'none';
-ringFill.style.display=b?'none':'block';
-ringText.style.display=b?'none':'block';
-document.getElementById('price-val').classList.toggle('dim',b);
+ ringSpin.style.display=b?'block':'none';
+ ringFill.style.display=b?'none':'block';
+ ringText.style.display=b?'none':'block';
+ document.getElementById('price-val').classList.toggle('dim',b);
 }
 
 function updateRing(){ringFill.style.strokeDashoffset=C*(1-sec/20);ringText.textContent=sec;}
