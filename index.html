@@ -26,21 +26,16 @@
  #error-box { display:none; text-align:center; padding:16px 0; }
  #error-msg { color:#f87171; font-size:13px; margin-bottom:10px; }
  #retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
-
- /* صف المصاغ */
  .masagh-box { margin-top:20px; border-top:1px solid rgba(255,215,0,0.08); padding-top:16px; display:none; }
  .masagh-row { display:flex; gap:8px; }
  .masagh-cell { flex:1; background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:12px 6px; text-align:center; }
  .masagh-cell.title-only { display:flex; align-items:center; justify-content:center; }
  .masagh-label { color:#64748b; font-size:11px; margin-bottom:6px; }
  .masagh-title-text { color:#FFD700; font-size:13px; font-weight:900; line-height:1.4; }
- .masagh-val { color:#FFD700; font-size:15px; font-weight:900; font-family:monospace; }
+ .masagh-val { color:#FFD700; font-size:15px; font-weight:900; font-family:'Cairo',sans-serif; }
  .masagh-currency { color:#334155; font-size:10px; margin-top:4px; }
-
  .footer { margin-top:20px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
  #settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:5px 12px; cursor:pointer; font-size:13px; font-family:'Cairo',sans-serif; }
-
- /* Modal */
  #modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px; }
  #modal-overlay.show { display:flex; }
  #modal { background:#0f1420; border:1px solid rgba(255,215,0,0.2); border-radius:24px; padding:24px; width:100%; max-width:340px; }
@@ -80,7 +75,6 @@
    <div class="unit">دولار أمريكي / أوقية ترويّة</div>
  </div>
 
- <!-- صف المصاغ -->
  <div class="masagh-box" id="masagh-box">
    <div class="masagh-row">
      <div class="masagh-cell title-only">
@@ -105,7 +99,6 @@
  </div>
 </div>
 
-<!-- Modal -->
 <div id="modal-overlay" onclick="closeIfOutside(event)">
  <div id="modal">
    <h3>⚙️ إعدادات السعر</h3>
@@ -135,6 +128,38 @@ const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
 let price=null,count=0,sec=20,adjSign=1,adjVal=0,paperRate=1530000;
+
+// ── تحميل الإعدادات المحفوظة ──
+function loadSettings(){
+  const s=localStorage.getItem('goldSettings');
+  if(s){
+    try{
+      const o=JSON.parse(s);
+      adjSign=o.adjSign??1;
+      adjVal=o.adjVal??0;
+      paperRate=o.paperRate??1530000;
+      document.getElementById('adj-sign').value=adjSign;
+      document.getElementById('adj-val').value=adjVal;
+      document.getElementById('paper-rate').value=paperRate;
+    }catch{}
+  }
+}
+
+// ── حفظ الإعدادات ──
+function saveSettings(){
+  localStorage.setItem('goldSettings',JSON.stringify({adjSign,adjVal,paperRate}));
+}
+
+// ── تنسيق الأرقام بالعربي مثل ١٩٥،٢٣٢ ──
+function toArabicNum(n){
+  return Math.round(n)
+    .toLocaleString('en-US')
+    .replace(/,/g,'،')
+    .replace(/0/g,'٠').replace(/1/g,'١').replace(/2/g,'٢')
+    .replace(/3/g,'٣').replace(/4/g,'٤').replace(/5/g,'٥')
+    .replace(/6/g,'٦').replace(/7/g,'٧').replace(/8/g,'٨')
+    .replace(/9/g,'٩');
+}
 
 async function fetchGoldPrice(){
  const sources=[
@@ -170,14 +195,15 @@ function calcMasagh(){
  const gram=(adjusted/31.1)*0.88*paperRate;
  const mithqal=gram*5;
  document.getElementById('masagh-box').style.display='block';
- document.getElementById('gram-val').textContent=Math.round(gram).toLocaleString('ar-EG');
- document.getElementById('mithqal-val').textContent=Math.round(mithqal).toLocaleString('ar-EG');
+ document.getElementById('gram-val').textContent=toArabicNum(gram);
+ document.getElementById('mithqal-val').textContent=toArabicNum(mithqal);
 }
 
 function applySettings(){
  adjSign=parseInt(document.getElementById('adj-sign').value);
  adjVal=parseFloat(document.getElementById('adj-val').value)||0;
  paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;
+ saveSettings();
  calcMasagh();
  closeSettings();
 }
@@ -195,6 +221,8 @@ function setBusy(b){
 
 function updateRing(){ringFill.style.strokeDashoffset=C*(1-sec/20);ringText.textContent=sec;}
 
+// ── تشغيل ──
+loadSettings();
 fetchNow();
 setInterval(fetchNow,20000);
 setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
