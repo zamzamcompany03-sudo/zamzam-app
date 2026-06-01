@@ -150,9 +150,9 @@ function saveSettings(){
   localStorage.setItem('goldSettings',JSON.stringify({adjSign,adjVal,paperRate}));
 }
 
-// ── تنسيق الأرقام بالعربي مثل ١٩٥،٢٣٢ ──
+// ── تنسيق الأرقام: قسمة على 1000 ثم تحويل لعربي ──
 function toArabicNum(n){
-  return Math.round(n)
+  return Math.floor(n/1000)
     .toLocaleString('en-US')
     .replace(/,/g,'،')
     .replace(/0/g,'٠').replace(/1/g,'١').replace(/2/g,'٢')
