@@ -149,19 +149,14 @@ function saveSettings(){
 }
 
 function toArabicNum(n){
-  // حول الرقم لـ string وأضف فاصلة كل 3 أرقام يدوياً
   const num = Math.floor(n / 1000);
   const str = num.toString();
   const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-  
-  // أضف فاصلة ، كل 3 أرقام
   let withComma = '';
   for(let i = 0; i < str.length; i++){
-    if(i > 0 && (str.length - i) % 3 === 0) withComma += '\u060C'; // ، فاصلة عربية
+    if(i > 0 && (str.length - i) % 3 === 0) withComma += ','; // ← فاصلة إنجليزية
     withComma += str[i];
   }
-  
-  // حول الأرقام اللاتينية لعربية
   return withComma.replace(/[0-9]/g, d => arabicDigits[parseInt(d)]);
 }
 
