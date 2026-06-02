@@ -257,7 +257,67 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
 </div>
 
 <!-- زر تحميل التطبيق -->
-<button id="install-btn" onclick="installApp()">📲 أضف التطبيق على شاشتك الرئيسية</button>
+<button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
+
+<!-- مودال التثبيت -->
+<div id="install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:400;align-items:flex-end;justify-content:center;padding:0;">
+  <div style="background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:24px 24px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:16px;font-weight:900;color:#FFD700;margin-bottom:4px;">📲 أضف التطبيق</div>
+      <div style="font-size:12px;color:#64748b;">اختر نوع جهازك</div>
+    </div>
+    <!-- اختيار الجهاز -->
+    <div id="device-choice" style="display:flex;gap:10px;margin-bottom:16px;">
+      <button onclick="showSteps('ios')" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:14px;padding:14px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">
+        🍎 iPhone
+      </button>
+      <button onclick="showSteps('android')" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:14px;padding:14px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">
+        🤖 Android
+      </button>
+    </div>
+    <!-- خطوات iOS -->
+    <div id="steps-ios" style="display:none;">
+      <div style="font-size:13px;font-weight:900;color:#64b4ff;margin-bottom:12px;text-align:center;">خطوات iPhone</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.15);border-radius:12px;padding:10px 12px;">
+          <div style="font-size:22px;flex-shrink:0;">1️⃣</div>
+          <div style="font-size:13px;color:#cbd5e1;">اضغط على زر <strong style="color:#64b4ff;">المشاركة</strong> في أسفل المتصفح (الأيقونة مربع بسهم لأعلى ⬆️)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.15);border-radius:12px;padding:10px 12px;">
+          <div style="font-size:22px;flex-shrink:0;">2️⃣</div>
+          <div style="font-size:13px;color:#cbd5e1;">مرّر للأسفل وابحث عن <strong style="color:#64b4ff;">"أضف إلى الشاشة الرئيسية"</strong></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.15);border-radius:12px;padding:10px 12px;">
+          <div style="font-size:22px;flex-shrink:0;">3️⃣</div>
+          <div style="font-size:13px;color:#cbd5e1;">اضغط <strong style="color:#64b4ff;">"إضافة"</strong> وسيظهر التطبيق على شاشتك ✅</div>
+        </div>
+      </div>
+    </div>
+    <!-- خطوات Android -->
+    <div id="steps-android" style="display:none;">
+      <div style="font-size:13px;font-weight:900;color:#64ffa0;margin-bottom:12px;text-align:center;">خطوات Android</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,255,160,0.06);border:1px solid rgba(100,255,160,0.15);border-radius:12px;padding:10px 12px;">
+          <div style="font-size:22px;flex-shrink:0;">1️⃣</div>
+          <div style="font-size:13px;color:#cbd5e1;">اضغط على <strong style="color:#64ffa0;">النقاط الثلاث ⋮</strong> في أعلى المتصفح</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,255,160,0.06);border:1px solid rgba(100,255,160,0.15);border-radius:12px;padding:10px 12px;">
+          <div style="font-size:22px;flex-shrink:0;">2️⃣</div>
+          <div style="font-size:13px;color:#cbd5e1;">اختر <strong style="color:#64ffa0;">"إضافة إلى الشاشة الرئيسية"</strong></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,255,160,0.06);border:1px solid rgba(100,255,160,0.15);border-radius:12px;padding:10px 12px;">
+          <div style="font-size:22px;flex-shrink:0;">3️⃣</div>
+          <div style="font-size:13px;color:#cbd5e1;">اضغط <strong style="color:#64ffa0;">"إضافة"</strong> وسيظهر التطبيق على شاشتك ✅</div>
+        </div>
+      </div>
+    </div>
+    <!-- أزرار -->
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button id="back-btn" onclick="backToChoice()" style="display:none;flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#a3a3a3;border-radius:12px;padding:11px;font-size:13px;font-family:Cairo,sans-serif;cursor:pointer;">← رجوع</button>
+      <button onclick="closeInstallModal()" style="flex:1;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:12px;padding:11px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">إغلاق</button>
+    </div>
+  </div>
+</div>
 
 <div id="password-modal">
   <div class="password-box">
@@ -365,14 +425,40 @@ window.addEventListener('beforeinstallprompt', e => {
   document.getElementById('install-btn').style.display = 'block';
 });
 
-function installApp(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-btn').style.display='none'; });
+function showInstallModal(){
+  const m = document.getElementById("install-modal");
+  m.style.display = "flex";
+  document.getElementById("steps-ios").style.display = "none";
+  document.getElementById("steps-android").style.display = "none";
+  document.getElementById("device-choice").style.display = "flex";
+  document.getElementById("back-btn").style.display = "none";
+}
+function closeInstallModal(){
+  document.getElementById("install-modal").style.display = "none";
+}
+function showSteps(type){
+  document.getElementById("device-choice").style.display = "none";
+  document.getElementById("back-btn").style.display = "block";
+  if(type === "ios"){
+    document.getElementById("steps-ios").style.display = "block";
+    document.getElementById("steps-android").style.display = "none";
+    // على Android حاول التثبيت التلقائي
   } else {
-    alert('لتثبيت التطبيق:\niPhone: اضغط على زر المشاركة ← "أضف إلى الشاشة الرئيسية"\nAndroid: اضغط على قائمة المتصفح ← "تثبيت التطبيق"');
+    document.getElementById("steps-android").style.display = "block";
+    document.getElementById("steps-ios").style.display = "none";
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; closeInstallModal(); });
+    }
   }
 }
+function backToChoice(){
+  document.getElementById("steps-ios").style.display = "none";
+  document.getElementById("steps-android").style.display = "none";
+  document.getElementById("device-choice").style.display = "flex";
+  document.getElementById("back-btn").style.display = "none";
+}
+function installApp(){ showInstallModal(); }
 
 // إظهار الزر دائماً على iOS (لأن iOS ما يدعم beforeinstallprompt)
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
