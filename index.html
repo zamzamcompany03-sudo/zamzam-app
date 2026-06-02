@@ -267,71 +267,36 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
 </div>
 </div>
 
+<!-- Firebase بدون module -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAO4o1zCEpBb3tvNXoHRJMhpDDp4BK6Myg",
+  authDomain: "zamzam-gold-2.firebaseapp.com",
+  databaseURL: "https://zamzam-gold-2-default-rtdb.firebaseio.com",
+  projectId: "zamzam-gold-2",
+  storageBucket: "zamzam-gold-2.firebasestorage.app",
+  messagingSenderId: "114154841133",
+  appId: "1:114154841133:web:3c5779d1671c8b6a3204a4"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const settingsRef = db.ref('settings');
+
 const PASSWORD = 'sa12345IF';
-const GITHUB_TOKEN = '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';
-const GIST_FILENAME = 'zamzam_settings.json';
 const C = 2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
 let price=null,count=0,sec=20;
 let adjSign=1,adjVal=0,paperRate=1530000;
 let gulfSign=1,gulfVal=0,iraqiSign=1,iraqiVal=0;
-let gistId=null;
 
-async function saveSettings(){
+function saveSettings(){
   const o={adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal};
   localStorage.setItem('zs',JSON.stringify(o));
-  try {
-    const content=JSON.stringify(o);
-    if(gistId){
-      await fetch(`https://api.github.com/gists/${gistId}`,{
-        method:'PATCH',
-        headers:{'Authorization':`token ${GITHUB_TOKEN}`,'Content-Type':'application/json'},
-        body:JSON.stringify({files:{[GIST_FILENAME]:{content}}})
-      });
-    } else {
-      const r=await fetch('https://api.github.com/gists',{
-        method:'POST',
-        headers:{'Authorization':`token ${GITHUB_TOKEN}`,'Content-Type':'application/json'},
-        body:JSON.stringify({public:false,files:{[GIST_FILENAME]:{content}}})
-      });
-      const d=await r.json();
-      gistId=d.id;
-      localStorage.setItem('zs_gid',gistId);
-    }
-  } catch(e){}
-}
-
-async function loadSettings(){
-  let o=null;
-  try {
-    gistId=localStorage.getItem('zs_gid');
-    if(!gistId){
-      const r=await fetch('https://api.github.com/gists',{
-        headers:{'Authorization':`token ${GITHUB_TOKEN}`}
-      });
-      const list=await r.json();
-      const g=list.find(x=>x.files&&x.files[GIST_FILENAME]);
-      if(g) gistId=g.id;
-      if(gistId) localStorage.setItem('zs_gid',gistId);
-    }
-    if(gistId){
-      const r=await fetch(`https://api.github.com/gists/${gistId}`,{
-        headers:{'Authorization':`token ${GITHUB_TOKEN}`}
-      });
-      const d=await r.json();
-      const raw=d.files?.[GIST_FILENAME]?.content;
-      if(raw) o=JSON.parse(raw);
-    }
-  } catch(e){}
-  if(!o){const s=localStorage.getItem('zs');if(s){try{o=JSON.parse(s);}catch{}}}
-  if(o){
-    adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;
-    gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;
-    iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;
-    applyToUI();
-  }
+  settingsRef.set(o).catch(e=>console.log('Firebase error:',e));
 }
 
 function applyToUI(){
@@ -343,6 +308,18 @@ function applyToUI(){
   document.getElementById('iraqi-sign').value=iraqiSign;
   document.getElementById('iraqi-val').value=iraqiVal;
 }
+
+// مراقبة التغييرات من Firebase - تحديث فوري على كل الأجهزة
+settingsRef.on('value', function(snapshot){
+  const o = snapshot.val();
+  if(o){
+    adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;
+    gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;
+    iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;
+    applyToUI();
+    calcAll();
+  }
+});
 
 function toArabicNum(n){
   const num=Math.floor(n/1000);
@@ -432,28 +409,9 @@ function setBusy(b){
 }
 function updateRing(){ringFill.style.strokeDashoffset=C*(1-sec/20);ringText.textContent=sec;}
 
-async function syncSettings(){
-  try {
-    if(!gistId) return;
-    const r=await fetch(`https://api.github.com/gists/${gistId}`,{
-      headers:{'Authorization':`token ${GITHUB_TOKEN}`}
-    });
-    const d=await r.json();
-    const raw=d.files?.[GIST_FILENAME]?.content;
-    if(raw){
-      const o=JSON.parse(raw);
-      adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;
-      gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;
-      iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;
-      applyToUI();calcAll();
-    }
-  } catch(e){}
-}
-
-loadSettings().then(()=>{fetchNow();});
+fetchNow();
 setInterval(fetchNow,20000);
 setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
-setInterval(syncSettings,30000);
 </script>
 </body>
 </html>
