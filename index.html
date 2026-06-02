@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#07090f"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="زمزم ذهب"/>
+<link rel="manifest" id="manifest-link"/>
 <title>شركة زمزم - سعر الذهب</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
@@ -74,6 +79,23 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
 .section-wrap.iraqi .masagh-currency { color:#70c88a; }
 .footer { margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
 #settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:4px 12px; cursor:pointer; font-size:12px; font-family:'Cairo',sans-serif; }
+
+/* عداد المشاهدات */
+.views-box { width:100%; max-width:400px; margin-top:12px; border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:10px 16px; background:rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.views-item { flex:1; text-align:center; }
+.views-label { font-size:10px; color:#64748b; font-weight:700; margin-bottom:3px; }
+.views-val { font-size:20px; font-weight:900; font-family:'Amiri',serif; color:#FFD700; }
+.views-divider { width:1px; height:36px; background:rgba(255,215,0,0.1); }
+
+/* التاريخ والساعة */
+.datetime-box { width:100%; max-width:400px; margin-top:10px; border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:10px 16px; background:rgba(255,255,255,0.02); text-align:center; }
+.datetime-time { font-size:28px; font-weight:900; color:#FFD700; font-family:"Amiri",serif; direction:ltr; letter-spacing:2px; }
+.datetime-date { font-size:13px; color:#a89060; font-weight:700; margin-top:3px; }
+
+/* زر التحميل PWA */
+#install-btn { display:none; width:100%; max-width:400px; margin-top:10px; background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,180,0,0.08)); border:1px solid rgba(255,215,0,0.4); color:#FFD700; padding:12px; border-radius:14px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:900; text-align:center; animation:pulse-btn 2s ease infinite; }
+@keyframes pulse-btn { 0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0.3)} 50%{box-shadow:0 0 0 8px rgba(255,215,0,0)} }
+
 #password-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; align-items:center; justify-content:center; padding:20px; }
 #password-modal.show { display:flex; }
 .password-box { background:#0f1420; border:1px solid rgba(255,215,0,0.3); border-radius:20px; padding:24px; width:100%; max-width:320px; }
@@ -215,6 +237,28 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
 </div>
 </div>
 
+<!-- عداد المشاهدات -->
+<div class="views-box">
+  <div class="views-item">
+    <div class="views-label">👁️ مشاهدات اليوم</div>
+    <div class="views-val" id="today-views">—</div>
+  </div>
+  <div class="views-divider"></div>
+  <div class="views-item">
+    <div class="views-label">📊 إجمالي المشاهدات</div>
+    <div class="views-val" id="total-views">—</div>
+  </div>
+</div>
+
+<!-- التاريخ والساعة -->
+<div class="datetime-box">
+  <div class="datetime-time" id="clock">—</div>
+  <div class="datetime-date" id="datebox">—</div>
+</div>
+
+<!-- زر تحميل التطبيق -->
+<button id="install-btn" onclick="installApp()">📲 أضف التطبيق على شاشتك الرئيسية</button>
+
 <div id="password-modal">
   <div class="password-box">
     <h3>🔐 الإعدادات المحمية</h3>
@@ -267,7 +311,6 @@ body { min-height:100vh; background:#07090f; display:flex; flex-direction:column
 </div>
 </div>
 
-<!-- Firebase بدون module -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
@@ -284,6 +327,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const settingsRef = db.ref('settings');
+const viewsRef = db.ref('views');
 
 const PASSWORD = 'sa12345IF';
 const C = 2*Math.PI*21;
@@ -292,7 +336,50 @@ ringFill.style.strokeDasharray=C;
 let price=null,count=0,sec=20;
 let adjSign=1,adjVal=0,paperRate=1530000;
 let gulfSign=1,gulfVal=0,iraqiSign=1,iraqiVal=0;
+let deferredPrompt=null;
 
+// ---- عداد المشاهدات ----
+function todayKey(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+function trackView(){
+  const key = todayKey();
+  // إجمالي
+  viewsRef.child('total').transaction(v => (v||0)+1);
+  // اليوم
+  viewsRef.child('daily/'+key).transaction(v => (v||0)+1);
+}
+
+viewsRef.child('total').on('value', s => {
+  document.getElementById('total-views').textContent = (s.val()||0).toLocaleString('ar-EG');
+});
+viewsRef.child('daily/'+todayKey()).on('value', s => {
+  document.getElementById('today-views').textContent = (s.val()||0).toLocaleString('ar-EG');
+});
+
+trackView();
+
+// ---- PWA ----
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-btn').style.display = 'block';
+});
+
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-btn').style.display='none'; });
+  } else {
+    alert('لتثبيت التطبيق:\niPhone: اضغط على زر المشاركة ← "أضف إلى الشاشة الرئيسية"\nAndroid: اضغط على قائمة المتصفح ← "تثبيت التطبيق"');
+  }
+}
+
+// إظهار الزر دائماً على iOS (لأن iOS ما يدعم beforeinstallprompt)
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isInStandalone = window.navigator.standalone;
+if(isIOS && !isInStandalone){ document.getElementById('install-btn').style.display='block'; }
+
+// ---- الإعدادات ----
 function saveSettings(){
   const o={adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal};
   localStorage.setItem('zs',JSON.stringify(o));
@@ -309,15 +396,13 @@ function applyToUI(){
   document.getElementById('iraqi-val').value=iraqiVal;
 }
 
-// مراقبة التغييرات من Firebase - تحديث فوري على كل الأجهزة
 settingsRef.on('value', function(snapshot){
   const o = snapshot.val();
   if(o){
     adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;
     gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;
     iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;
-    applyToUI();
-    calcAll();
+    applyToUI(); calcAll();
   }
 });
 
@@ -376,38 +461,29 @@ function calcAll(){
   document.getElementById('iraqi-mithqal-val').textContent=toArabicNum(iraqiMithqal);
 }
 
-function openPasswordModal(){
-  document.getElementById('password-modal').classList.add('show');
-  document.getElementById('password-input').value='';
-  document.getElementById('password-error').style.display='none';
-  document.getElementById('password-input').focus();
-}
+function openPasswordModal(){document.getElementById('password-modal').classList.add('show');document.getElementById('password-input').value='';document.getElementById('password-error').style.display='none';document.getElementById('password-input').focus();}
 function closePasswordModal(){document.getElementById('password-modal').classList.remove('show');}
-function confirmPassword(){
-  const pass=document.getElementById('password-input').value;
-  if(pass===PASSWORD){closePasswordModal();openSettings();}
-  else{document.getElementById('password-error').style.display='block';document.getElementById('password-input').value='';}
-}
-function applySettings(){
-  adjSign=parseInt(document.getElementById('adj-sign').value);
-  adjVal=parseFloat(document.getElementById('adj-val').value)||0;
-  paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;
-  gulfSign=parseInt(document.getElementById('gulf-sign').value);
-  gulfVal=parseFloat(document.getElementById('gulf-val').value)||0;
-  iraqiSign=parseInt(document.getElementById('iraqi-sign').value);
-  iraqiVal=parseFloat(document.getElementById('iraqi-val').value)||0;
-  saveSettings();calcAll();closeSettings();
-}
+function confirmPassword(){const pass=document.getElementById('password-input').value;if(pass===PASSWORD){closePasswordModal();openSettings();}else{document.getElementById('password-error').style.display='block';document.getElementById('password-input').value='';}}
+function applySettings(){adjSign=parseInt(document.getElementById('adj-sign').value);adjVal=parseFloat(document.getElementById('adj-val').value)||0;paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;gulfSign=parseInt(document.getElementById('gulf-sign').value);gulfVal=parseFloat(document.getElementById('gulf-val').value)||0;iraqiSign=parseInt(document.getElementById('iraqi-sign').value);iraqiVal=parseFloat(document.getElementById('iraqi-val').value)||0;saveSettings();calcAll();closeSettings();}
 function openSettings(){document.getElementById('modal-overlay').classList.add('show');}
 function closeSettings(){document.getElementById('modal-overlay').classList.remove('show');}
 function closeIfOutside(e){if(e.target===document.getElementById('modal-overlay'))closeSettings();}
-function setBusy(b){
-  ringSpin.style.display=b?'block':'none';
-  ringFill.style.display=b?'none':'block';
-  ringText.style.display=b?'none':'block';
-  document.getElementById('price-val').classList.toggle('dim',b);
-}
+function setBusy(b){ringSpin.style.display=b?'block':'none';ringFill.style.display=b?'none':'block';ringText.style.display=b?'none':'block';document.getElementById('price-val').classList.toggle('dim',b);}
 function updateRing(){ringFill.style.strokeDashoffset=C*(1-sec/20);ringText.textContent=sec;}
+
+// الساعة والتاريخ
+function updateClock(){
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,"0");
+  const m = now.getMinutes().toString().padStart(2,"0");
+  const s = now.getSeconds().toString().padStart(2,"0");
+  document.getElementById("clock").textContent = h+":"+m+":"+s;
+  const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  const months = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+  document.getElementById("datebox").textContent = days[now.getDay()]+" · "+now.getDate()+" "+months[now.getMonth()]+" "+now.getFullYear();
+}
+updateClock();
+setInterval(updateClock,1000);
 
 fetchNow();
 setInterval(fetchNow,20000);
