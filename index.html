@@ -637,39 +637,66 @@ async function takeScreenshot(){
 // ---- لقطة الشاشة ----
 function takeScreenshot(){
   const btn = document.getElementById("screenshot-btn");
+  const toast = document.getElementById("save-toast");
   btn.style.display = "none";
+  toast.style.display = "none";
   const size = 1080;
+  const bgColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-color").trim() || "#07090f";
+  const fullH = document.body.scrollHeight;
+  const fullW = document.body.scrollWidth;
   html2canvas(document.body, {
     scale: 2,
     useCORS: true,
     allowTaint: true,
-    backgroundColor: "#07090f",
-    logging: false
+    backgroundColor: bgColor,
+    logging: false,
+    width: fullW,
+    height: fullH,
+    windowWidth: fullW,
+    windowHeight: fullH,
+    scrollX: 0,
+    scrollY: 0
   }).then(function(canvas){
     btn.style.display = "flex";
-    // اقتصاص مربع من المنتصف
+    // رسم الصفحة كاملة داخل مربع 1080x1080 مع padding
     const sq = document.createElement("canvas");
     sq.width = size;
     sq.height = size;
     const ctx = sq.getContext("2d");
-    const src = canvas;
-    const sw = src.width;
-    const sh = src.height;
-    const side = Math.min(sw, sh);
-    const sx = (sw - side) / 2;
-    const sy = 0;
-    ctx.drawImage(src, sx, sy, side, side, 0, 0, size, size);
-    // حفظ
-    const link = document.createElement("a");
-    link.download = "zamzam-gold-" + Date.now() + ".png";
-    link.href = sq.toDataURL("image/png", 1.0);
-    link.click();
-    // توست
-    const toast = document.getElementById("save-toast");
+    // خلفية
+    ctx.fillStyle = bgColor || "#07090f";
+    ctx.fillRect(0, 0, size, size);
+    // احسب النسبة لتوسيط الصفحة داخل المربع
+    const cw = canvas.width;
+    const ch = canvas.height;
+    const scale = Math.min(size / cw, size / ch);
+    const dw = cw * scale;
+    const dh = ch * scale;
+    const dx = (size - dw) / 2;
+    const dy = (size - dh) / 2;
+    ctx.drawImage(canvas, 0, 0, cw, ch, dx, dy, dw, dh);
+    const dataUrl = sq.toDataURL("image/png", 1.0);
+    // فتح الصورة بتاب جديد
+    const win = window.open("", "_blank");
+    if(win){
+      win.document.write(
+        "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
+        "<style>body{margin:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;}" +
+        "img{max-width:100%;border-radius:12px;}" +
+        "p{color:#FFD700;font-family:Cairo,sans-serif;font-size:15px;margin:16px;text-align:center;line-height:1.6;}</style></head>" +
+        "<body><p>📸 اضغط على الصورة مطولاً<br>ثم اختر <strong>حفظ في الاستديو</strong></p>" +
+        "<img src=\"" + dataUrl + "\" /></body></html>"
+      );
+      win.document.close();
+    }
+    toast.textContent = "📸 اضغط الصورة مطولاً للحفظ";
     toast.style.display = "block";
-    setTimeout(()=>{ toast.style.display = "none"; }, 3000);
+    setTimeout(()=>{ toast.style.display = "none"; }, 4000);
   }).catch(function(){
     btn.style.display = "flex";
+    toast.textContent = "❌ حدث خطأ، حاول مجدداً";
+    toast.style.display = "block";
+    setTimeout(()=>{ toast.style.display = "none"; }, 3000);
   });
 }
 
