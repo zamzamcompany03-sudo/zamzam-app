@@ -83,7 +83,7 @@ body { min-height:100vh; background:var(--bg-color); display:flex; flex-directio
 
 
 /* زر لقطة الشاشة */
-#screenshot-btn { position:fixed; bottom:24px; left:16px; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,180,0,0.1)); border:1px solid rgba(255,215,0,0.4); color:#FFD700; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.5); z-index:200; transition:transform 0.2s; }
+#screenshot-btn { display:none !important; position:fixed; bottom:24px; left:16px; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,180,0,0.1)); border:1px solid rgba(255,215,0,0.4); color:#FFD700; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.5); z-index:200; transition:transform 0.2s; }
 #screenshot-btn:active { transform:scale(0.9); }
 /* توست الحفظ */
 #save-toast { display:none; position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:rgba(30,40,60,0.97); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:10px 22px; border-radius:20px; font-size:13px; font-family:Cairo,sans-serif; font-weight:700; z-index:500; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
@@ -96,9 +96,13 @@ body { min-height:100vh; background:var(--bg-color); display:flex; flex-directio
 .views-divider { width:1px; height:36px; background:rgba(255,215,0,0.1); }
 
 /* التاريخ والساعة */
-.datetime-box { width:100%; max-width:400px; margin-top:10px; border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:10px 16px; background:rgba(255,255,255,0.02); text-align:center; }
+.datetime-box { width:100%; max-width:400px; margin-top:10px; border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:10px 16px; background:rgba(255,255,255,0.02); display:flex; align-items:center; justify-content:space-between; }
+.datetime-inner { text-align:center; flex:1; }
 .datetime-time { font-size:28px; font-weight:900; color:#FFD700; font-family:"Amiri",serif; direction:ltr; letter-spacing:2px; }
 .datetime-date { font-size:13px; color:#a89060; font-weight:700; margin-top:3px; }
+.cam-btn { display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:1px solid rgba(255,215,0,0.25); border-radius:12px; padding:8px 10px; cursor:pointer; color:#FFD700; font-family:Cairo,sans-serif; flex-shrink:0; }
+.cam-btn span:first-child { font-size:22px; }
+.cam-btn span:last-child { font-size:9px; font-weight:700; }
 
 
 /* زر لقطة الشاشة */
@@ -266,8 +270,14 @@ body { min-height:100vh; background:var(--bg-color); display:flex; flex-directio
 
 <!-- التاريخ والساعة -->
 <div class="datetime-box">
-  <div class="datetime-time" id="clock">—</div>
-  <div class="datetime-date" id="datebox">—</div>
+  <div class="datetime-inner">
+    <div class="datetime-time" id="clock">—</div>
+    <div class="datetime-date" id="datebox">—</div>
+  </div>
+  <button class="cam-btn" onclick="takeScreenshot()">
+    <span>📸</span>
+    <span>لقطة شاشة</span>
+  </button>
 </div>
 
 <!-- زر تحميل التطبيق -->
@@ -680,18 +690,22 @@ function takeScreenshot(){
     const win = window.open("", "_blank");
     if(win){
       win.document.write(
-        "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
-        "<style>body{margin:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;}" +
-        "img{max-width:100%;border-radius:12px;}" +
-        "p{color:#FFD700;font-family:Cairo,sans-serif;font-size:15px;margin:16px;text-align:center;line-height:1.6;}</style></head>" +
-        "<body><p>📸 اضغط على الصورة مطولاً<br>ثم اختر <strong>حفظ في الاستديو</strong></p>" +
-        "<img src=\"" + dataUrl + "\" /></body></html>"
+        "<html><head><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/>" +
+        "<style>" +
+        "body{margin:0;background:#07090f;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100vh;padding:16px;box-sizing:border-box;}" +
+        "img{width:100%;max-width:500px;border-radius:16px;display:block;}" +
+        "a{display:block;width:100%;max-width:500px;margin-top:14px;padding:16px;background:linear-gradient(135deg,#FFD700,#e6a800);color:#000;text-align:center;border-radius:14px;font-size:18px;font-weight:900;font-family:Cairo,sans-serif;text-decoration:none;box-sizing:border-box;}" +
+        "</style></head>" +
+        "<body>" +
+        "<img src=\"" + dataUrl + "\" />" +
+        "<a href=\"" + dataUrl + "\" download=\"zamzam-gold.png\">💾 احفظ الصورة</a>" +
+        "</body></html>"
       );
       win.document.close();
     }
-    toast.textContent = "📸 اضغط الصورة مطولاً للحفظ";
+    toast.textContent = "📸 جاهزة - اضغط زر الحفظ";
     toast.style.display = "block";
-    setTimeout(()=>{ toast.style.display = "none"; }, 4000);
+    setTimeout(()=>{ toast.style.display = "none"; }, 3000);
   }).catch(function(){
     btn.style.display = "flex";
     toast.textContent = "❌ حدث خطأ، حاول مجدداً";
@@ -709,7 +723,10 @@ function updateClock(){
   document.getElementById("clock").textContent = h+":"+m+":"+s;
   const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
   const months = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-  document.getElementById("datebox").textContent = days[now.getDay()]+" · "+now.getDate()+" "+months[now.getMonth()]+" "+now.getFullYear();
+  const dd = String(now.getDate()).replace(/[0-9]/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]);
+  const mm = String(now.getMonth()+1).replace(/[0-9]/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]);
+  const yyyy = String(now.getFullYear()).replace(/[0-9]/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]);
+  document.getElementById("datebox").textContent = dd+" / "+mm+" / "+yyyy;
 }
 updateClock();
 setInterval(updateClock,1000);
