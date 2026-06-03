@@ -15,7 +15,7 @@
 :root { --bg-color: #07090f; }
 body { min-height:100vh; background:var(--bg-color); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:12px; }
 .company-header { text-align:center; padding:14px 16px 10px; margin-bottom:12px; border-bottom:1px solid rgba(255,215,0,0.15); width:100%; max-width:400px; }
-.company-name { font-size:38px; font-weight:900; color:#e53935; letter-spacing:2px; margin-bottom:4px; text-shadow:0 0 30px rgba(229,57,53,0.5); }
+.company-name { font-size:38px; font-weight:900; color:#e53935; letter-spacing:2px; margin-bottom:4px; text-shadow:0 0 30px rgba(229,57,53,0.5); display:flex; justify-content:center; }
 .company-address { font-size:12px; color:#a3a3a3; margin-bottom:4px; }
 .company-tagline { font-size:11px; color:#FFD700; font-weight:700; margin-bottom:8px; }
 .owners-box { display:flex; flex-direction:column; gap:4px; margin-bottom:6px; }
@@ -147,7 +147,17 @@ body { min-height:100vh; background:var(--bg-color); display:flex; flex-directio
 <body>
 
 <div class="company-header">
-  <div class="company-name">✨ شركة زمزم ✨</div>
+  <div class="company-name">
+  <svg viewBox="0 0 320 60" width="320" height="60" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glow-red">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <text x="160" y="46" text-anchor="middle" font-family="Cairo, Arial, sans-serif" font-size="38" font-weight="900" fill="#e53935" filter="url(#glow-red)" letter-spacing="2">✨ شركة زمزم ✨</text>
+  </svg>
+</div>
   <div class="company-address">📍 الانبار - الرمادي - شارع الصياغ</div>
   <div class="company-tagline">🥇 متخصصون في تجارة الذهب</div>
   <div class="owners-box">
