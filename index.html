@@ -653,6 +653,8 @@ function takeScreenshot(){
   const bgColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-color").trim() || "#07090f";
   const fullH = document.body.scrollHeight;
   const fullW = document.body.scrollWidth;
+  // تأكد من تحميل الخطوط أولاً
+  document.fonts.ready.then(function(){});
   html2canvas(document.body, {
     scale: 2,
     useCORS: true,
@@ -664,7 +666,13 @@ function takeScreenshot(){
     windowWidth: fullW,
     windowHeight: fullH,
     scrollX: 0,
-    scrollY: 0
+    scrollY: 0,
+    onclone: function(doc){
+      // تأكد من تطبيق الخطوط
+      doc.querySelectorAll('*').forEach(el => {
+        el.style.fontFamily = el.style.fontFamily || '';
+      });
+    }
   }).then(function(canvas){
     btn.style.display = "flex";
     const sq = document.createElement("canvas");
@@ -724,32 +732,43 @@ setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
 
 
 <!-- مودال الصورة -->
-<div id="img-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:600;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:14px;">
-  
-  <!-- الصورة مع شريط التقدم -->
-  <div style="position:relative;width:100%;max-width:480px;">
-    <img id="img-modal-src" style="width:100%;border-radius:14px;display:block;user-select:none;-webkit-user-select:none;" src="" draggable="false"/>
-    <!-- شريط التقدم -->
-    <div id="progress-wrap" style="display:none;position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);border-radius:0 0 14px 14px;padding:10px 14px;">
-      <div style="font-size:12px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;text-align:center;margin-bottom:6px;">جار الحفظ...</div>
-      <div style="background:rgba(255,255,255,0.15);border-radius:20px;height:8px;overflow:hidden;">
+<div id="img-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:600;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px;overflow-y:auto;">
+
+  <!-- سهم فوق يشير للصورة -->
+  <div id="save-instruction" style="font-size:14px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:900;text-align:center;animation:bounce-arrow 1s ease infinite;">
+    👆 اضغط باستمرار داخل الإطار للحفظ
+  </div>
+
+  <!-- الصورة بإطار ذهبي وامض -->
+  <div id="img-frame" style="position:relative;width:100%;max-width:420px;border:3px solid #FFD700;border-radius:16px;padding:4px;background:#000;box-shadow:0 0 20px rgba(255,215,0,0.5);animation:frame-pulse 1.5s ease infinite;cursor:pointer;">
+    <img id="img-modal-src" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block;user-select:none;-webkit-user-select:none;" src="" draggable="false"/>
+    <!-- شريط التقدم داخل الإطار -->
+    <div id="progress-wrap" style="display:none;position:absolute;bottom:8px;left:8px;right:8px;background:rgba(0,0,0,0.75);border-radius:20px;padding:8px 12px;">
+      <div style="font-size:12px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;text-align:center;margin-bottom:5px;">⏳ جار الحفظ...</div>
+      <div style="background:rgba(255,255,255,0.15);border-radius:20px;height:10px;overflow:hidden;">
         <div id="progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFD700,#e6a800);border-radius:20px;transition:width 0.05s linear;"></div>
       </div>
     </div>
   </div>
 
-  <!-- تعليمات -->
-  <div id="save-instruction" style="font-size:13px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;text-align:center;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:10px 16px;">
-    👇 اضغط مطولاً على الصورة للحفظ
-  </div>
-
   <!-- رسالة النجاح -->
-  <div id="success-msg" style="display:none;font-size:15px;color:#4ade80;font-family:Cairo,sans-serif;font-weight:900;text-align:center;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:12px;padding:12px 20px;">
+  <div id="success-msg" style="display:none;font-size:16px;color:#4ade80;font-family:Cairo,sans-serif;font-weight:900;text-align:center;background:rgba(74,222,128,0.12);border:2px solid rgba(74,222,128,0.4);border-radius:14px;padding:14px 24px;">
     ✅ تم الحفظ بنجاح في الاستديو!
   </div>
 
-  <button onclick="closeImgModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#a3a3a3;padding:10px 28px;border-radius:12px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">✕ إغلاق</button>
+  <button onclick="closeImgModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#a3a3a3;padding:10px 32px;border-radius:12px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">✕ إغلاق</button>
 </div>
+
+<style>
+@keyframes frame-pulse {
+  0%,100% { box-shadow:0 0 15px rgba(255,215,0,0.4); border-color:#FFD700; }
+  50% { box-shadow:0 0 35px rgba(255,215,0,0.9); border-color:#fff3a0; }
+}
+@keyframes bounce-arrow {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-6px); }
+}
+</style>
 
 <style>
 #img-modal-src { touch-action: none; }
@@ -807,9 +826,10 @@ function saveImageNow(){
   }, 3000);
 }
 
-// أحداث الضغط المطول
+// أحداث الضغط المطول على الصورة داخل الإطار
 document.addEventListener("DOMContentLoaded", function(){
   const img = document.getElementById("img-modal-src");
+  if(!img) return;
   img.addEventListener("touchstart", function(e){ e.preventDefault(); startHold(); }, {passive:false});
   img.addEventListener("touchend", function(e){ e.preventDefault(); clearHold(); }, {passive:false});
   img.addEventListener("touchcancel", function(){ clearHold(); });
