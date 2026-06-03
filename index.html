@@ -7,517 +7,435 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="زمزم ذهب"/>
-<link rel="manifest" id="manifest-link"/>
 <title>شركة زمزم - سعر الذهب</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
-* { margin:0; padding:0; box-sizing:border-box; }
-:root { --bg-color: #07090f; }
-body { min-height:100vh; background:var(--bg-color); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Cairo',sans-serif; padding:12px; }
-.company-header { text-align:center; padding:14px 16px 10px; margin-bottom:12px; border-bottom:1px solid rgba(255,215,0,0.15); width:100%; max-width:400px; }
-.company-name-wrap { display:flex; justify-content:center; margin-bottom:8px; }
-.company-name-border { display:inline-flex; align-items:center; gap:8px; border:2px solid #e53935; border-radius:40px; padding:6px 20px; animation:border-glow 2s ease infinite; }
-.company-name { font-size:34px; font-weight:900; color:#e53935; letter-spacing:2px; text-shadow:0 0 30px rgba(229,57,53,0.5); font-family:"Cairo",sans-serif; }
-.heart-spin { font-size:18px; animation:heart-rotate 4s linear infinite; display:inline-block; }
-@keyframes border-glow {
-  0%,100%{ box-shadow:0 0 8px rgba(229,57,53,0.4); border-color:#e53935; }
-  50%{ box-shadow:0 0 22px rgba(229,57,53,0.9); border-color:#ff6b6b; }
-}
-@keyframes heart-rotate {
-  0%{ transform:rotate(0deg); }
-  100%{ transform:rotate(360deg); }
-}
-.company-address { font-size:12px; color:#a3a3a3; margin-bottom:4px; }
-.company-tagline { font-size:11px; color:#FFD700; font-weight:700; margin-bottom:8px; }
-.owners-box { display:flex; flex-direction:column; gap:4px; margin-bottom:6px; }
-.owner-row { display:flex; justify-content:space-between; align-items:center; background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.12); border-radius:10px; padding:5px 12px; }
-.owner-name { font-size:13px; font-weight:900; color:#e0c060; }
-.owner-phone { font-size:13px; color:#a3a3a3; direction:ltr; letter-spacing:0.5px; }
-.social-icons { display:flex; justify-content:center; align-items:center; gap:12px; margin:8px 0 4px; flex-wrap:wrap; }
-.social-btn { display:flex; flex-direction:column; align-items:center; gap:3px; text-decoration:none; cursor:pointer; }
-.social-icon { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; transition:transform 0.2s; }
-.social-icon:hover { transform:scale(1.15); }
-.social-label { font-size:9px; font-weight:700; font-family:'Cairo',sans-serif; }
-.wa-saif .social-icon { background:rgba(37,211,102,0.15); border:1px solid rgba(37,211,102,0.4); }
-.wa-saif .social-label { color:#25d366; }
-.wa-husam .social-icon { background:rgba(37,211,102,0.15); border:1px solid rgba(37,211,102,0.4); }
-.wa-husam .social-label { color:#25d366; }
-.insta-btn .social-icon { background:rgba(225,48,108,0.15); border:1px solid rgba(225,48,108,0.4); }
-.fb-btn .social-icon { background:rgba(24,119,242,0.15); border:1px solid rgba(24,119,242,0.4); }
-.tiktok-btn .social-icon { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); }
-.real-prices-note { font-size:13px; color:#1e90ff; font-weight:700; text-align:center; margin-top:4px; }
-.card { width:100%; max-width:400px; border:1px solid rgba(255,215,0,0.15); border-radius:18px; padding:12px 14px; background:rgba(255,255,255,0.02); box-shadow:0 20px 50px rgba(0,0,0,0.7); }
-.header { display:flex; justify-content:flex-end; margin-bottom:6px; }
-#ring { width:42px; height:42px; }
-#ring-track { fill:none; stroke:rgba(255,215,0,0.1); stroke-width:3.5; }
-#ring-fill { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; transform:rotate(-90deg); transform-origin:26px 26px; transition:stroke-dashoffset 1s linear; }
-#ring-text { fill:#FFD700; font-size:12px; font-family:monospace; font-weight:bold; }
-#ring-spin { fill:none; stroke:#FFD700; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:20 104; transform-origin:26px 26px; animation:spin 1s linear infinite; display:none; }
-@keyframes spin { to { transform:rotate(270deg); } }
-.price-block { text-align:center; padding:4px 0 6px; }
-#price-val { font-size:52px; font-weight:900; color:#FFD700; letter-spacing:-2px; line-height:1; font-family:'Amiri',serif; animation:glow 3s ease infinite; transition:opacity 0.3s; }
-#price-val.dim { opacity:0.5; }
-@keyframes glow { 0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)} 50%{text-shadow:0 0 58px rgba(255,215,0,0.9)} }
-.unit { color:#a89060; font-size:12px; margin-top:2px; font-weight:700; }
-#loading { text-align:center; padding:14px 0; color:#FFD700; font-size:15px; font-weight:700; }
-#error-box { display:none; text-align:center; padding:10px 0; }
-#error-msg { color:#f87171; font-size:13px; margin-bottom:10px; }
-#retry-btn { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:8px 20px; border-radius:12px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:700; }
-.masagh-box { margin-top:8px; display:none; }
-.section-wrap { border-radius:14px; padding:10px 8px; margin-bottom:8px; }
-.section-wrap.sell { background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.25); }
-.section-wrap.gulf { background:rgba(100,180,255,0.04); border:1px solid rgba(100,180,255,0.25); }
-.section-wrap.iraqi { background:rgba(100,255,160,0.04); border:1px solid rgba(100,255,160,0.25); }
-.section-title { font-size:12px; font-weight:900; margin-bottom:7px; padding-bottom:5px; border-bottom:1px solid; font-family:'Cairo',sans-serif; text-align:center; }
-.section-wrap.sell .section-title { color:#FFD700; border-color:rgba(255,215,0,0.2); }
-.section-wrap.gulf .section-title { color:#64b4ff; border-color:rgba(100,180,255,0.2); }
-.section-wrap.iraqi .section-title { color:#64ffa0; border-color:rgba(100,255,160,0.2); }
-.masagh-row { display:flex; gap:7px; }
-.masagh-cell { flex:1; border-radius:10px; padding:7px 5px; text-align:center; }
-.section-wrap.sell .masagh-cell { background:rgba(255,215,0,0.05); border:1px solid rgba(255,215,0,0.12); }
-.section-wrap.gulf .masagh-cell { background:rgba(100,180,255,0.05); border:1px solid rgba(100,180,255,0.12); }
-.section-wrap.iraqi .masagh-cell { background:rgba(100,255,160,0.05); border:1px solid rgba(100,255,160,0.12); }
-.masagh-label { font-size:11px; font-weight:700; margin-bottom:3px; font-family:'Cairo',sans-serif; }
-.section-wrap.sell .masagh-label { color:#a89060; }
-.section-wrap.gulf .masagh-label { color:#7ab8e8; }
-.section-wrap.iraqi .masagh-label { color:#70c88a; }
-.masagh-val { font-size:19px; font-weight:700; font-family:'Amiri',serif; line-height:1.3; }
-.section-wrap.sell .masagh-val { color:#FFD700; }
-.section-wrap.gulf .masagh-val { color:#64b4ff; }
-.section-wrap.iraqi .masagh-val { color:#64ffa0; }
-.masagh-currency { font-size:10px; font-weight:700; margin-top:2px; font-family:'Cairo',sans-serif; }
-.section-wrap.sell .masagh-currency { color:#a89060; }
-.section-wrap.gulf .masagh-currency { color:#7ab8e8; }
-.section-wrap.iraqi .masagh-currency { color:#70c88a; }
-.footer { margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; color:#334155; font-size:11px; align-items:center; }
-#settings-btn { background:none; border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:4px 12px; cursor:pointer; font-size:12px; font-family:'Cairo',sans-serif; }
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#07090f;}
+body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;align-items:center;font-family:'Cairo',sans-serif;padding:8px 10px 16px;}
 
+/* ===== HEADER ===== */
+.hdr{width:100%;max-width:420px;text-align:center;padding:10px 0 6px;}
 
-/* زر لقطة الشاشة */
-#screenshot-btn { display:none !important; position:fixed; bottom:24px; left:16px; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,180,0,0.1)); border:1px solid rgba(255,215,0,0.4); color:#FFD700; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.5); z-index:200; transition:transform 0.2s; }
-#screenshot-btn:active { transform:scale(0.9); }
-/* توست الحفظ */
-#save-toast { display:none; position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:rgba(30,40,60,0.97); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:10px 22px; border-radius:20px; font-size:13px; font-family:Cairo,sans-serif; font-weight:700; z-index:500; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
+/* اسم الشركة */
+.name-wrap{display:flex;justify-content:center;margin-bottom:6px;}
+.name-border{display:inline-flex;align-items:center;gap:8px;border:2px solid #e53935;border-radius:40px;padding:5px 18px;animation:border-glow 2s ease infinite;}
+.company-name{font-size:30px;font-weight:900;color:#e53935;letter-spacing:1px;text-shadow:0 0 20px rgba(229,57,53,0.5);font-family:'Cairo',sans-serif;}
+.heart{font-size:16px;animation:heart-rot 4s linear infinite;display:inline-block;}
+@keyframes border-glow{0%,100%{box-shadow:0 0 8px rgba(229,57,53,0.4);border-color:#e53935;}50%{box-shadow:0 0 22px rgba(229,57,53,0.9);border-color:#ff6b6b;}}
+@keyframes heart-rot{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
-/* عداد المشاهدات */
-.views-box { width:100%; max-width:400px; margin-top:12px; border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:10px 16px; background:rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center; gap:8px; }
-.views-item { flex:1; text-align:center; }
-.views-label { font-size:10px; color:#64748b; font-weight:700; margin-bottom:3px; }
-.views-val { font-size:20px; font-weight:900; font-family:'Amiri',serif; color:#FFD700; }
-.views-divider { width:1px; height:36px; background:rgba(255,215,0,0.1); }
+/* سطر العنوان والتخصص */
+.addr-line{font-size:11px;color:#a3a3a3;margin-bottom:2px;}
+.tag-line{font-size:11px;color:#FFD700;font-weight:700;margin-bottom:6px;}
+.info-row{display:flex;justify-content:center;gap:8px;font-size:11px;color:#a3a3a3;margin-bottom:6px;}
+.info-row span{color:#FFD700;}
 
-/* التاريخ والساعة */
-.datetime-box { width:100%; max-width:400px; margin-top:10px; border:1px solid rgba(255,215,0,0.1); border-radius:14px; padding:10px 16px; background:rgba(255,255,255,0.02); display:flex; align-items:center; justify-content:space-between; }
-.datetime-inner { text-align:center; flex:1; }
-.datetime-time { font-size:28px; font-weight:900; color:#FFD700; font-family:"Amiri",serif; direction:ltr; letter-spacing:2px; }
-.datetime-date { font-size:13px; color:#a89060; font-weight:700; margin-top:3px; }
-.cam-btn { display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:1px solid rgba(255,215,0,0.25); border-radius:12px; padding:8px 10px; cursor:pointer; color:#FFD700; font-family:Cairo,sans-serif; flex-shrink:0; }
-.cam-btn span:first-child { font-size:22px; }
-.cam-btn span:last-child { font-size:9px; font-weight:700; }
+/* صاحبين بسطر واحد */
+.owners-row{display:flex;gap:6px;margin-bottom:6px;}
+.owner-item{flex:1;display:flex;justify-content:space-between;align-items:center;background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.12);border-radius:10px;padding:5px 10px;}
+.owner-name{font-size:12px;font-weight:900;color:#e0c060;}
+.owner-phone{font-size:11px;color:#a3a3a3;direction:ltr;}
 
+/* سوشيال - حجم موحد */
+.social-row{display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.social-btn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;}
+.social-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.social-lbl{font-size:9px;font-weight:700;color:#25d366;}
+.wa .social-icon{background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.4);}
+.ig .social-icon{background:rgba(225,48,108,0.15);border:1px solid rgba(225,48,108,0.4);}
+.fb .social-icon{background:rgba(24,119,242,0.15);border:1px solid rgba(24,119,242,0.4);}
+.tk .social-icon{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);}
 
-/* زر لقطة الشاشة */
-#screenshot-btn { position:fixed; bottom:20px; left:16px; width:48px; height:48px; border-radius:50%; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.4); color:#FFD700; font-size:22px; cursor:pointer; z-index:200; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,0.4); transition:transform 0.2s; }
-#screenshot-btn:active { transform:scale(0.9); }
-#screenshot-toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:#FFD700; font-size:13px; font-family:Cairo,sans-serif; font-weight:700; padding:8px 18px; border-radius:20px; z-index:500; display:none; border:1px solid rgba(255,215,0,0.3); }
+/* نص متحرك */
+.marquee-wrap{overflow:hidden;width:100%;margin-bottom:6px;}
+.marquee-txt{font-size:13px;color:#1e90ff;font-weight:700;white-space:nowrap;animation:marquee-lr 3s ease-in-out infinite alternate;}
+@keyframes marquee-lr{0%{transform:translateX(-15%);}100%{transform:translateX(15%);}}
 
-/* زر التحميل PWA */
-#install-btn { display:block; width:100%; max-width:400px; margin-top:10px; background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,180,0,0.08)); border:1px solid rgba(255,215,0,0.4); color:#FFD700; padding:12px; border-radius:14px; cursor:pointer; font-size:14px; font-family:'Cairo',sans-serif; font-weight:900; text-align:center; animation:pulse-btn 2s ease infinite; }
-@keyframes pulse-btn { 0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0.3)} 50%{box-shadow:0 0 0 8px rgba(255,215,0,0)} }
+/* ===== CARD ===== */
+.card{width:100%;max-width:420px;border:1px solid rgba(255,215,0,0.15);border-radius:16px;padding:10px 12px;background:rgba(255,255,255,0.02);box-shadow:0 10px 40px rgba(0,0,0,0.6);margin-bottom:6px;}
+.card-header{display:flex;justify-content:flex-end;margin-bottom:4px;}
+#ring{width:38px;height:38px;}
+#ring-track{fill:none;stroke:rgba(255,215,0,0.1);stroke-width:3.5;}
+#ring-fill{fill:none;stroke:#FFD700;stroke-width:3.5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:26px 26px;transition:stroke-dashoffset 1s linear;}
+#ring-text{fill:#FFD700;font-size:12px;font-family:monospace;font-weight:bold;}
+#ring-spin{fill:none;stroke:#FFD700;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:20 104;transform-origin:26px 26px;animation:spin 1s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(270deg);}}
 
-#password-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; align-items:center; justify-content:center; padding:20px; }
-#password-modal.show { display:flex; }
-.password-box { background:#0f1420; border:1px solid rgba(255,215,0,0.3); border-radius:20px; padding:24px; width:100%; max-width:320px; }
-.password-box h3 { color:#FFD700; font-size:16px; font-weight:900; margin-bottom:6px; text-align:center; }
-.password-box p { color:#a3a3a3; font-size:12px; text-align:center; margin-bottom:16px; }
-.password-input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.2); color:#FFD700; border-radius:10px; padding:10px 12px; font-size:15px; font-family:'Cairo',sans-serif; width:100%; margin-bottom:12px; outline:none; }
-.password-error { color:#f87171; font-size:12px; text-align:center; margin-bottom:12px; display:none; }
-.password-btns { display:flex; gap:8px; }
-.password-btns button { flex:1; padding:10px; border-radius:10px; border:1px solid; font-size:13px; font-family:'Cairo',sans-serif; font-weight:700; cursor:pointer; }
-#confirm-pass-btn { background:rgba(255,215,0,0.15); border-color:rgba(255,215,0,0.4); color:#FFD700; }
-#cancel-pass-btn { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1); color:#a3a3a3; }
-#modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
-#modal-overlay.show { display:flex; }
-#modal { background:#0f1420; border:1px solid rgba(255,215,0,0.2); border-radius:24px; padding:24px; width:100%; max-width:340px; }
-#modal h3 { color:#FFD700; font-size:16px; font-weight:900; margin-bottom:16px; }
-.setting-section-title { font-size:12px; font-weight:900; margin:14px 0 8px; padding-bottom:4px; }
-.setting-section-title.sell { color:#FFD700; border-bottom:1px solid rgba(255,215,0,0.15); }
-.setting-section-title.gulf { color:#64b4ff; border-bottom:1px solid rgba(100,180,255,0.15); }
-.setting-section-title.iraqi { color:#64ffa0; border-bottom:1px solid rgba(100,255,160,0.15); }
-.setting-section-title.general { color:#a89060; border-bottom:1px solid rgba(168,144,96,0.15); }
-.setting-row { margin-bottom:14px; }
-.setting-label { color:#64748b; font-size:12px; margin-bottom:6px; }
-.setting-inputs { display:flex; gap:8px; }
-.setting-inputs select, .setting-inputs input, .setting-row input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.15); color:#FFD700; border-radius:10px; padding:9px 12px; font-size:15px; font-family:'Cairo',sans-serif; width:100%; outline:none; }
-.setting-inputs select { width:75px; flex-shrink:0; }
-.modal-btns { display:flex; gap:10px; margin-top:8px; }
-#apply-btn { flex:1; background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); color:#FFD700; padding:11px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; font-weight:700; }
-#cancel-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:#475569; padding:11px 16px; border-radius:12px; cursor:pointer; font-size:15px; font-family:'Cairo',sans-serif; }
+.price-block{text-align:center;padding:2px 0 6px;}
+#price-val{font-size:50px;font-weight:900;color:#FFD700;letter-spacing:-2px;line-height:1;font-family:'Amiri',serif;animation:glow 3s ease infinite;transition:opacity 0.3s;}
+#price-val.dim{opacity:0.5;}
+@keyframes glow{0%,100%{text-shadow:0 0 28px rgba(255,215,0,0.45)}50%{text-shadow:0 0 58px rgba(255,215,0,0.9)}}
+.unit{color:#a89060;font-size:11px;margin-top:1px;font-weight:700;}
+#loading{text-align:center;padding:12px 0;color:#FFD700;font-size:14px;font-weight:700;}
+#error-box{display:none;text-align:center;padding:10px 0;}
+#error-msg{color:#f87171;font-size:13px;margin-bottom:8px;}
+#retry-btn{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:7px 18px;border-radius:10px;cursor:pointer;font-size:13px;font-family:'Cairo',sans-serif;font-weight:700;}
+
+/* أقسام المصاغ */
+.masagh-box{margin-top:6px;display:none;}
+.section-wrap{border-radius:12px;padding:8px 8px;margin-bottom:6px;}
+.section-wrap.sell{background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.25);}
+.section-wrap.gulf{background:rgba(100,180,255,0.04);border:1px solid rgba(100,180,255,0.25);}
+.section-wrap.iraqi{background:rgba(100,255,160,0.04);border:1px solid rgba(100,255,160,0.25);}
+.section-title{font-size:14px;font-weight:900;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid;text-align:center;}
+.section-wrap.sell .section-title{color:#FFD700;border-color:rgba(255,215,0,0.2);}
+.section-wrap.gulf .section-title{color:#64b4ff;border-color:rgba(100,180,255,0.2);}
+.section-wrap.iraqi .section-title{color:#64ffa0;border-color:rgba(100,255,160,0.2);}
+.masagh-row{display:flex;gap:6px;}
+.masagh-cell{flex:1;border-radius:9px;padding:6px 4px;text-align:center;}
+.section-wrap.sell .masagh-cell{background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.12);}
+.section-wrap.gulf .masagh-cell{background:rgba(100,180,255,0.05);border:1px solid rgba(100,180,255,0.12);}
+.section-wrap.iraqi .masagh-cell{background:rgba(100,255,160,0.05);border:1px solid rgba(100,255,160,0.12);}
+.masagh-label{font-size:10px;font-weight:700;margin-bottom:2px;}
+.section-wrap.sell .masagh-label{color:#a89060;}
+.section-wrap.gulf .masagh-label{color:#7ab8e8;}
+.section-wrap.iraqi .masagh-label{color:#70c88a;}
+.masagh-val{font-size:18px;font-weight:700;font-family:'Amiri',serif;line-height:1.2;}
+.section-wrap.sell .masagh-val{color:#FFD700;}
+.section-wrap.gulf .masagh-val{color:#64b4ff;}
+.section-wrap.iraqi .masagh-val{color:#64ffa0;}
+.masagh-currency{font-size:9px;font-weight:700;margin-top:1px;}
+.section-wrap.sell .masagh-currency{color:#a89060;}
+.section-wrap.gulf .masagh-currency{color:#7ab8e8;}
+.section-wrap.iraqi .masagh-currency{color:#70c88a;}
+
+/* فوتر الكارد مدمج مع المشاهدات */
+.bottom-box{width:100%;max-width:420px;border:1px solid rgba(255,215,0,0.12);border-radius:14px;background:rgba(255,255,255,0.02);padding:8px 12px;margin-bottom:6px;}
+.footer-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid rgba(255,215,0,0.08);}
+#settings-btn{background:none;border:1px solid rgba(255,215,0,0.2);color:#FFD700;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:11px;font-family:'Cairo',sans-serif;}
+#count-label{color:#334155;font-size:10px;}
+.views-row{display:flex;justify-content:space-around;align-items:center;}
+.view-item{text-align:center;}
+.view-lbl{font-size:10px;color:#64748b;font-weight:700;margin-bottom:2px;}
+.view-val{font-size:18px;font-weight:900;font-family:'Amiri',serif;color:#FFD700;}
+.views-divider{width:1px;height:30px;background:rgba(255,215,0,0.1);}
+
+/* صندوق الساعة والتاريخ مع زر الكاميرا */
+.clock-box{width:100%;max-width:420px;border:1px solid rgba(255,215,0,0.12);border-radius:14px;background:rgba(255,255,255,0.02);padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.cam-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:6px 8px;cursor:pointer;color:#FFD700;font-family:'Cairo',sans-serif;flex-shrink:0;}
+.cam-btn span:first-child{font-size:20px;}
+.cam-btn span:last-child{font-size:9px;font-weight:700;}
+.clock-inner{flex:1;text-align:center;}
+#clock{font-size:26px;font-weight:900;color:#FFD700;font-family:'Amiri',serif;direction:ltr;letter-spacing:1px;}
+.ampm{font-size:13px;color:#a89060;font-weight:700;margin-right:4px;}
+#datebox{font-size:14px;color:#a89060;font-weight:700;margin-top:2px;}
+
+/* زر التطبيق */
+#install-btn{display:block;width:100%;max-width:420px;margin-bottom:6px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,180,0,0.08));border:1px solid rgba(255,215,0,0.4);color:#FFD700;padding:11px;border-radius:12px;cursor:pointer;font-size:14px;font-family:'Cairo',sans-serif;font-weight:900;text-align:center;animation:pulse-btn 2s ease infinite;}
+@keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0.3)}50%{box-shadow:0 0 0 6px rgba(255,215,0,0)}}
+
+/* مودالات */
+#password-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:300;align-items:center;justify-content:center;padding:20px;}
+#password-modal.show{display:flex;}
+.pw-box{background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:22px;width:100%;max-width:300px;}
+.pw-box h3{color:#FFD700;font-size:15px;font-weight:900;margin-bottom:4px;text-align:center;}
+.pw-box p{color:#a3a3a3;font-size:11px;text-align:center;margin-bottom:14px;}
+.pw-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.2);color:#FFD700;border-radius:10px;padding:9px 12px;font-size:15px;font-family:'Cairo',sans-serif;width:100%;margin-bottom:10px;outline:none;}
+.pw-err{color:#f87171;font-size:11px;text-align:center;margin-bottom:10px;display:none;}
+.pw-btns{display:flex;gap:8px;}
+.pw-btns button{flex:1;padding:9px;border-radius:10px;border:1px solid;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;cursor:pointer;}
+#confirm-pass-btn{background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:#FFD700;}
+#cancel-pass-btn{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:#a3a3a3;}
+
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+#modal-overlay.show{display:flex;}
+#modal{background:#0f1420;border:1px solid rgba(255,215,0,0.2);border-radius:22px;padding:20px;width:100%;max-width:340px;}
+#modal h3{color:#FFD700;font-size:15px;font-weight:900;margin-bottom:14px;}
+.s-title{font-size:11px;font-weight:900;margin:12px 0 7px;padding-bottom:3px;}
+.s-title.sell{color:#FFD700;border-bottom:1px solid rgba(255,215,0,0.15);}
+.s-title.gulf{color:#64b4ff;border-bottom:1px solid rgba(100,180,255,0.15);}
+.s-title.iraqi{color:#64ffa0;border-bottom:1px solid rgba(100,255,160,0.15);}
+.s-title.gen{color:#a89060;border-bottom:1px solid rgba(168,144,96,0.15);}
+.s-row{margin-bottom:12px;}
+.s-lbl{color:#64748b;font-size:11px;margin-bottom:5px;}
+.s-inputs{display:flex;gap:6px;}
+.s-inputs select,.s-inputs input,.s-row input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.15);color:#FFD700;border-radius:10px;padding:8px 10px;font-size:14px;font-family:'Cairo',sans-serif;width:100%;outline:none;}
+.s-inputs select{width:70px;flex-shrink:0;}
+.modal-btns{display:flex;gap:8px;margin-top:6px;}
+#apply-btn{flex:1;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:10px;border-radius:11px;cursor:pointer;font-size:14px;font-family:'Cairo',sans-serif;font-weight:700;}
+#cancel-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#475569;padding:10px 14px;border-radius:11px;cursor:pointer;font-size:14px;font-family:'Cairo',sans-serif;}
+
+/* مودال الصورة */
+#img-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:600;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px;overflow-y:auto;}
+#save-toast{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(30,40,60,0.97);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:10px 20px;border-radius:18px;font-size:13px;font-family:'Cairo',sans-serif;font-weight:700;z-index:500;white-space:nowrap;}
+#screenshot-btn{display:none!important;}
+
+/* مودال التطبيق */
+#install-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:400;align-items:flex-end;justify-content:center;}
+.install-box{background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:24px 24px 0 0;padding:22px 18px 34px;width:100%;max-width:480px;}
 </style>
 </head>
 <body>
 
-<div class="company-header">
-  <div class="company-name-wrap">
-  <div class="company-name-border">
-    <span class="heart-spin">🤍</span>
-    <span class="company-name">شركة زمزم</span>
-    <span class="heart-spin">🤍</span>
+<!-- HEADER -->
+<div class="hdr">
+  <!-- اسم الشركة مع إطار وقلوب -->
+  <div class="name-wrap">
+    <div class="name-border">
+      <span class="heart">🤍</span>
+      <span class="company-name">شركة زمزم</span>
+      <span class="heart">🤍</span>
+    </div>
   </div>
-</div>
-  <div class="company-address">📍 الانبار - الرمادي - شارع الصياغ</div>
-  <div class="company-tagline">🥇 متخصصون في تجارة الذهب</div>
-  <div class="owners-box">
-    <div class="owner-row">
+  <!-- العنوان والتخصص بسطر واحد -->
+  <div class="info-row">
+    <span>📍 الانبار - الرمادي - شارع الصياغ</span>
+    <span>·</span>
+    <span style="color:#FFD700;">🥇 متخصصون في تجارة الذهب</span>
+  </div>
+  <!-- الملاك بسطر واحد -->
+  <div class="owners-row">
+    <div class="owner-item">
       <span class="owner-name">سيف الفهداوي</span>
       <span class="owner-phone">07901196926</span>
     </div>
-    <div class="owner-row">
+    <div class="owner-item">
       <span class="owner-name">حسام الفهداوي</span>
       <span class="owner-phone">07805747247</span>
     </div>
   </div>
-  <div class="social-icons">
-    <a class="social-btn wa-saif" href="https://wa.me/9647901196926" target="_blank">
+  <!-- سوشيال - حجم موحد -->
+  <div class="social-row">
+    <a class="social-btn wa" href="https://wa.me/9647901196926" target="_blank">
       <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-      <div class="social-label" style="color:#25d366">سيف</div>
+      <div class="social-lbl">سيف</div>
     </a>
-    <a class="social-btn wa-husam" href="https://wa.me/9647805747247" target="_blank">
+    <a class="social-btn wa" href="https://wa.me/9647805747247" target="_blank">
       <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-      <div class="social-label" style="color:#25d366">حسام</div>
+      <div class="social-lbl">حسام</div>
     </a>
-    <a class="social-btn insta-btn" href="https://www.instagram.com/zamzm_gold?igsh=bTdnaTJ6aTFxc2Fv&utm_source=qr" target="_blank">
-      <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="url(#ig)"><defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="25%" style="stop-color:#e6683c"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="75%" style="stop-color:#cc2366"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    <a class="social-btn ig" href="https://www.instagram.com/zamzm_gold?igsh=bTdnaTJ6aTFxc2Fv&utm_source=qr" target="_blank">
+      <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="url(#ig)"><defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
     </a>
-    <a class="social-btn fb-btn" href="https://www.facebook.com/share/1C9yHdfjk7/?mibextid=wwXIfr" target="_blank">
+    <a class="social-btn fb" href="https://www.facebook.com/share/1C9yHdfjk7/?mibextid=wwXIfr" target="_blank">
       <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
     </a>
-    <a class="social-btn tiktok-btn" href="https://www.tiktok.com/@zamzam_gold?_r=1&_t=ZS-96r6BSH2srd" target="_blank">
+    <a class="social-btn tk" href="https://www.tiktok.com/@zamzam_gold?_r=1&_t=ZS-96r6BSH2srd" target="_blank">
       <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></div>
     </a>
   </div>
-  <div class="real-prices-note">💙 هذه الأسعار حقيقية خاصة بشركتنا</div>
+  <!-- نص متحرك -->
+  <div class="marquee-wrap">
+    <div class="marquee-txt">💙 هذه الأسعار حقيقية خاصة بشركتنا</div>
+  </div>
 </div>
 
+<!-- CARD الأسعار -->
 <div class="card">
-<div class="header">
-  <svg id="ring" viewBox="0 0 52 52">
-    <circle id="ring-track" cx="26" cy="26" r="21"/>
-    <circle id="ring-spin" cx="26" cy="26" r="21"/>
-    <circle id="ring-fill" cx="26" cy="26" r="21"/>
-    <text id="ring-text" x="26" y="31" text-anchor="middle">20</text>
-  </svg>
-</div>
-<div id="loading">جار جلب السعر…</div>
-<div id="error-box">
-  <div id="error-msg">تعذّر جلب السعر</div>
-  <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
-</div>
-<div id="price-area" style="display:none">
-  <div class="price-block">
-    <div id="price-val">—</div>
-    <div class="unit">💵 سعر الأونصة الآن</div>
+  <div class="card-header">
+    <svg id="ring" viewBox="0 0 52 52">
+      <circle id="ring-track" cx="26" cy="26" r="21"/>
+      <circle id="ring-spin" cx="26" cy="26" r="21"/>
+      <circle id="ring-fill" cx="26" cy="26" r="21"/>
+      <text id="ring-text" x="26" y="31" text-anchor="middle">20</text>
+    </svg>
   </div>
-</div>
-<div class="masagh-box" id="masagh-box">
-  <div class="section-wrap sell">
-    <div class="section-title">🔶 سعر بيع المصاغ</div>
-    <div class="masagh-row">
-      <div class="masagh-cell">
-        <div class="masagh-label">سعر الغرام</div>
-        <div class="masagh-val" id="gram-val">—</div>
-        <div class="masagh-currency">دينار عراقي</div>
+  <div id="loading">جار جلب السعر…</div>
+  <div id="error-box">
+    <div id="error-msg">تعذّر جلب السعر</div>
+    <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
+  </div>
+  <div id="price-area" style="display:none">
+    <div class="price-block">
+      <div id="price-val">—</div>
+      <div class="unit">💵 سعر الأونصة الآن</div>
+    </div>
+  </div>
+  <div class="masagh-box" id="masagh-box">
+    <div class="section-wrap sell">
+      <div class="section-title">🔶 سعر بيع المصاغ</div>
+      <div class="masagh-row">
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">—</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">—</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
-      <div class="masagh-cell">
-        <div class="masagh-label">سعر المثقال</div>
-        <div class="masagh-val" id="mithqal-val">—</div>
-        <div class="masagh-currency">دينار عراقي</div>
+    </div>
+    <div class="section-wrap gulf">
+      <div class="section-title">🔷 شراء كسر خليجي</div>
+      <div class="masagh-row">
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">—</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">—</div><div class="masagh-currency">دينار عراقي</div></div>
+      </div>
+    </div>
+    <div class="section-wrap iraqi">
+      <div class="section-title">🔸 شراء كسر عراقي</div>
+      <div class="masagh-row">
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">—</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">—</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
   </div>
-  <div class="section-wrap gulf">
-    <div class="section-title">🔷 شراء كسر خليجي</div>
-    <div class="masagh-row">
-      <div class="masagh-cell">
-        <div class="masagh-label">سعر الغرام</div>
-        <div class="masagh-val" id="gulf-gram-val">—</div>
-        <div class="masagh-currency">دينار عراقي</div>
-      </div>
-      <div class="masagh-cell">
-        <div class="masagh-label">سعر المثقال</div>
-        <div class="masagh-val" id="gulf-mithqal-val">—</div>
-        <div class="masagh-currency">دينار عراقي</div>
-      </div>
+  <!-- فوتر مدمج مع المشاهدات -->
+  <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
+    <div class="footer-row">
+      <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
+      <span id="count-label">كل 20 ثانية · 0 تحديث</span>
     </div>
-  </div>
-  <div class="section-wrap iraqi">
-    <div class="section-title">🔸 شراء كسر عراقي</div>
-    <div class="masagh-row">
-      <div class="masagh-cell">
-        <div class="masagh-label">سعر الغرام</div>
-        <div class="masagh-val" id="iraqi-gram-val">—</div>
-        <div class="masagh-currency">دينار عراقي</div>
-      </div>
-      <div class="masagh-cell">
-        <div class="masagh-label">سعر المثقال</div>
-        <div class="masagh-val" id="iraqi-mithqal-val">—</div>
-        <div class="masagh-currency">دينار عراقي</div>
-      </div>
+    <div class="views-row">
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">—</div></div>
+      <div class="views-divider"></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">—</div></div>
     </div>
-  </div>
-</div>
-<div class="footer">
-  <span id="count-label">كل 20 ثانية · 0 تحديث</span>
-  <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-</div>
-</div>
-
-<!-- عداد المشاهدات -->
-<div class="views-box">
-  <div class="views-item">
-    <div class="views-label">👁️ مشاهدات اليوم</div>
-    <div class="views-val" id="today-views">—</div>
-  </div>
-  <div class="views-divider"></div>
-  <div class="views-item">
-    <div class="views-label">📊 إجمالي المشاهدات</div>
-    <div class="views-val" id="total-views">—</div>
   </div>
 </div>
 
-<!-- التاريخ والساعة -->
-<div class="datetime-box">
-  <div class="datetime-inner">
-    <div class="datetime-time" id="clock">—</div>
-    <div class="datetime-date" id="datebox">—</div>
-  </div>
+<!-- ساعة + تاريخ + كاميرا بإطار واحد -->
+<div class="clock-box">
   <button class="cam-btn" onclick="takeScreenshot()">
     <span>📸</span>
     <span>لقطة شاشة</span>
   </button>
-</div>
-
-<!-- زر تحميل التطبيق -->
-<button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
-
-<!-- مودال التثبيت -->
-<div id="install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:400;align-items:flex-end;justify-content:center;padding:0;">
-  <div style="background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:24px 24px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;">
-    <div style="text-align:center;margin-bottom:16px;">
-      <div style="font-size:16px;font-weight:900;color:#FFD700;margin-bottom:4px;">📲 أضف التطبيق</div>
-      <div style="font-size:12px;color:#64748b;">اختر نوع جهازك</div>
-    </div>
-    <!-- اختيار الجهاز -->
-    <div id="device-choice" style="display:flex;gap:10px;margin-bottom:16px;">
-      <button onclick="showSteps('ios')" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:14px;padding:14px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">
-        🍎 iPhone
-      </button>
-      <button onclick="showSteps('android')" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:14px;padding:14px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">
-        🤖 Android
-      </button>
-    </div>
-    <!-- خطوات iOS -->
-    <div id="steps-ios" style="display:none;">
-      <div style="font-size:13px;font-weight:900;color:#64b4ff;margin-bottom:12px;text-align:center;">خطوات iPhone</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.15);border-radius:12px;padding:10px 12px;">
-          <div style="font-size:22px;flex-shrink:0;">1️⃣</div>
-          <div style="font-size:13px;color:#cbd5e1;">اضغط على زر <strong style="color:#64b4ff;">المشاركة</strong> في أسفل المتصفح (الأيقونة مربع بسهم لأعلى ⬆️)</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.15);border-radius:12px;padding:10px 12px;">
-          <div style="font-size:22px;flex-shrink:0;">2️⃣</div>
-          <div style="font-size:13px;color:#cbd5e1;">مرّر للأسفل وابحث عن <strong style="color:#64b4ff;">"أضف إلى الشاشة الرئيسية"</strong></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.15);border-radius:12px;padding:10px 12px;">
-          <div style="font-size:22px;flex-shrink:0;">3️⃣</div>
-          <div style="font-size:13px;color:#cbd5e1;">اضغط <strong style="color:#64b4ff;">"إضافة"</strong> وسيظهر التطبيق على شاشتك ✅</div>
-        </div>
-      </div>
-    </div>
-    <!-- خطوات Android -->
-    <div id="steps-android" style="display:none;">
-      <div style="font-size:13px;font-weight:900;color:#64ffa0;margin-bottom:12px;text-align:center;">خطوات Android</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,255,160,0.06);border:1px solid rgba(100,255,160,0.15);border-radius:12px;padding:10px 12px;">
-          <div style="font-size:22px;flex-shrink:0;">1️⃣</div>
-          <div style="font-size:13px;color:#cbd5e1;">اضغط على <strong style="color:#64ffa0;">النقاط الثلاث ⋮</strong> في أعلى المتصفح</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,255,160,0.06);border:1px solid rgba(100,255,160,0.15);border-radius:12px;padding:10px 12px;">
-          <div style="font-size:22px;flex-shrink:0;">2️⃣</div>
-          <div style="font-size:13px;color:#cbd5e1;">اختر <strong style="color:#64ffa0;">"إضافة إلى الشاشة الرئيسية"</strong></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(100,255,160,0.06);border:1px solid rgba(100,255,160,0.15);border-radius:12px;padding:10px 12px;">
-          <div style="font-size:22px;flex-shrink:0;">3️⃣</div>
-          <div style="font-size:13px;color:#cbd5e1;">اضغط <strong style="color:#64ffa0;">"إضافة"</strong> وسيظهر التطبيق على شاشتك ✅</div>
-        </div>
-      </div>
-    </div>
-    <!-- أزرار -->
-    <div style="display:flex;gap:8px;margin-top:16px;">
-      <button id="back-btn" onclick="backToChoice()" style="display:none;flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#a3a3a3;border-radius:12px;padding:11px;font-size:13px;font-family:Cairo,sans-serif;cursor:pointer;">← رجوع</button>
-      <button onclick="closeInstallModal()" style="flex:1;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:12px;padding:11px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">إغلاق</button>
-    </div>
+  <button class="cam-btn" onclick="shareApp()" style="margin-right:6px;">
+    <span>🔗</span>
+    <span>مشاركة</span>
+  </button>
+  <div class="clock-inner">
+    <div id="clock">—<span class="ampm" id="ampm"></span></div>
+    <div id="datebox">—</div>
   </div>
 </div>
 
-<button id="screenshot-btn" onclick="takeScreenshot()" title="لقطة شاشة">📸</button>
-<div id="screenshot-toast">✅ تم حفظ الصورة!</div>
+<!-- زر التطبيق -->
+<button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
 
+<!-- مودال كلمة المرور -->
 <div id="password-modal">
-  <div class="password-box">
+  <div class="pw-box">
     <h3>🔐 الإعدادات المحمية</h3>
     <p>أدخل كلمة المرور</p>
-    <input type="password" id="password-input" class="password-input" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')confirmPassword()"/>
-    <div class="password-error" id="password-error">❌ كلمة المرور غير صحيحة</div>
-    <div class="password-btns">
+    <input type="password" id="password-input" class="pw-input" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')confirmPassword()"/>
+    <div class="pw-err" id="password-error">❌ كلمة المرور غير صحيحة</div>
+    <div class="pw-btns">
       <button id="cancel-pass-btn" onclick="closePasswordModal()">إلغاء</button>
       <button id="confirm-pass-btn" onclick="confirmPassword()">✅ تأكيد</button>
     </div>
   </div>
 </div>
 
+<!-- مودال الإعدادات -->
 <div id="modal-overlay" onclick="closeIfOutside(event)">
-<div id="modal">
-  <h3>⚙️ إعدادات السعر</h3>
-  <div class="setting-section-title sell">🔶 سعر بيع المصاغ</div>
-  <div class="setting-row">
-    <div class="setting-label">تعديل على سعر الأونصة</div>
-    <div class="setting-inputs">
-      <select id="adj-sign"><option value="1">+</option><option value="-1">-</option></select>
-      <input type="number" id="adj-val" placeholder="0" value="0" min="0"/>
+  <div id="modal">
+    <h3>⚙️ إعدادات السعر</h3>
+    <div class="s-title sell">🔶 سعر بيع المصاغ</div>
+    <div class="s-row"><div class="s-lbl">تعديل على سعر الأونصة</div><div class="s-inputs"><select id="adj-sign"><option value="1">+</option><option value="-1">-</option></select><input type="number" id="adj-val" placeholder="0" value="0" min="0"/></div></div>
+    <div class="s-title gulf">🔷 شراء كسر خليجي</div>
+    <div class="s-row"><div class="s-lbl">رقم كسري (+/-)</div><div class="s-inputs"><select id="gulf-sign"><option value="1">+</option><option value="-1">-</option></select><input type="number" id="gulf-val" placeholder="0" value="0" min="0" step="0.01"/></div></div>
+    <div class="s-title iraqi">🔸 شراء كسر عراقي</div>
+    <div class="s-row"><div class="s-lbl">فرق عن غرام الخليجي بالدينار</div><div class="s-inputs"><select id="iraqi-sign"><option value="1">+</option><option value="-1">-</option></select><input type="number" id="iraqi-val" placeholder="0" value="0" min="0"/></div></div>
+    <div class="s-title gen">💵 عام</div>
+    <div class="s-row"><div class="s-lbl">سعر الورق (دينار عراقي)</div><input type="number" id="paper-rate" placeholder="1530000" value="1530000" min="1"/></div>
+    <div class="modal-btns">
+      <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
+      <button id="apply-btn" onclick="applySettings()">✅ تطبيق</button>
     </div>
   </div>
-  <div class="setting-section-title gulf">🔷 شراء كسر خليجي</div>
-  <div class="setting-row">
-    <div class="setting-label">رقم كسري (+/-)</div>
-    <div class="setting-inputs">
-      <select id="gulf-sign"><option value="1">+</option><option value="-1">-</option></select>
-      <input type="number" id="gulf-val" placeholder="0" value="0" min="0" step="0.01"/>
-    </div>
-  </div>
-  <div class="setting-section-title iraqi">🔸 شراء كسر عراقي</div>
-  <div class="setting-row">
-    <div class="setting-label">فرق عن غرام الخليجي بالدينار (+/-)</div>
-    <div class="setting-inputs">
-      <select id="iraqi-sign"><option value="1">+</option><option value="-1">-</option></select>
-      <input type="number" id="iraqi-val" placeholder="0" value="0" min="0"/>
-    </div>
-  </div>
-  <div class="setting-section-title general">💵 عام</div>
-  <div class="setting-row">
-    <div class="setting-label">سعر الورق (دينار عراقي)</div>
-    <input type="number" id="paper-rate" placeholder="مثال: 1530000" value="1530000" min="1"/>
-  </div>
-  <div class="modal-btns">
-    <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
-    <button id="apply-btn" onclick="applySettings()">✅ تطبيق</button>
-  </div>
-</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- مودال الصورة -->
+<div id="img-modal">
+  <div id="device-step">
+    <div style="font-size:14px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:900;text-align:center;margin-bottom:14px;">📱 حدد نوع جهازك لحفظ الصورة في الاستديو</div>
+    <div style="display:flex;gap:12px;">
+      <button onclick="selectDevice('ios')" style="flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);color:#fff;border-radius:16px;padding:18px 12px;font-size:16px;font-family:Cairo,sans-serif;font-weight:900;cursor:pointer;">🍎<br/>iPhone</button>
+      <button onclick="selectDevice('android')" style="flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);color:#fff;border-radius:16px;padding:18px 12px;font-size:16px;font-family:Cairo,sans-serif;font-weight:900;cursor:pointer;">🤖<br/>Android</button>
+    </div>
+  </div>
+  <div id="image-step" style="display:none;width:100%;max-width:420px;">
+    <div id="save-instruction" style="font-size:13px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:900;text-align:center;margin-bottom:10px;animation:bounce-arrow 1s ease infinite;">👆 اضغط باستمرار على الصورة للحفظ</div>
+    <div id="img-frame" style="position:relative;width:100%;border:3px solid #FFD700;border-radius:16px;padding:4px;background:#000;box-shadow:0 0 20px rgba(255,215,0,0.5);animation:frame-pulse 1.5s ease infinite;cursor:pointer;">
+      <img id="img-modal-src" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block;user-select:none;-webkit-user-select:none;" src="" draggable="false"/>
+      <div id="progress-wrap" style="display:none;position:absolute;bottom:8px;left:8px;right:8px;background:rgba(0,0,0,0.8);border-radius:20px;padding:8px 12px;">
+        <div style="font-size:12px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;text-align:center;margin-bottom:5px;">⏳ جار الحفظ...</div>
+        <div style="background:rgba(255,255,255,0.15);border-radius:20px;height:10px;overflow:hidden;"><div id="progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFD700,#e6a800);border-radius:20px;transition:width 0.05s linear;"></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="success-msg" style="display:none;font-size:16px;color:#4ade80;font-family:Cairo,sans-serif;font-weight:900;text-align:center;background:rgba(74,222,128,0.12);border:2px solid rgba(74,222,128,0.4);border-radius:14px;padding:14px 24px;">✅ تم الحفظ بنجاح في الاستديو!</div>
+  <button onclick="closeImgModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#a3a3a3;padding:10px 32px;border-radius:12px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">✕ إغلاق</button>
+</div>
+
+<!-- مودال تثبيت التطبيق -->
+<div id="install-modal">
+  <div class="install-box">
+    <div style="font-size:15px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:900;text-align:center;margin-bottom:16px;">📲 أضف التطبيق على شاشتك</div>
+    <div style="display:flex;gap:10px;margin-bottom:14px;">
+      <button onclick="installDirect('ios')" style="flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.15);color:#fff;border-radius:14px;padding:16px 10px;font-size:15px;font-family:Cairo,sans-serif;font-weight:900;cursor:pointer;">🍎<br/>iPhone</button>
+      <button onclick="installDirect('android')" style="flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.15);color:#fff;border-radius:14px;padding:16px 10px;font-size:15px;font-family:Cairo,sans-serif;font-weight:900;cursor:pointer;">🤖<br/>Android</button>
+    </div>
+    <button onclick="closeInstallModal()" style="width:100%;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);color:#FFD700;padding:11px;border-radius:12px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">إغلاق</button>
+  </div>
+</div>
+
+<div id="save-toast"></div>
+<button id="screenshot-btn"></button>
+
+<style>
+@keyframes frame-pulse{0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.4);border-color:#FFD700;}50%{box-shadow:0 0 35px rgba(255,215,0,0.9);border-color:#fff3a0;}}
+@keyframes bounce-arrow{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+#img-modal-src{touch-action:none;}
+</style>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAO4o1zCEpBb3tvNXoHRJMhpDDp4BK6Myg",
-  authDomain: "zamzam-gold-2.firebaseapp.com",
-  databaseURL: "https://zamzam-gold-2-default-rtdb.firebaseio.com",
-  projectId: "zamzam-gold-2",
-  storageBucket: "zamzam-gold-2.firebasestorage.app",
-  messagingSenderId: "114154841133",
-  appId: "1:114154841133:web:3c5779d1671c8b6a3204a4"
-};
-
+// Firebase
+const firebaseConfig={apiKey:"AIzaSyAO4o1zCEpBb3tvNXoHRJMhpDDp4BK6Myg",authDomain:"zamzam-gold-2.firebaseapp.com",databaseURL:"https://zamzam-gold-2-default-rtdb.firebaseio.com",projectId:"zamzam-gold-2",storageBucket:"zamzam-gold-2.firebasestorage.app",messagingSenderId:"114154841133",appId:"1:114154841133:web:3c5779d1671c8b6a3204a4"};
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const settingsRef = db.ref('settings');
-const viewsRef = db.ref('views');
+const db=firebase.database();
+const settingsRef=db.ref('settings');
+const viewsRef=db.ref('views');
 
-const PASSWORD = 'sa12345IF';
-const C = 2*Math.PI*21;
+const PASSWORD='sa12345IF';
+const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
 let price=null,count=0,sec=20;
-let adjSign=1,adjVal=0,paperRate=1530000;
-let gulfSign=1,gulfVal=0,iraqiSign=1,iraqiVal=0;
+let adjSign=1,adjVal=0,paperRate=1530000,gulfSign=1,gulfVal=0,iraqiSign=1,iraqiVal=0;
 let deferredPrompt=null;
 
-// ---- عداد المشاهدات ----
-function todayKey(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+// خلفية يومية
+(function(){const bg=['#07090f','#0a0a1a','#0f0a00','#06100a','#100808','#080d14','#0d0810'];document.documentElement.style.setProperty('--bg',bg[new Date().getDay()]);})();
 
-function trackView(){
-  const key = todayKey();
-  // إجمالي
-  viewsRef.child('total').transaction(v => (v||0)+1);
-  // اليوم
-  viewsRef.child('daily/'+key).transaction(v => (v||0)+1);
-}
-
-viewsRef.child('total').on('value', s => {
-  document.getElementById('total-views').textContent = (s.val()||0).toLocaleString('ar-EG');
-});
-viewsRef.child('daily/'+todayKey()).on('value', s => {
-  document.getElementById('today-views').textContent = (s.val()||0).toLocaleString('ar-EG');
-});
-
+// مشاهدات
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function trackView(){viewsRef.child('total').transaction(v=>(v||0)+1);viewsRef.child('daily/'+todayKey()).transaction(v=>(v||0)+1);}
+viewsRef.child('total').on('value',s=>{document.getElementById('total-views').textContent=(s.val()||0).toLocaleString('ar-EG');});
+viewsRef.child('daily/'+todayKey()).on('value',s=>{document.getElementById('today-views').textContent=(s.val()||0).toLocaleString('ar-EG');});
 trackView();
 
-// ---- PWA ----
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('install-btn').style.display = 'block';
-});
+// PWA
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
+function showInstallModal(){document.getElementById('install-modal').style.display='flex';}
+function closeInstallModal(){document.getElementById('install-modal').style.display='none';}
+function installDirect(type){
+  closeInstallModal();
+  if(type==='android'&&deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});return;}
+  if(type==='ios'){alert('لتثبيت التطبيق على iPhone:\n1. اضغط زر المشاركة ⬆️\n2. اختر "أضف إلى الشاشة الرئيسية"\n3. اضغط "إضافة"');}
+  else{alert('لتثبيت التطبيق على Android:\n1. اضغط النقاط الثلاث ⋮\n2. اختر "إضافة إلى الشاشة الرئيسية"\n3. اضغط "إضافة"');}
+}
 
-function showInstallModal(){
-  const m = document.getElementById("install-modal");
-  m.style.display = "flex";
-  document.getElementById("steps-ios").style.display = "none";
-  document.getElementById("steps-android").style.display = "none";
-  document.getElementById("device-choice").style.display = "flex";
-  document.getElementById("back-btn").style.display = "none";
+// ساعة 12 ساعة
+function updateClock(){
+  const now=new Date();
+  let h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+  const ampm=h>=12?'PM':'AM';
+  h=h%12||12;
+  const pad=n=>String(n).padStart(2,'0');
+  document.getElementById('clock').innerHTML=pad(h)+':'+pad(m)+':'+pad(s)+'<span class="ampm"> '+ampm+'</span>';
+  const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('datebox').textContent=days[now.getDay()]+' · '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
 }
-function closeInstallModal(){
-  document.getElementById("install-modal").style.display = "none";
-}
-function showSteps(type){
-  document.getElementById("device-choice").style.display = "none";
-  document.getElementById("back-btn").style.display = "block";
-  if(type === "ios"){
-    document.getElementById("steps-ios").style.display = "block";
-    document.getElementById("steps-android").style.display = "none";
-    // على Android حاول التثبيت التلقائي
-  } else {
-    document.getElementById("steps-android").style.display = "block";
-    document.getElementById("steps-ios").style.display = "none";
-    if(deferredPrompt){
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; closeInstallModal(); });
-    }
-  }
-}
-function backToChoice(){
-  document.getElementById("steps-ios").style.display = "none";
-  document.getElementById("steps-android").style.display = "none";
-  document.getElementById("device-choice").style.display = "flex";
-  document.getElementById("back-btn").style.display = "none";
-}
-function installApp(){ showInstallModal(); }
+updateClock();
+setInterval(updateClock,1000);
 
-// إظهار الزر دائماً على iOS (لأن iOS ما يدعم beforeinstallprompt)
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isInStandalone = window.navigator.standalone;
-if(isIOS && !isInStandalone){ document.getElementById('install-btn').style.display='block'; }
-
-// ---- الإعدادات ----
+// Firebase إعدادات
 function saveSettings(){
   const o={adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal};
   localStorage.setItem('zs',JSON.stringify(o));
-  settingsRef.set(o).catch(e=>console.log('Firebase error:',e));
+  settingsRef.set(o);
 }
-
 function applyToUI(){
   document.getElementById('adj-sign').value=adjSign;
   document.getElementById('adj-val').value=adjVal;
@@ -527,23 +445,14 @@ function applyToUI(){
   document.getElementById('iraqi-sign').value=iraqiSign;
   document.getElementById('iraqi-val').value=iraqiVal;
 }
-
-settingsRef.on('value', function(snapshot){
-  const o = snapshot.val();
-  if(o){
-    adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;
-    gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;
-    iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;
-    applyToUI(); calcAll();
-  }
+settingsRef.on('value',function(snapshot){
+  const o=snapshot.val();
+  if(o){adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;applyToUI();calcAll();}
 });
 
 function toArabicNum(n){
-  const num=Math.floor(n/1000);
-  const str=num.toString();
-  const d=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-  let w='';
-  for(let i=0;i<str.length;i++){if(i>0&&(str.length-i)%3===0)w+=',';w+=str[i];}
+  const num=Math.floor(n/1000);const str=num.toString();const d=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  let w='';for(let i=0;i<str.length;i++){if(i>0&&(str.length-i)%3===0)w+=',';w+=str[i];}
   return w.replace(/[0-9]/g,x=>d[parseInt(x)]);
 }
 
@@ -566,13 +475,12 @@ async function fetchNow(){
     document.getElementById('loading').style.display='none';
     document.getElementById('price-area').style.display='block';
     document.getElementById('price-val').textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    document.getElementById('count-label').textContent=`كل 20 ثانية · ${count} تحديث`;
+    document.getElementById('count-label').textContent='كل 20 ثانية · '+count+' تحديث';
     document.getElementById('error-box').style.display='none';
     calcAll();
   }catch{
     if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
-  }
-  finally{setBusy(false);sec=20;updateRing();}
+  }finally{setBusy(false);sec=20;updateRing();}
 }
 
 function calcAll(){
@@ -580,320 +488,145 @@ function calcAll(){
   document.getElementById('masagh-box').style.display='block';
   const adjusted=price+(adjSign*adjVal);
   const gram=(adjusted/31.1)*0.88*paperRate;
-  const mithqal=gram*5;
   document.getElementById('gram-val').textContent=toArabicNum(gram);
-  document.getElementById('mithqal-val').textContent=toArabicNum(mithqal);
+  document.getElementById('mithqal-val').textContent=toArabicNum(gram*5);
   const gulfGram=((price/31.1)+(gulfSign*gulfVal))*0.875*paperRate;
-  const gulfMithqal=gulfGram*5;
   document.getElementById('gulf-gram-val').textContent=toArabicNum(gulfGram);
-  document.getElementById('gulf-mithqal-val').textContent=toArabicNum(gulfMithqal);
+  document.getElementById('gulf-mithqal-val').textContent=toArabicNum(gulfGram*5);
   const iraqiGram=gulfGram+(iraqiSign*iraqiVal*1000);
-  const iraqiMithqal=iraqiGram*5;
   document.getElementById('iraqi-gram-val').textContent=toArabicNum(iraqiGram);
-  document.getElementById('iraqi-mithqal-val').textContent=toArabicNum(iraqiMithqal);
+  document.getElementById('iraqi-mithqal-val').textContent=toArabicNum(iraqiGram*5);
 }
 
-function openPasswordModal(){document.getElementById('password-modal').classList.add('show');document.getElementById('password-input').value='';document.getElementById('password-error').style.display='none';document.getElementById('password-input').focus();}
+// مودالات الإعدادات
+function openPasswordModal(){document.getElementById('password-modal').classList.add('show');document.getElementById('password-input').value='';document.getElementById('password-error').style.display='none';}
 function closePasswordModal(){document.getElementById('password-modal').classList.remove('show');}
-function confirmPassword(){const pass=document.getElementById('password-input').value;if(pass===PASSWORD){closePasswordModal();openSettings();}else{document.getElementById('password-error').style.display='block';document.getElementById('password-input').value='';}}
+function confirmPassword(){const p=document.getElementById('password-input').value;if(p===PASSWORD){closePasswordModal();openSettings();}else{document.getElementById('password-error').style.display='block';document.getElementById('password-input').value='';}}
 function applySettings(){adjSign=parseInt(document.getElementById('adj-sign').value);adjVal=parseFloat(document.getElementById('adj-val').value)||0;paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;gulfSign=parseInt(document.getElementById('gulf-sign').value);gulfVal=parseFloat(document.getElementById('gulf-val').value)||0;iraqiSign=parseInt(document.getElementById('iraqi-sign').value);iraqiVal=parseFloat(document.getElementById('iraqi-val').value)||0;saveSettings();calcAll();closeSettings();}
 function openSettings(){document.getElementById('modal-overlay').classList.add('show');}
 function closeSettings(){document.getElementById('modal-overlay').classList.remove('show');}
 function closeIfOutside(e){if(e.target===document.getElementById('modal-overlay'))closeSettings();}
+
 function setBusy(b){ringSpin.style.display=b?'block':'none';ringFill.style.display=b?'none':'block';ringText.style.display=b?'none':'block';document.getElementById('price-val').classList.toggle('dim',b);}
 function updateRing(){ringFill.style.strokeDashoffset=C*(1-sec/20);ringText.textContent=sec;}
 
 // لقطة الشاشة
-async function takeScreenshot(){
-  const btn = document.getElementById("screenshot-btn");
-  const toast = document.getElementById("screenshot-toast");
-  btn.style.display = "none";
-  try {
-    const canvas = await html2canvas(document.body, {
-      backgroundColor: "#07090f",
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      logging: false
-    });
-    // تحويل لمربع 1000x1000 لحالة واتساب
-    const size = 1000;
-    const out = document.createElement("canvas");
-    out.width = size;
-    out.height = size;
-    const ctx = out.getContext("2d");
-    ctx.fillStyle = "#07090f";
-    ctx.fillRect(0, 0, size, size);
-    // رسم المحتوى في المنتصف
-    const ratio = Math.min(size / canvas.width, size / canvas.height);
-    const w = canvas.width * ratio;
-    const h = canvas.height * ratio;
-    const x = (size - w) / 2;
-    const y = (size - h) / 2;
-    ctx.drawImage(canvas, x, y, w, h);
-    // تحميل الصورة
-    const link = document.createElement("a");
-    link.download = "zamzam-gold-" + new Date().toISOString().slice(0,10) + ".png";
-    link.href = out.toDataURL("image/png", 1.0);
-    link.click();
-    toast.style.display = "block";
-    setTimeout(() => { toast.style.display = "none"; }, 2500);
-  } catch(e) {
-    console.log("Screenshot error:", e);
-  }
-  btn.style.display = "flex";
-}
-
-
-
-// ---- خلفية يومية ----
-(function(){
-  const backgrounds = [
-    '#07090f', // أسود كلاسيكي (الأحد)
-    '#0a0a1a', // أزرق ليلي عميق (الاثنين)
-    '#0f0a00', // بني ذهبي داكن (الثلاثاء)
-    '#06100a', // أخضر زمردي داكن (الأربعاء)
-    '#100808', // أحمر نبيذي داكن (الخميس)
-    '#080d14', // أزرق بحري داكن (الجمعة)
-    '#0d0810', // بنفسجي داكن (السبت)
-  ];
-  const day = new Date().getDay();
-  document.documentElement.style.setProperty('--bg-color', backgrounds[day]);
-})();
-
-// ---- لقطة الشاشة ----
 function takeScreenshot(){
-  const btn = document.getElementById("screenshot-btn");
-  const toast = document.getElementById("save-toast");
-  btn.style.display = "none";
-  const size = 1080;
-  const bgColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-color").trim() || "#07090f";
-  const fullH = document.body.scrollHeight;
-  const fullW = document.body.scrollWidth;
-  // تأكد من تحميل الخطوط أولاً
-  document.fonts.ready.then(function(){});
-  html2canvas(document.body, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: bgColor,
-    logging: false,
-    width: fullW,
-    height: fullH,
-    windowWidth: fullW,
-    windowHeight: fullH,
-    scrollX: 0,
-    scrollY: 0,
-    onclone: function(doc){
-      // تأكد من تطبيق الخطوط
-      doc.querySelectorAll('*').forEach(el => {
-        el.style.fontFamily = el.style.fontFamily || '';
-      });
-    }
-  }).then(function(canvas){
-    btn.style.display = "flex";
-    const sq = document.createElement("canvas");
-    sq.width = size;
-    sq.height = size;
-    const ctx = sq.getContext("2d");
-    ctx.fillStyle = bgColor || "#07090f";
-    ctx.fillRect(0, 0, size, size);
-    const cw = canvas.width;
-    const ch = canvas.height;
-    const scale = Math.min(size / cw, size / ch);
-    const dw = cw * scale;
-    const dh = ch * scale;
-    const dx = (size - dw) / 2;
-    const dy = (size - dh) / 2;
-    ctx.drawImage(canvas, 0, 0, cw, ch, dx, dy, dw, dh);
-    const dataUrl = sq.toDataURL("image/png", 1.0);
-    // عرض بالمودال
-    const modal = document.getElementById("img-modal");
-    document.getElementById("img-modal-src").src = dataUrl;
-    modal.style.display = "flex";
-    document.getElementById("device-step").style.display = "block";
-    document.getElementById("image-step").style.display = "none";
-    document.getElementById("success-msg").style.display = "none";
-  }).catch(function(){
-    btn.style.display = "flex";
-    toast.textContent = "❌ حدث خطأ، حاول مجدداً";
-    toast.style.display = "block";
-    setTimeout(()=>{ toast.style.display = "none"; }, 3000);
+  const btn=document.querySelector('.cam-btn');
+  btn.style.opacity='0';
+  // استبدل اسم الشركة بنص بسيط وقت التصوير
+  const nameBorder=document.querySelector('.name-border');
+  const origHTML=nameBorder.innerHTML;
+  nameBorder.innerHTML='<span style="font-size:30px;font-weight:900;color:#e53935;font-family:Arial,sans-serif;letter-spacing:1px;">شركة زمزم</span>';
+  const bgColor=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#07090f';
+  document.fonts.ready.then(()=>{
+    html2canvas(document.body,{scale:2,useCORS:true,allowTaint:true,backgroundColor:bgColor,logging:false,width:document.body.scrollWidth,height:document.body.scrollHeight,windowWidth:document.body.scrollWidth,windowHeight:document.body.scrollHeight,scrollX:0,scrollY:0}).then(function(canvas){
+      btn.style.opacity='1';
+      nameBorder.innerHTML=origHTML;
+      const sq=document.createElement('canvas');sq.width=1080;sq.height=1080;
+      const ctx=sq.getContext('2d');
+      ctx.fillStyle=bgColor;ctx.fillRect(0,0,1080,1080);
+      const sc=Math.min(1080/canvas.width,1080/canvas.height);
+      const dw=canvas.width*sc,dh=canvas.height*sc;
+      ctx.drawImage(canvas,0,0,canvas.width,canvas.height,(1080-dw)/2,(1080-dh)/2,dw,dh);
+      const dataUrl=sq.toDataURL('image/png',1.0);
+      const modal=document.getElementById('img-modal');
+      document.getElementById('img-modal-src').src=dataUrl;
+      modal.style.display='flex';
+      document.getElementById('device-step').style.display='block';
+      document.getElementById('image-step').style.display='none';
+      document.getElementById('success-msg').style.display='none';
+    }).catch(()=>{btn.style.opacity='1';nameBorder.innerHTML=origHTML;});
   });
 }
 
-// الساعة والتاريخ
-function updateClock(){
-  const now = new Date();
-  const h = now.getHours().toString().padStart(2,"0");
-  const m = now.getMinutes().toString().padStart(2,"0");
-  const s = now.getSeconds().toString().padStart(2,"0");
-  document.getElementById("clock").textContent = h+":"+m+":"+s;
-  const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-  const months = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-  const dd = String(now.getDate()).replace(/[0-9]/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]);
-  const mm = String(now.getMonth()+1).replace(/[0-9]/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]);
-  const yyyy = String(now.getFullYear()).replace(/[0-9]/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]);
-  document.getElementById("datebox").textContent = dd+" / "+mm+" / "+yyyy;
+// مودال الصورة
+function selectDevice(type){
+  document.getElementById('device-step').style.display='none';
+  document.getElementById('image-step').style.display='block';
+  document.getElementById('success-msg').style.display='none';
+  if(type==='android'&&deferredPrompt){}
 }
-updateClock();
-setInterval(updateClock,1000);
+function closeImgModal(){
+  document.getElementById('img-modal').style.display='none';
+  document.getElementById('device-step').style.display='block';
+  document.getElementById('image-step').style.display='none';
+  clearHold();
+}
+
+// ضغط مطول
+let progressInterval=null,holdProgress=0;
+const HOLD_DURATION=2000;
+function startHold(){
+  holdProgress=0;
+  document.getElementById('progress-wrap').style.display='block';
+  document.getElementById('progress-bar').style.width='0%';
+  progressInterval=setInterval(()=>{
+    holdProgress+=50;
+    const pct=Math.min((holdProgress/HOLD_DURATION)*100,100);
+    document.getElementById('progress-bar').style.width=pct+'%';
+    if(holdProgress>=HOLD_DURATION){clearHold();saveImageNow();}
+  },50);
+}
+function clearHold(){
+  clearInterval(progressInterval);progressInterval=null;holdProgress=0;
+  document.getElementById('progress-wrap').style.display='none';
+  document.getElementById('progress-bar').style.width='0%';
+}
+function saveImageNow(){
+  const img=document.getElementById('img-modal-src');
+  const tmpImg=new Image();
+  tmpImg.onload=function(){
+    const sq=document.createElement('canvas');sq.width=1080;sq.height=1080;
+    const ctx=sq.getContext('2d');
+    ctx.fillStyle='#07090f';ctx.fillRect(0,0,1080,1080);
+    const sc=Math.min(1080/tmpImg.width,1080/tmpImg.height);
+    const dw=tmpImg.width*sc,dh=tmpImg.height*sc;
+    ctx.drawImage(tmpImg,(1080-dw)/2,(1080-dh)/2,dw,dh);
+    const link=document.createElement('a');
+    link.href=sq.toDataURL('image/png',1.0);
+    link.download='zamzam-gold-'+Date.now()+'.png';
+    link.click();
+    document.getElementById('save-instruction').style.display='none';
+    document.getElementById('success-msg').style.display='block';
+    setTimeout(()=>{document.getElementById('success-msg').style.display='none';document.getElementById('save-instruction').style.display='block';},3000);
+  };
+  tmpImg.src=img.src;
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  const img=document.getElementById('img-modal-src');
+  img.addEventListener('touchstart',function(e){e.preventDefault();startHold();},{passive:false});
+  img.addEventListener('touchend',function(e){e.preventDefault();clearHold();},{passive:false});
+  img.addEventListener('touchcancel',()=>clearHold());
+  img.addEventListener('mousedown',()=>startHold());
+  img.addEventListener('mouseup',()=>clearHold());
+  img.addEventListener('mouseleave',()=>clearHold());
+});
+
+// مشاركة التطبيق
+function shareApp(){
+  const url = window.location.href;
+  const text = '🥇 شركة زمزم - سعر الذهب اللحظي\n📍 الانبار - الرمادي - شارع الصياغ\n\n👇 تابع أسعار الذهب الآن:\n' + url;
+  if(navigator.share){
+    navigator.share({title:'شركة زمزم - سعر الذهب',text:text,url:url})
+    .catch(()=>{});
+  } else {
+    // fallback: نسخ الرابط
+    navigator.clipboard.writeText(text).then(()=>{
+      const toast=document.getElementById('save-toast');
+      toast.textContent='✅ تم نسخ الرابط - شاركه مع أصدقائك';
+      toast.style.display='block';
+      setTimeout(()=>{ toast.style.display='none'; },3000);
+    }).catch(()=>{
+      prompt('انسخ الرابط وشاركه:', url);
+    });
+  }
+}
 
 fetchNow();
 setInterval(fetchNow,20000);
 setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
 </script>
-
-<!-- زر لقطة الشاشة -->
-<button id="screenshot-btn" onclick="takeScreenshot()" title="لقطة شاشة">📸</button>
-<div id="save-toast">✅ تم الحفظ في الاستديو</div>
-
-
-<!-- مودال الصورة -->
-<div id="img-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:600;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px;overflow-y:auto;">
-
-  <!-- خطوة 1: اختيار الجهاز -->
-  <div id="device-step">
-    <div style="font-size:15px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:900;text-align:center;margin-bottom:16px;">📱 حدد نوع جهازك</div>
-    <div style="display:flex;gap:12px;">
-      <button onclick="selectDevice('ios')" style="flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);color:#fff;border-radius:16px;padding:18px 12px;font-size:16px;font-family:Cairo,sans-serif;font-weight:900;cursor:pointer;">🍎<br/>iPhone</button>
-      <button onclick="selectDevice('android')" style="flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.2);color:#fff;border-radius:16px;padding:18px 12px;font-size:16px;font-family:Cairo,sans-serif;font-weight:900;cursor:pointer;">🤖<br/>Android</button>
-    </div>
-  </div>
-
-  <!-- خطوة 2: الصورة مع الضغط المطول -->
-  <div id="image-step" style="display:none;width:100%;max-width:420px;">
-    <div id="save-instruction" style="font-size:14px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:900;text-align:center;margin-bottom:10px;animation:bounce-arrow 1s ease infinite;">
-      👆 اضغط باستمرار على الصورة للحفظ
-    </div>
-    <div id="img-frame" style="position:relative;width:100%;border:3px solid #FFD700;border-radius:16px;padding:4px;background:#000;box-shadow:0 0 20px rgba(255,215,0,0.5);animation:frame-pulse 1.5s ease infinite;cursor:pointer;">
-      <img id="img-modal-src" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block;user-select:none;-webkit-user-select:none;" src="" draggable="false"/>
-      <div id="progress-wrap" style="display:none;position:absolute;bottom:8px;left:8px;right:8px;background:rgba(0,0,0,0.8);border-radius:20px;padding:8px 12px;">
-        <div style="font-size:12px;color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;text-align:center;margin-bottom:5px;">⏳ جار الحفظ...</div>
-        <div style="background:rgba(255,255,255,0.15);border-radius:20px;height:10px;overflow:hidden;">
-          <div id="progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFD700,#e6a800);border-radius:20px;transition:width 0.05s linear;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- رسالة النجاح -->
-  <div id="success-msg" style="display:none;font-size:16px;color:#4ade80;font-family:Cairo,sans-serif;font-weight:900;text-align:center;background:rgba(74,222,128,0.12);border:2px solid rgba(74,222,128,0.4);border-radius:14px;padding:14px 24px;">
-    ✅ تم الحفظ بنجاح في الاستديو!
-  </div>
-
-  <button onclick="closeImgModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#a3a3a3;padding:10px 32px;border-radius:12px;font-size:13px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">✕ إغلاق</button>
-</div>
-
-<style>
-@keyframes frame-pulse {
-  0%,100%{ box-shadow:0 0 15px rgba(255,215,0,0.4); border-color:#FFD700; }
-  50%{ box-shadow:0 0 35px rgba(255,215,0,0.9); border-color:#fff3a0; }
-}
-@keyframes bounce-arrow {
-  0%,100%{ transform:translateY(0); }
-  50%{ transform:translateY(-6px); }
-}
-</style>
-
-<style>
-#img-modal-src { touch-action: none; }
-</style>
-
-<script>
-let holdTimer = null;
-let progressInterval = null;
-let holdProgress = 0;
-const HOLD_DURATION = 2000;
-
-function selectDevice(type){
-  document.getElementById("device-step").style.display = "none";
-  document.getElementById("image-step").style.display = "block";
-  document.getElementById("success-msg").style.display = "none";
-  // على Android حاول التثبيت التلقائي
-  if(type === "android" && window._deferredPrompt){
-    // لا شي، فقط اعرض الصورة
-  }
-}
-
-function closeImgModal(){
-  document.getElementById("img-modal").style.display = "none";
-  document.getElementById("success-msg").style.display = "none";
-  document.getElementById("device-step").style.display = "block";
-  document.getElementById("image-step").style.display = "none";
-  clearHold();
-}
-
-function startHold(){
-  holdProgress = 0;
-  document.getElementById("progress-wrap").style.display = "block";
-  document.getElementById("progress-bar").style.width = "0%";
-  progressInterval = setInterval(()=>{
-    holdProgress += 50;
-    const pct = Math.min((holdProgress / HOLD_DURATION) * 100, 100);
-    document.getElementById("progress-bar").style.width = pct + "%";
-    if(holdProgress >= HOLD_DURATION){
-      clearHold();
-      saveImageNow();
-    }
-  }, 50);
-}
-
-function clearHold(){
-  clearInterval(progressInterval);
-  progressInterval = null;
-  holdProgress = 0;
-  document.getElementById("progress-wrap").style.display = "none";
-  document.getElementById("progress-bar").style.width = "0%";
-}
-
-function saveImageNow(){
-  const img = document.getElementById("img-modal-src");
-  const srcUrl = img.src;
-  // ارسم الصورة على كانفس 1080x1080 مربع
-  const sq = document.createElement("canvas");
-  sq.width = 1080;
-  sq.height = 1080;
-  const ctx = sq.getContext("2d");
-  const tmpImg = new Image();
-  tmpImg.onload = function(){
-    ctx.fillStyle = "#07090f";
-    ctx.fillRect(0,0,1080,1080);
-    // توسيط مع الحفاظ على النسبة
-    const scale = Math.min(1080/tmpImg.width, 1080/tmpImg.height);
-    const dw = tmpImg.width * scale;
-    const dh = tmpImg.height * scale;
-    const dx = (1080 - dw) / 2;
-    const dy = (1080 - dh) / 2;
-    ctx.drawImage(tmpImg, dx, dy, dw, dh);
-    const dataUrl = sq.toDataURL("image/png", 1.0);
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = "zamzam-gold-" + Date.now() + ".png";
-    link.click();
-    // رسالة النجاح
-    document.getElementById("save-instruction").style.display = "none";
-    document.getElementById("success-msg").style.display = "block";
-    setTimeout(()=>{
-      document.getElementById("success-msg").style.display = "none";
-      document.getElementById("save-instruction").style.display = "block";
-    }, 3000);
-  };
-  tmpImg.src = srcUrl;
-}
-
-// أحداث الضغط المطول على الصورة داخل الإطار
-document.addEventListener("DOMContentLoaded", function(){
-  const img = document.getElementById("img-modal-src");
-  if(!img) return;
-  img.addEventListener("touchstart", function(e){ e.preventDefault(); startHold(); }, {passive:false});
-  img.addEventListener("touchend", function(e){ e.preventDefault(); clearHold(); }, {passive:false});
-  img.addEventListener("touchcancel", function(){ clearHold(); });
-  img.addEventListener("mousedown", function(){ startHold(); });
-  img.addEventListener("mouseup", function(){ clearHold(); });
-  img.addEventListener("mouseleave", function(){ clearHold(); });
-});
-</script>
-
 </body>
 </html>
