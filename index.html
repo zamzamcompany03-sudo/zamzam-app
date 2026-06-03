@@ -812,18 +812,37 @@ function clearHold(){
 
 function saveImageNow(){
   const img = document.getElementById("img-modal-src");
-  const dataUrl = img.src;
-  const link = document.createElement("a");
-  link.href = dataUrl;
-  link.download = "zamzam-gold-" + Date.now() + ".png";
-  link.click();
-  // رسالة النجاح
-  document.getElementById("save-instruction").style.display = "none";
-  document.getElementById("success-msg").style.display = "block";
-  setTimeout(()=>{
-    document.getElementById("success-msg").style.display = "none";
-    document.getElementById("save-instruction").style.display = "block";
-  }, 3000);
+  const srcUrl = img.src;
+  // ارسم الصورة على كانفس 1080x1080 مربع
+  const sq = document.createElement("canvas");
+  sq.width = 1080;
+  sq.height = 1080;
+  const ctx = sq.getContext("2d");
+  const tmpImg = new Image();
+  tmpImg.onload = function(){
+    ctx.fillStyle = "#07090f";
+    ctx.fillRect(0,0,1080,1080);
+    // توسيط مع الحفاظ على النسبة
+    const scale = Math.min(1080/tmpImg.width, 1080/tmpImg.height);
+    const dw = tmpImg.width * scale;
+    const dh = tmpImg.height * scale;
+    const dx = (1080 - dw) / 2;
+    const dy = (1080 - dh) / 2;
+    ctx.drawImage(tmpImg, dx, dy, dw, dh);
+    const dataUrl = sq.toDataURL("image/png", 1.0);
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = "zamzam-gold-" + Date.now() + ".png";
+    link.click();
+    // رسالة النجاح
+    document.getElementById("save-instruction").style.display = "none";
+    document.getElementById("success-msg").style.display = "block";
+    setTimeout(()=>{
+      document.getElementById("success-msg").style.display = "none";
+      document.getElementById("save-instruction").style.display = "block";
+    }, 3000);
+  };
+  tmpImg.src = srcUrl;
 }
 
 // أحداث الضغط المطول على الصورة داخل الإطار
