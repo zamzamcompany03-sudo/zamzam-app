@@ -366,6 +366,38 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   </div>
 </div>
 
+
+<!-- مودال تعليمات iOS Safari -->
+<div id="ios-install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:flex-end;justify-content:center;padding:0;">
+  <div style="background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:24px 24px 0 0;padding:22px 18px 34px;width:100%;max-width:480px;">
+    <h3 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:16px;font-weight:900;text-align:center;margin-bottom:16px;">📲 تثبيت تطبيق زمزم</h3>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:12px;padding:10px 12px;">
+        <span style="font-size:22px;">1️⃣</span>
+        <span style="font-size:13px;color:#cbd5e1;font-family:Cairo,sans-serif;">اضغط زر <strong style="color:#FFD700;">المشاركة</strong> ⬆️ في أسفل Safari</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:12px;padding:10px 12px;">
+        <span style="font-size:22px;">2️⃣</span>
+        <span style="font-size:13px;color:#cbd5e1;font-family:Cairo,sans-serif;">اختر <strong style="color:#FFD700;">"أضف إلى الشاشة الرئيسية"</strong></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:12px;padding:10px 12px;">
+        <span style="font-size:22px;">3️⃣</span>
+        <span style="font-size:13px;color:#cbd5e1;font-family:Cairo,sans-serif;">اضغط <strong style="color:#FFD700;">"إضافة"</strong> ✅</span>
+      </div>
+    </div>
+    <button onclick="closeIosModal()" style="width:100%;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:12px;border-radius:12px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">إغلاق</button>
+  </div>
+</div>
+
+<!-- مودال افتح Safari -->
+<div id="open-safari-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:24px;width:100%;max-width:320px;text-align:center;">
+    <div style="font-size:40px;margin-bottom:12px;">🧭</div>
+    <h3 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:15px;font-weight:900;margin-bottom:10px;">افتح الصفحة في Safari</h3>
+    <p style="color:#a3a3a3;font-family:Cairo,sans-serif;font-size:13px;line-height:1.6;margin-bottom:18px;">لتثبيت تطبيق زمزم على iPhone، افتح هذه الصفحة في <strong style="color:#FFD700;">Safari</strong> أولاً ثم أعد الضغط على زر التثبيت.</p>
+    <button onclick="closeSafariModal()" style="width:100%;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:12px;border-radius:12px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">إغلاق</button>
+  </div>
+</div>
 <div id="save-toast"></div>
 <button id="screenshot-btn"></button>
 
@@ -373,6 +405,9 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 @keyframes frame-pulse{0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.4);border-color:#FFD700;}50%{box-shadow:0 0 35px rgba(255,215,0,0.9);border-color:#fff3a0;}}
 @keyframes bounce-arrow{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 #img-modal-src{touch-action:none;}
+
+#ios-install-modal.show{display:flex!important;}
+#open-safari-modal.show{display:flex!important;}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -416,6 +451,7 @@ function installDirect(type){
 }
 
 // ساعة 12 ساعة
+function toAr(n){return String(n).replace(/[0-9]/g,x=>'٠١٢٣٤٥٦٧٨٩'[x]);}
 function updateClock(){
   const now=new Date();
   let h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
@@ -423,9 +459,10 @@ function updateClock(){
   h=h%12||12;
   const pad=n=>String(n).padStart(2,'0');
   document.getElementById('clock').innerHTML=pad(h)+':'+pad(m)+':'+pad(s)+'<span class="ampm"> '+ampm+'</span>';
-  const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  document.getElementById('datebox').textContent=days[now.getDay()]+' · '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+  const dd=toAr(now.getDate());
+  const mm=toAr(now.getMonth()+1);
+  const yyyy=toAr(now.getFullYear());
+  document.getElementById('datebox').textContent=dd+' / '+mm+' / '+yyyy;
 }
 updateClock();
 setInterval(updateClock,1000);
