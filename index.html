@@ -17,7 +17,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 /* ===== HEADER ===== */
 .hdr{width:100%;max-width:420px;text-align:center;padding:10px 0 6px;}
 
-/* اسم الشركة */
 .name-wrap{display:flex;justify-content:center;margin-bottom:6px;}
 .name-border{display:inline-flex;align-items:center;gap:8px;border:2px solid #e53935;border-radius:40px;padding:5px 18px;animation:border-glow 2s ease infinite;}
 .company-name{font-size:30px;font-weight:900;color:#e53935;letter-spacing:1px;text-shadow:0 0 20px rgba(229,57,53,0.5);font-family:'Cairo',sans-serif;}
@@ -25,19 +24,16 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 @keyframes border-glow{0%,100%{box-shadow:0 0 8px rgba(229,57,53,0.4);border-color:#e53935;}50%{box-shadow:0 0 22px rgba(229,57,53,0.9);border-color:#ff6b6b;}}
 @keyframes heart-rot{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
-/* سطر العنوان والتخصص */
 .addr-line{font-size:11px;color:#a3a3a3;margin-bottom:2px;}
 .tag-line{font-size:11px;color:#FFD700;font-weight:700;margin-bottom:6px;}
 .info-row{display:flex;justify-content:center;gap:8px;font-size:11px;color:#a3a3a3;margin-bottom:6px;}
 .info-row span{color:#FFD700;}
 
-/* صاحبين بسطر واحد */
 .owners-row{display:flex;gap:6px;margin-bottom:6px;}
 .owner-item{flex:1;display:flex;justify-content:space-between;align-items:center;background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.12);border-radius:10px;padding:5px 10px;}
 .owner-name{font-size:12px;font-weight:900;color:#e0c060;}
 .owner-phone{font-size:11px;color:#a3a3a3;direction:ltr;}
 
-/* سوشيال - حجم موحد */
 .social-row{display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
 .social-btn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;}
 .social-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
@@ -47,7 +43,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 .fb .social-icon{background:rgba(24,119,242,0.15);border:1px solid rgba(24,119,242,0.4);}
 .tk .social-icon{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);}
 
-/* نص متحرك */
 .marquee-wrap{overflow:hidden;width:100%;margin-bottom:6px;}
 .marquee-txt{font-size:13px;color:#1e90ff;font-weight:700;white-space:nowrap;animation:marquee-lr 3s ease-in-out infinite alternate;}
 @keyframes marquee-lr{0%{transform:translateX(-15%);}100%{transform:translateX(15%);}}
@@ -72,7 +67,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 #error-msg{color:#f87171;font-size:13px;margin-bottom:8px;}
 #retry-btn{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:7px 18px;border-radius:10px;cursor:pointer;font-size:13px;font-family:'Cairo',sans-serif;font-weight:700;}
 
-/* أقسام المصاغ */
 .masagh-box{margin-top:6px;display:none;}
 .section-wrap{border-radius:12px;padding:8px 8px;margin-bottom:6px;}
 .section-wrap.sell{background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.25);}
@@ -100,7 +94,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 .section-wrap.gulf .masagh-currency{color:#7ab8e8;}
 .section-wrap.iraqi .masagh-currency{color:#70c88a;}
 
-/* فوتر الكارد مدمج مع المشاهدات */
 .bottom-box{width:100%;max-width:420px;border:1px solid rgba(255,215,0,0.12);border-radius:14px;background:rgba(255,255,255,0.02);padding:8px 12px;margin-bottom:6px;}
 .footer-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid rgba(255,215,0,0.08);}
 #settings-btn{background:none;border:1px solid rgba(255,215,0,0.2);color:#FFD700;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:11px;font-family:'Cairo',sans-serif;}
@@ -111,7 +104,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 .view-val{font-size:18px;font-weight:900;font-family:'Amiri',serif;color:#FFD700;}
 .views-divider{width:1px;height:30px;background:rgba(255,215,0,0.1);}
 
-/* صندوق الساعة والتاريخ مع زر الكاميرا */
 .clock-box{width:100%;max-width:420px;border:1px solid rgba(255,215,0,0.12);border-radius:14px;background:rgba(255,255,255,0.02);padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
 .cam-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:6px 8px;cursor:pointer;color:#FFD700;font-family:'Cairo',sans-serif;flex-shrink:0;}
 .cam-btn span:first-child{font-size:20px;}
@@ -121,11 +113,10 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 .ampm{font-size:13px;color:#a89060;font-weight:700;margin-right:4px;}
 #datebox{font-size:14px;color:#a89060;font-weight:700;margin-top:2px;}
 
-/* زر التطبيق */
 #install-btn{display:block;width:100%;max-width:420px;margin-bottom:6px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,180,0,0.08));border:1px solid rgba(255,215,0,0.4);color:#FFD700;padding:11px;border-radius:12px;cursor:pointer;font-size:14px;font-family:'Cairo',sans-serif;font-weight:900;text-align:center;animation:pulse-btn 2s ease infinite;}
 @keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0.3)}50%{box-shadow:0 0 0 6px rgba(255,215,0,0)}}
 
-/* مودالات */
+/* مودال كلمة المرور (Firebase Auth) */
 #password-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:300;align-items:center;justify-content:center;padding:20px;}
 #password-modal.show{display:flex;}
 .pw-box{background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:22px;width:100%;max-width:300px;}
@@ -137,6 +128,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 .pw-btns button{flex:1;padding:9px;border-radius:10px;border:1px solid;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;cursor:pointer;}
 #confirm-pass-btn{background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:#FFD700;}
 #cancel-pass-btn{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:#a3a3a3;}
+#pw-loading{color:#FFD700;font-size:12px;text-align:center;margin-bottom:8px;display:none;}
 
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 #modal-overlay.show{display:flex;}
@@ -156,21 +148,24 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 #apply-btn{flex:1;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:10px;border-radius:11px;cursor:pointer;font-size:14px;font-family:'Cairo',sans-serif;font-weight:700;}
 #cancel-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#475569;padding:10px 14px;border-radius:11px;cursor:pointer;font-size:14px;font-family:'Cairo',sans-serif;}
 
-/* مودال الصورة */
 #img-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:600;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px;overflow-y:auto;}
 #save-toast{display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(30,40,60,0.97);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:10px 20px;border-radius:18px;font-size:13px;font-family:'Cairo',sans-serif;font-weight:700;z-index:500;white-space:nowrap;}
 #screenshot-btn{display:none!important;}
 
-/* مودال التطبيق */
 #install-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:400;align-items:flex-end;justify-content:center;}
 .install-box{background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:24px 24px 0 0;padding:22px 18px 34px;width:100%;max-width:480px;}
+
+@keyframes frame-pulse{0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.4);border-color:#FFD700;}50%{box-shadow:0 0 35px rgba(255,215,0,0.9);border-color:#fff3a0;}}
+@keyframes bounce-arrow{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+#img-modal-src{touch-action:none;}
+#ios-install-modal.show{display:flex!important;}
+#open-safari-modal.show{display:flex!important;}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="hdr">
-  <!-- اسم الشركة مع إطار وقلوب -->
   <div class="name-wrap">
     <div class="name-border">
       <span class="heart">🤍</span>
@@ -178,13 +173,11 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
       <span class="heart">🤍</span>
     </div>
   </div>
-  <!-- العنوان والتخصص بسطر واحد -->
   <div class="info-row">
     <span>📍 الانبار - الرمادي - شارع الصياغ</span>
     <span>·</span>
     <span style="color:#FFD700;">🥇 متخصصون في تجارة الذهب</span>
   </div>
-  <!-- الملاك بسطر واحد -->
   <div class="owners-row">
     <div class="owner-item">
       <span class="owner-name">سيف الفهداوي</span>
@@ -195,7 +188,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
       <span class="owner-phone">07805747247</span>
     </div>
   </div>
-  <!-- سوشيال - حجم موحد -->
   <div class="social-row">
     <a class="social-btn wa" href="https://wa.me/9647901196926" target="_blank">
       <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
@@ -215,7 +207,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
       <div class="social-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></div>
     </a>
   </div>
-  <!-- نص متحرك -->
   <div class="marquee-wrap">
     <div class="marquee-txt">💙 هذه الأسعار حقيقية خاصة بشركتنا</div>
   </div>
@@ -265,7 +256,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
       </div>
     </div>
   </div>
-  <!-- فوتر مدمج مع المشاهدات -->
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
@@ -279,7 +269,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   </div>
 </div>
 
-<!-- ساعة + تاريخ + كاميرا بإطار واحد -->
+<!-- ساعة + تاريخ + كاميرا -->
 <div class="clock-box">
   <button class="cam-btn" onclick="takeScreenshot()">
     <span>📸</span>
@@ -298,13 +288,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 <!-- زر التطبيق -->
 <button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
 
-<!-- مودال كلمة المرور -->
+<!-- مودال كلمة المرور - Firebase Auth -->
 <div id="password-modal">
   <div class="pw-box">
     <h3>🔐 الإعدادات المحمية</h3>
     <p>أدخل كلمة المرور</p>
     <input type="password" id="password-input" class="pw-input" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')confirmPassword()"/>
     <div class="pw-err" id="password-error">❌ كلمة المرور غير صحيحة</div>
+    <div id="pw-loading">⏳ جار التحقق...</div>
     <div class="pw-btns">
       <button id="cancel-pass-btn" onclick="closePasswordModal()">إلغاء</button>
       <button id="confirm-pass-btn" onclick="confirmPassword()">✅ تأكيد</button>
@@ -366,7 +357,6 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   </div>
 </div>
 
-
 <!-- مودال تعليمات iOS Safari -->
 <div id="ios-install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:flex-end;justify-content:center;padding:0;">
   <div style="background:#0f1420;border:1px solid rgba(255,215,0,0.3);border-radius:24px 24px 0 0;padding:22px 18px 34px;width:100%;max-width:480px;">
@@ -398,30 +388,32 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <button onclick="closeSafariModal()" style="width:100%;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:12px;border-radius:12px;font-size:14px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">إغلاق</button>
   </div>
 </div>
+
 <div id="save-toast"></div>
 <button id="screenshot-btn"></button>
-
-<style>
-@keyframes frame-pulse{0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.4);border-color:#FFD700;}50%{box-shadow:0 0 35px rgba(255,215,0,0.9);border-color:#fff3a0;}}
-@keyframes bounce-arrow{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-#img-modal-src{touch-action:none;}
-
-#ios-install-modal.show{display:flex!important;}
-#open-safari-modal.show{display:flex!important;}
-</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
-// Firebase
-const firebaseConfig={apiKey:"AIzaSyAO4o1zCEpBb3tvNXoHRJMhpDDp4BK6Myg",authDomain:"zamzam-gold-2.firebaseapp.com",databaseURL:"https://zamzam-gold-2-default-rtdb.firebaseio.com",projectId:"zamzam-gold-2",storageBucket:"zamzam-gold-2.firebasestorage.app",messagingSenderId:"114154841133",appId:"1:114154841133:web:3c5779d1671c8b6a3204a4"};
+// ===== Firebase Init =====
+const firebaseConfig={
+  apiKey:"AIzaSyAO4o1zCEpBb3tvNXoHRJMhpDDp4BK6Myg",
+  authDomain:"zamzam-gold-2.firebaseapp.com",
+  databaseURL:"https://zamzam-gold-2-default-rtdb.firebaseio.com",
+  projectId:"zamzam-gold-2",
+  storageBucket:"zamzam-gold-2.firebasestorage.app",
+  messagingSenderId:"114154841133",
+  appId:"1:114154841133:web:3c5779d1671c8b6a3204a4"
+};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
+const auth=firebase.auth();
 const settingsRef=db.ref('settings');
 const viewsRef=db.ref('views');
 
-const PASSWORD='sa12345IF';
+// ===== Ring =====
 const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
@@ -449,8 +441,10 @@ function installDirect(type){
   if(type==='ios'){alert('لتثبيت التطبيق على iPhone:\n1. اضغط زر المشاركة ⬆️\n2. اختر "أضف إلى الشاشة الرئيسية"\n3. اضغط "إضافة"');}
   else{alert('لتثبيت التطبيق على Android:\n1. اضغط النقاط الثلاث ⋮\n2. اختر "إضافة إلى الشاشة الرئيسية"\n3. اضغط "إضافة"');}
 }
+function closeIosModal(){document.getElementById('ios-install-modal').classList.remove('show');}
+function closeSafariModal(){document.getElementById('open-safari-modal').classList.remove('show');}
 
-// ساعة 12 ساعة
+// ساعة
 function toAr(n){return String(n).replace(/[0-9]/g,x=>'٠١٢٣٤٥٦٧٨٩'[x]);}
 function updateClock(){
   const now=new Date();
@@ -459,18 +453,15 @@ function updateClock(){
   h=h%12||12;
   const pad=n=>String(n).padStart(2,'0');
   document.getElementById('clock').innerHTML=pad(h)+':'+pad(m)+':'+pad(s)+'<span class="ampm"> '+ampm+'</span>';
-  const dd=toAr(now.getDate());
-  const mm=toAr(now.getMonth()+1);
-  const yyyy=toAr(now.getFullYear());
+  const dd=toAr(now.getDate()),mm=toAr(now.getMonth()+1),yyyy=toAr(now.getFullYear());
   document.getElementById('datebox').textContent=dd+' / '+mm+' / '+yyyy;
 }
 updateClock();
 setInterval(updateClock,1000);
 
-// Firebase إعدادات
+// ===== Firebase Settings =====
 function saveSettings(){
   const o={adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal};
-  localStorage.setItem('zs',JSON.stringify(o));
   settingsRef.set(o);
 }
 function applyToUI(){
@@ -493,6 +484,7 @@ function toArabicNum(n){
   return w.replace(/[0-9]/g,x=>d[parseInt(x)]);
 }
 
+// جلب سعر الذهب
 async function fetchGoldPrice(){
   const sources=[
     ()=>fetch('https://api.metals.live/v1/spot/gold').then(r=>r.json()).then(d=>{const p=Array.isArray(d)?d[0]?.price:d?.price;if(p>100)return+p;throw 0;}),
@@ -535,30 +527,72 @@ function calcAll(){
   document.getElementById('iraqi-mithqal-val').textContent=toArabicNum(iraqiGram*5);
 }
 
-// مودالات الإعدادات
-function openPasswordModal(){document.getElementById('password-modal').classList.add('show');document.getElementById('password-input').value='';document.getElementById('password-error').style.display='none';}
-function closePasswordModal(){document.getElementById('password-modal').classList.remove('show');}
-function confirmPassword(){const p=document.getElementById('password-input').value;if(p===PASSWORD){closePasswordModal();openSettings();}else{document.getElementById('password-error').style.display='block';document.getElementById('password-input').value='';}}
-function applySettings(){adjSign=parseInt(document.getElementById('adj-sign').value);adjVal=parseFloat(document.getElementById('adj-val').value)||0;paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;gulfSign=parseInt(document.getElementById('gulf-sign').value);gulfVal=parseFloat(document.getElementById('gulf-val').value)||0;iraqiSign=parseInt(document.getElementById('iraqi-sign').value);iraqiVal=parseFloat(document.getElementById('iraqi-val').value)||0;saveSettings();calcAll();closeSettings();}
+// ===== مودال كلمة المرور - Firebase Auth =====
+function openPasswordModal(){
+  document.getElementById('password-modal').classList.add('show');
+  document.getElementById('password-input').value='';
+  document.getElementById('password-error').style.display='none';
+  document.getElementById('pw-loading').style.display='none';
+}
+function closePasswordModal(){
+  document.getElementById('password-modal').classList.remove('show');
+  auth.signOut();
+}
+async function confirmPassword(){
+  const pw=document.getElementById('password-input').value.trim();
+  if(!pw)return;
+  document.getElementById('password-error').style.display='none';
+  document.getElementById('pw-loading').style.display='block';
+  document.getElementById('confirm-pass-btn').disabled=true;
+  try{
+    await auth.signInWithEmailAndPassword('zamzamcompany0@gmail.com', pw);
+    document.getElementById('pw-loading').style.display='none';
+    document.getElementById('confirm-pass-btn').disabled=false;
+    closePasswordModal();
+    openSettings();
+  }catch(e){
+    document.getElementById('pw-loading').style.display='none';
+    document.getElementById('confirm-pass-btn').disabled=false;
+    document.getElementById('password-error').style.display='block';
+    document.getElementById('password-input').value='';
+  }
+}
+
+function applySettings(){
+  adjSign=parseInt(document.getElementById('adj-sign').value);
+  adjVal=parseFloat(document.getElementById('adj-val').value)||0;
+  paperRate=parseFloat(document.getElementById('paper-rate').value)||1530000;
+  gulfSign=parseInt(document.getElementById('gulf-sign').value);
+  gulfVal=parseFloat(document.getElementById('gulf-val').value)||0;
+  iraqiSign=parseInt(document.getElementById('iraqi-sign').value);
+  iraqiVal=parseFloat(document.getElementById('iraqi-val').value)||0;
+  saveSettings();
+  calcAll();
+  closeSettings();
+}
 function openSettings(){document.getElementById('modal-overlay').classList.add('show');}
 function closeSettings(){document.getElementById('modal-overlay').classList.remove('show');}
 function closeIfOutside(e){if(e.target===document.getElementById('modal-overlay'))closeSettings();}
 
-function setBusy(b){ringSpin.style.display=b?'block':'none';ringFill.style.display=b?'none':'block';ringText.style.display=b?'none':'block';document.getElementById('price-val').classList.toggle('dim',b);}
+function setBusy(b){
+  ringSpin.style.display=b?'block':'none';
+  ringFill.style.display=b?'none':'block';
+  ringText.style.display=b?'none':'block';
+  document.getElementById('price-val').classList.toggle('dim',b);
+}
 function updateRing(){ringFill.style.strokeDashoffset=C*(1-sec/20);ringText.textContent=sec;}
 
 // لقطة الشاشة
 function takeScreenshot(){
-  const btn=document.querySelector('.cam-btn');
-  btn.style.opacity='0';
-  // استبدل اسم الشركة بنص بسيط وقت التصوير
+  const btns=document.querySelectorAll('.cam-btn');
+  btns.forEach(b=>b.style.opacity='0');
   const nameBorder=document.querySelector('.name-border');
   const origHTML=nameBorder.innerHTML;
   nameBorder.innerHTML='<span style="font-size:30px;font-weight:900;color:#e53935;font-family:Arial,sans-serif;letter-spacing:1px;">شركة زمزم</span>';
   const bgColor=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#07090f';
   document.fonts.ready.then(()=>{
     html2canvas(document.body,{scale:2,useCORS:true,allowTaint:true,backgroundColor:bgColor,logging:false,width:document.body.scrollWidth,height:document.body.scrollHeight,windowWidth:document.body.scrollWidth,windowHeight:document.body.scrollHeight,scrollX:0,scrollY:0}).then(function(canvas){
-      btn.style.opacity='1';
+      btns.forEach(b=>b.style.opacity='1');
       nameBorder.innerHTML=origHTML;
       const sq=document.createElement('canvas');sq.width=1080;sq.height=1080;
       const ctx=sq.getContext('2d');
@@ -573,16 +607,14 @@ function takeScreenshot(){
       document.getElementById('device-step').style.display='block';
       document.getElementById('image-step').style.display='none';
       document.getElementById('success-msg').style.display='none';
-    }).catch(()=>{btn.style.opacity='1';nameBorder.innerHTML=origHTML;});
+    }).catch(()=>{btns.forEach(b=>b.style.opacity='1');nameBorder.innerHTML=origHTML;});
   });
 }
 
-// مودال الصورة
 function selectDevice(type){
   document.getElementById('device-step').style.display='none';
   document.getElementById('image-step').style.display='block';
   document.getElementById('success-msg').style.display='none';
-  if(type==='android'&&deferredPrompt){}
 }
 function closeImgModal(){
   document.getElementById('img-modal').style.display='none';
@@ -591,7 +623,6 @@ function closeImgModal(){
   clearHold();
 }
 
-// ضغط مطول
 let progressInterval=null,holdProgress=0;
 const HOLD_DURATION=2000;
 function startHold(){
@@ -623,40 +654,23 @@ function saveImageNow(){
     const dataUrl=sq.toDataURL('image/png',1.0);
     const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
     if(isIOS){
-      // iPhone: فتح تاب جديد بالصورة فقط
       const win=window.open('','_blank');
       if(win){
-        win.document.write(
-          '<html><head><meta name="viewport" content="width=device-width,initial-scale=1"/>' +
-          '<style>*{margin:0;padding:0;}body{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:14px;padding:16px;}' +
-          'img{width:100%;max-width:500px;border-radius:12px;}' +
-          'p{color:#FFD700;font-family:Cairo,Arial,sans-serif;font-size:14px;font-weight:700;text-align:center;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:12px 16px;}' +
-          '</style></head><body>' +
-          '<p>📸 اضغط على الصورة مطولاً<br>ثم اختر <strong>حفظ الصورة</strong></p>' +
-          '<img src="' + dataUrl + '" />' +
-          '</body></html>'
-        );
+        win.document.write('<html><head><meta name="viewport" content="width=device-width,initial-scale=1"/><style>*{margin:0;padding:0;}body{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:14px;padding:16px;}img{width:100%;max-width:500px;border-radius:12px;}p{color:#FFD700;font-family:Cairo,Arial,sans-serif;font-size:14px;font-weight:700;text-align:center;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:12px 16px;}</style></head><body><p>📸 اضغط على الصورة مطولاً<br>ثم اختر <strong>حفظ الصورة</strong></p><img src="'+dataUrl+'" /></body></html>');
         win.document.close();
       }
-    } else {
-      // Android: تنزيل مباشر
+    }else{
       sq.toBlob(function(blob){
         const blobUrl=URL.createObjectURL(blob);
         const link=document.createElement('a');
-        link.href=blobUrl;
-        link.download='zamzam-gold.png';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        link.href=blobUrl;link.download='zamzam-gold.png';
+        document.body.appendChild(link);link.click();document.body.removeChild(link);
         setTimeout(()=>URL.revokeObjectURL(blobUrl),1000);
       },'image/png',1.0);
     }
     document.getElementById('save-instruction').style.display='none';
     document.getElementById('success-msg').style.display='block';
-    setTimeout(()=>{
-      document.getElementById('success-msg').style.display='none';
-      document.getElementById('save-instruction').style.display='block';
-    },3000);
+    setTimeout(()=>{document.getElementById('success-msg').style.display='none';document.getElementById('save-instruction').style.display='block';},3000);
   };
   tmpImg.src=img.src;
 }
@@ -673,21 +687,16 @@ document.addEventListener('DOMContentLoaded',function(){
 
 // مشاركة التطبيق
 function shareApp(){
-  const url = window.location.href;
-  const text = '🥇 شركة زمزم - سعر الذهب اللحظي\n📍 الانبار - الرمادي - شارع الصياغ\n\n👇 تابع أسعار الذهب الآن:\n' + url;
-  if(navigator.share){
-    navigator.share({title:'شركة زمزم - سعر الذهب',text:text,url:url})
-    .catch(()=>{});
-  } else {
-    // fallback: نسخ الرابط
+  const url=window.location.href;
+  const text='🥇 شركة زمزم - سعر الذهب اللحظي\n📍 الانبار - الرمادي - شارع الصياغ\n\n👇 تابع أسعار الذهب الآن:\n'+url;
+  if(navigator.share){navigator.share({title:'شركة زمزم - سعر الذهب',text:text,url:url}).catch(()=>{});}
+  else{
     navigator.clipboard.writeText(text).then(()=>{
       const toast=document.getElementById('save-toast');
       toast.textContent='✅ تم نسخ الرابط - شاركه مع أصدقائك';
       toast.style.display='block';
-      setTimeout(()=>{ toast.style.display='none'; },3000);
-    }).catch(()=>{
-      prompt('انسخ الرابط وشاركه:', url);
-    });
+      setTimeout(()=>{toast.style.display='none';},3000);
+    }).catch(()=>{prompt('انسخ الرابط وشاركه:',url);});
   }
 }
 
