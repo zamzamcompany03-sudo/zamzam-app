@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/44dd0f07-3e74-4919-8e6b-4906adc3d220">
+</script><link rel="manifest" href="blob:null/722f1b27-8a47-4fe9-b9ed-ab49abdc829b">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -247,24 +247,26 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 <!-- CARD الأسعار -->
 <div class="card">
-  <div class="card-header">
-    <svg id="ring" viewBox="0 0 52 52">
-      <circle id="ring-track" cx="26" cy="26" r="21"></circle>
-      <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 52.7788;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">12</text>
-    </svg>
-  </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
   <div id="error-box" style="display: none;">
     <div id="error-msg">تعذّر جلب السعر</div>
     <button id="retry-btn" onclick="fetchNow()">🔄 إعادة المحاولة</button>
   </div>
   <div id="price-area" style="display: block;">
-    <div class="price-block">
-      <div id="price-val" class="">4,330.00</div>
-      <div class="unit">💵 سعر الأونصة الآن</div>
-      <div id="price-change" style="color: rgb(168, 144, 96);">⚪ 0.00% مقارنة بالأمس</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+      <div class="price-block">
+        <div id="price-val" class="">4,330.00</div>
+        <div class="unit">💵 سعر الأونصة الآن</div>
+        <div id="price-change" style="color: rgb(168, 144, 96);">⚪ 0.00% مقارنة بالأمس</div>
+      </div>
+      <div style="flex-shrink:0;">
+        <svg id="ring" viewBox="0 0 52 52">
+          <circle id="ring-track" cx="26" cy="26" r="21"></circle>
+          <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
+          <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 26.3894;"></circle>
+          <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">16</text>
+        </svg>
+      </div>
     </div>
     
     <!-- إشعار العودة للصفحة -->
@@ -275,7 +277,11 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     
     <!-- مؤشر حالة السوق -->
     <div id="market-status" style="margin-top:10px;padding:12px;border-radius:12px;text-align:center;font-size:14px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;">🟢 السوق مفتوح الآن</div>
-
+    
+    <!-- عداد الزوار -->
+    <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
+      👥 يوجد الآن <span id="visitor-num">1</span> زائر داخل الصفحة
+    </div>
   </div>
   <div class="masagh-box" id="masagh-box">
     <div class="section-wrap sell">
@@ -303,7 +309,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
   <!-- عداد عمر الصفحة -->
   <div id="page-age" style="margin-top:6px;padding:8px;border-radius:12px;text-align:center;font-size:11px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-    📅 الصفحة تعمل منذ <span id="age-time">8 ثواني</span>
+    📅 الصفحة تعمل منذ <span id="age-time">1 دقيقة و5 ثواني</span>
   </div>
 
   <!-- مؤشر حالة السوق -->
@@ -313,7 +319,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
   <!-- عداد الزوار -->
   <div id="visitors-count" style="margin-top:6px;padding:8px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
-    👥 يوجد الآن <span id="visitor-num">2</span> زائر داخل الصفحة
+    👥 يوجد الآن <span id="visitor-num">1</span> زائر داخل الصفحة
   </div>
 
   <!-- تنبيه السعر -->
@@ -336,12 +342,12 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   <div style="margin-top:6px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 1 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 4 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٣٩</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٥٦</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٣٦٣</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٣٨٠</div></div>
     </div>
   </div>
 </div>
@@ -357,7 +363,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">01:14:16<span class="ampm"> PM</span></div>
+    <div id="clock">02:08:51<span class="ampm"> PM</span></div>
     <div id="datebox">٦ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
@@ -1017,16 +1023,7 @@ function shareAsImage(){
   const now=new Date();
   const dateStr=toAr(now.getDate())+'/'+toAr(now.getMonth()+1)+'/'+toAr(now.getFullYear());
   const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-
-  // قراءة الأسعار الحالية من الصفحة
-  const gramVal = document.getElementById('gram-val').textContent || '—';
-  const mithqalVal = document.getElementById('mithqal-val').textContent || '—';
-  const gulfGramVal = document.getElementById('gulf-gram-val').textContent || '—';
-  const gulfMithqalVal = document.getElementById('gulf-mithqal-val').textContent || '—';
-  const iraqiGramVal = document.getElementById('iraqi-gram-val').textContent || '—';
-  const iraqiMithqalVal = document.getElementById('iraqi-mithqal-val').textContent || '—';
-  const priceChangeText = document.getElementById('price-change') ? document.getElementById('price-change').textContent : '';
-
+  
   // إنشاء عنصر مؤقت للصورة
   const container=document.createElement('div');
   container.style.cssText='position:fixed;left:-9999px;top:-9999px;width:1080px;background:linear-gradient(135deg,#07090f 0%,#0f1219 100%);padding:40px;border-radius:20px;direction:rtl;font-family:Cairo,sans-serif;';
@@ -1043,7 +1040,7 @@ function shareAsImage(){
       <div style="font-size:16px;color:#FFD700;font-weight:700;margin-bottom:12px;">💵 سعر الأونصة الآن</div>
       <div style="font-size:56px;font-weight:900;color:#FFD700;margin-bottom:12px;">\$${price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
       <div style="font-size:14px;color:#a89060;background:rgba(255,215,0,0.08);padding:10px;border-radius:8px;margin-bottom:12px;">⚠️ هذا السعر قابل للتغير بأي لحضة</div>
-      <div style="font-size:15px;color:#22c55e;font-weight:700;">${priceChangeText}</div>
+      <div style="font-size:15px;color:#22c55e;font-weight:700;">${document.getElementById('price-change').textContent}</div>
     </div>
     
     <div style="background:rgba(255,215,0,0.08);border:2px solid rgba(255,215,0,0.2);border-radius:14px;padding:20px;margin:15px 0;">
@@ -1051,12 +1048,12 @@ function shareAsImage(){
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
         <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.2);border-radius:10px;padding:15px;text-align:center;">
           <div style="color:#a89060;font-size:13px;margin-bottom:8px;font-weight:700;">سعر الغرام</div>
-          <div style="color:#FFD700;font-size:28px;font-weight:900;">${gramVal}</div>
+          <div style="color:#FFD700;font-size:28px;font-weight:900;">${document.getElementById('gram-val').textContent}</div>
           <div style="color:#a89060;font-size:11px;margin-top:6px;">دينار عراقي</div>
         </div>
         <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.2);border-radius:10px;padding:15px;text-align:center;">
           <div style="color:#a89060;font-size:13px;margin-bottom:8px;font-weight:700;">سعر المثقال</div>
-          <div style="color:#FFD700;font-size:28px;font-weight:900;">${mithqalVal}</div>
+          <div style="color:#FFD700;font-size:28px;font-weight:900;">${document.getElementById('mithqal-val').textContent}</div>
           <div style="color:#a89060;font-size:11px;margin-top:6px;">دينار عراقي</div>
         </div>
       </div>
@@ -1067,12 +1064,12 @@ function shareAsImage(){
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
         <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(100,180,255,0.2);border-radius:10px;padding:15px;text-align:center;">
           <div style="color:#a89060;font-size:13px;margin-bottom:8px;font-weight:700;">سعر الغرام</div>
-          <div style="color:#64b4ff;font-size:28px;font-weight:900;">${gulfGramVal}</div>
+          <div style="color:#64b4ff;font-size:28px;font-weight:900;">${document.getElementById('gulf-gram-val').textContent}</div>
           <div style="color:#a89060;font-size:11px;margin-top:6px;">دينار عراقي</div>
         </div>
         <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(100,180,255,0.2);border-radius:10px;padding:15px;text-align:center;">
           <div style="color:#a89060;font-size:13px;margin-bottom:8px;font-weight:700;">سعر المثقال</div>
-          <div style="color:#64b4ff;font-size:28px;font-weight:900;">${gulfMithqalVal}</div>
+          <div style="color:#64b4ff;font-size:28px;font-weight:900;">${document.getElementById('gulf-mithqal-val').textContent}</div>
           <div style="color:#a89060;font-size:11px;margin-top:6px;">دينار عراقي</div>
         </div>
       </div>
@@ -1083,12 +1080,12 @@ function shareAsImage(){
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
         <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(168,144,96,0.2);border-radius:10px;padding:15px;text-align:center;">
           <div style="color:#a89060;font-size:13px;margin-bottom:8px;font-weight:700;">سعر الغرام</div>
-          <div style="color:#a89060;font-size:28px;font-weight:900;">${iraqiGramVal}</div>
+          <div style="color:#a89060;font-size:28px;font-weight:900;">${document.getElementById('iraqi-gram-val').textContent}</div>
           <div style="color:#a89060;font-size:11px;margin-top:6px;">دينار عراقي</div>
         </div>
         <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(168,144,96,0.2);border-radius:10px;padding:15px;text-align:center;">
           <div style="color:#a89060;font-size:13px;margin-bottom:8px;font-weight:700;">سعر المثقال</div>
-          <div style="color:#a89060;font-size:28px;font-weight:900;">${iraqiMithqalVal}</div>
+          <div style="color:#a89060;font-size:28px;font-weight:900;">${document.getElementById('iraqi-mithqal-val').textContent}</div>
           <div style="color:#a89060;font-size:11px;margin-top:6px;">دينار عراقي</div>
         </div>
       </div>
