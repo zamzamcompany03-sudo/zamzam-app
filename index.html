@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/ff16300f-535d-45bb-9b9e-902497d1583b">
+</script><link rel="manifest" href="blob:null/81d6aa4c-7bed-4f7f-b0f3-4a12a2699a95">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -330,8 +330,8 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
       <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 19.792;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">17</text>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 0;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">20</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -347,43 +347,20 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     </div>
     
     <!-- إشعار العودة للصفحة -->
-    <div id="return-notification" style="display: block; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
+    <div id="return-notification" style="display:none;margin-top:12px;padding:14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:12px;font-family:Cairo,sans-serif;color:#3b82f6;font-weight:700;">
       <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
-      <div id="return-change" style="font-size: 13px; color: rgb(168, 144, 96);">⚪ السعر ثابت منذ آخر زيارة لك</div>
+      <div id="return-change" style="font-size:13px;color:#94a3b8;"></div>
     </div>
-    
-    <!-- عداد عمر الصفحة -->
-    <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-      📅 الصفحة تعمل منذ <span id="age-time">2 دقائق و23 ثواني</span>
-    </div>
-    
-    <!-- مؤشر حالة السوق -->
-    <div id="market-status" style="margin-top:10px;padding:12px;border-radius:12px;text-align:center;font-size:14px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;">🟢 السوق مفتوح الآن</div>
-    
-    <!-- عداد الزوار -->
-    <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
-      👥 يوجد الآن <span id="visitor-num">15</span> زائر داخل الصفحة
-    </div>
-    
-    <!-- تنبيه السعر -->
-    <div id="alert-section" style="margin-top:10px;padding:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;">
-      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;font-size:13px;font-weight:700;color:#FFD700;font-family:Cairo,sans-serif;">
-        🔔 تنبيه السعر
-      </div>
-      <div style="display:flex;gap:6px;">
-        <input type="number" id="alert-price" placeholder="أدخل السعر المستهدف" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,215,0,0.3);background:rgba(0,0,0,0.3);color:#FFD700;font-family:Cairo,sans-serif;font-size:12px;" step="0.01" min="0">
-        <button id="alert-btn" onclick="togglePriceAlert()" style="padding:8px 14px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:8px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:12px;transition:all 0.3s;">تفعيل</button>
-      </div>
-      <div id="alert-status" style="margin-top:6px;font-size:11px;color:#a89060;font-family:Cairo,sans-serif;min-height:14px;"></div>
-    </div>
+
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 3 ثواني</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(34, 197, 94);">🟢 تم التحديث الآن</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
       📸 مشاركة السعر كصورة
     </button>
+
   </div>
   <div class="masagh-box" id="masagh-box" style="display: block;">
     <div class="section-wrap sell">
@@ -411,30 +388,51 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 8 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 2 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٧٧</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٩٠</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٤٠١</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٤١٤</div></div>
     </div>
   </div>
 </div>
 
 <!-- ساعة + تاريخ + كاميرا -->
 <div class="clock-box">
-  <button class="cam-btn" onclick="takeScreenshot()">
-    <span>📸</span>
-    <span>لقطة شاشة</span>
-  </button>
   <button class="cam-btn" onclick="shareApp()" style="margin-right:6px;">
     <span>🔗</span>
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">02:52:26<span class="ampm"> PM</span></div>
+    <div id="clock">03:21:58<span class="ampm"> PM</span></div>
     <div id="datebox">٦ / ٦ / ٢٠٢٦</div>
   </div>
+</div>
+
+<!-- عداد عمر الصفحة -->
+<div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;max-width:420px;margin-right:auto;margin-left:auto;width:100%;">
+  📅 الصفحة تعمل منذ <span id="age-time">20 ثواني</span>
+</div>
+
+<!-- مؤشر حالة السوق -->
+<div id="market-status" style="margin-top:10px;padding:12px;border-radius:12px;text-align:center;font-size:14px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;max-width:420px;margin-right:auto;margin-left:auto;width:100%;">🟢 السوق مفتوح الآن</div>
+
+<!-- عداد الزوار -->
+<div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;max-width:420px;margin-right:auto;margin-left:auto;width:100%;">
+  👥 يوجد الآن <span id="visitor-num">14</span> زائر داخل الصفحة
+</div>
+
+<!-- تنبيه السعر -->
+<div id="alert-section" style="margin-top:10px;padding:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;max-width:420px;margin-right:auto;margin-left:auto;width:100%;">
+  <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;font-size:13px;font-weight:700;color:#FFD700;font-family:Cairo,sans-serif;">
+    🔔 تنبيه السعر
+  </div>
+  <div style="display:flex;gap:6px;">
+    <input type="number" id="alert-price" placeholder="أدخل السعر المستهدف" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,215,0,0.3);background:rgba(0,0,0,0.3);color:#FFD700;font-family:Cairo,sans-serif;font-size:12px;" step="0.01" min="0">
+    <button id="alert-btn" onclick="togglePriceAlert()" style="padding:8px 14px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:8px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:12px;transition:all 0.3s;">تفعيل</button>
+  </div>
+  <div id="alert-status" style="margin-top:6px;font-size:11px;color:#a89060;font-family:Cairo,sans-serif;min-height:14px;"></div>
 </div>
 
 <!-- زر التطبيق -->
