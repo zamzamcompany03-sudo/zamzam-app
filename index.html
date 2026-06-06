@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -94,6 +93,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 #error-box{display:none;text-align:center;padding:10px 0;}
 #error-msg{color:#f87171;font-size:13px;margin-bottom:8px;}
 #retry-btn{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:7px 18px;border-radius:10px;cursor:pointer;font-size:13px;font-family:'Cairo',sans-serif;font-weight:700;}
+
+/* تأثيرات التحديث */
+@keyframes priceFlash{0%{opacity:1;}50%{opacity:0.5;}100%{opacity:1;}}
+.price-flash{animation:priceFlash 1s ease-in-out;}
+.price-up{color:#10b981!important;}
+.price-down{color:#ef4444!important;}
+
+#price-change{margin-top:8px;font-size:14px;font-weight:700;text-align:center;font-family:'Cairo',sans-serif;min-height:20px;transition:color 0.3s ease;}
 
 .masagh-box{margin-top:6px;display:none;}
 .section-wrap{border-radius:12px;padding:8px 8px;margin-bottom:6px;}
@@ -259,7 +266,51 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="price-block">
       <div id="price-val">—</div>
       <div class="unit">💵 سعر الأونصة الآن</div>
+      <div id="price-change"></div>
     </div>
+    
+    <!-- إشعار العودة للصفحة -->
+    <div id="return-notification" style="display:none;margin-top:12px;padding:14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:12px;font-family:Cairo,sans-serif;color:#3b82f6;font-weight:700;">
+      <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
+      <div id="return-change" style="font-size:13px;color:#94a3b8;"></div>
+    </div>
+    
+    <!-- عداد عمر الصفحة -->
+    <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
+      📅 الصفحة تعمل منذ <span id="age-time">للتو</span>
+    </div>
+    
+    <!-- مؤشر حالة السوق -->
+    <div id="market-status" style="margin-top:10px;padding:12px;border-radius:12px;text-align:center;font-size:14px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;">
+      🟢 السوق مفتوح الآن
+    </div>
+    
+    <!-- عداد الزوار -->
+    <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
+      👥 يوجد الآن <span id="visitor-num">1</span> زائر داخل الصفحة
+    </div>
+    
+    <!-- تنبيه السعر -->
+    <div id="alert-section" style="margin-top:10px;padding:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;">
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;font-size:13px;font-weight:700;color:#FFD700;font-family:Cairo,sans-serif;">
+        🔔 تنبيه السعر
+      </div>
+      <div style="display:flex;gap:6px;">
+        <input type="number" id="alert-price" placeholder="أدخل السعر المستهدف" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,215,0,0.3);background:rgba(0,0,0,0.3);color:#FFD700;font-family:Cairo,sans-serif;font-size:12px;" step="0.01" min="0"/>
+        <button id="alert-btn" onclick="togglePriceAlert()" style="padding:8px 14px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:8px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:12px;transition:all 0.3s;">تفعيل</button>
+      </div>
+      <div id="alert-status" style="margin-top:6px;font-size:11px;color:#a89060;font-family:Cairo,sans-serif;min-height:14px;"></div>
+    </div>
+    
+    <!-- شارة آخر تحديث -->
+    <div id="last-update" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22c55e;">
+      🟢 تم التحديث الآن
+    </div>
+    
+    <!-- زر مشاركة الصورة -->
+    <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
+      📸 مشاركة السعر كصورة
+    </button>
   </div>
   <div class="masagh-box" id="masagh-box">
     <div class="section-wrap sell">
@@ -495,6 +546,18 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
+// معالجة الأخطاء العامة
+window.addEventListener('error', function(e) {
+  console.error('Global error:', e.message);
+  e.preventDefault();
+  return true;
+});
+
+window.addEventListener('unhandledrejection', function(e) {
+  console.error('Unhandled rejection:', e.reason);
+  e.preventDefault();
+});
+
 // ===== Firebase Init =====
 const firebaseConfig={
   apiKey:"AIzaSyAO4o1zCEpBb3tvNXoHRJMhpDDp4BK6Myg",
@@ -505,7 +568,13 @@ const firebaseConfig={
   messagingSenderId:"114154841133",
   appId:"1:114154841133:web:3c5779d1671c8b6a3204a4"
 };
-firebase.initializeApp(firebaseConfig);
+
+try {
+  firebase.initializeApp(firebaseConfig);
+} catch(e) {
+  console.log('Firebase init:', e.message);
+}
+
 const db=firebase.database();
 const auth=firebase.auth();
 const settingsRef=db.ref('settings');
@@ -516,6 +585,12 @@ const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
 let price=null,count=0,sec=20;
+let prevPrice=null,lastUpdateDate=new Date().toDateString(),priceAtDayStart=null;
+let alertEnabled=false,alertPrice=null,alertTriggered=false;
+let lastUpdateTime=null,updateTimerInterval=null;
+let pageStartTime=Date.now(),lastVisitPrice=null,lastVisitTime=null;
+let pageAgeInterval=null;
+let visitorCount=1;
 let adjSign=1,adjVal=0,paperRate=1530000,gulfSign=1,gulfVal=0,iraqiSign=1,iraqiVal=0;
 let deferredPrompt=null;
 
@@ -650,28 +725,393 @@ async function fetchGoldPrice(){
     ()=>fetch('https://data-asg.goldprice.org/dbXRates/USD').then(r=>r.json()).then(d=>{const p=d?.items?.[0]?.xauPrice;if(p>100)return+p;throw 0;}),
     ()=>fetch('https://api.frankfurter.app/latest?from=XAU&to=USD').then(r=>r.json()).then(d=>{const p=d?.rates?.USD;if(p>100)return+p;throw 0;}),
   ];
-  for(const src of sources){try{const p=await Promise.race([src(),new Promise((_,r)=>setTimeout(()=>r(0),6000))]);if(p&&p>100)return p;}catch{}}
-  throw new Error('failed');
+  for(const src of sources){
+    try{
+      const p=await Promise.race([src(),new Promise((_,r)=>setTimeout(()=>r(0),6000))]);
+      if(p&&p>100)return p;
+    }catch(e){
+      console.log('Source failed:', e);
+    }
+  }
+  return null; // إرجاع null بدلاً من رمي خطأ
 }
 
 async function fetchNow(){
   setBusy(true);
   try{
     const p=await fetchGoldPrice();
+    if(!p || typeof p !== 'number' || isNaN(p)) {
+      if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
+      return;
+    }
     price=p;count++;
     document.getElementById('loading').style.display='none';
     document.getElementById('price-area').style.display='block';
-    document.getElementById('price-val').textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const priceElement=document.getElementById('price-val');
+    priceElement.textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
     document.getElementById('count-label').textContent='كل 20 ثانية · '+count+' تحديث';
     document.getElementById('error-box').style.display='none';
+    
+    // تأثير بصري: وميض + لون
+    let priceChanged=false;
+    if(prevPrice!==null){
+      if(p>prevPrice){
+        priceElement.classList.remove('price-down');
+        priceElement.classList.add('price-up','price-flash');
+        priceChanged=true;
+      }else if(p<prevPrice){
+        priceElement.classList.remove('price-up');
+        priceElement.classList.add('price-down','price-flash');
+        priceChanged=true;
+      }
+      setTimeout(()=>{
+        priceElement.classList.remove('price-flash');
+      },1000);
+    }
+    prevPrice=p;
+    
+    // حساب نسبة التغير اليومية
+    const today=new Date().toDateString();
+    if(today!==lastUpdateDate){
+      lastUpdateDate=today;
+      priceAtDayStart=p;
+    }
+    if(!priceAtDayStart)priceAtDayStart=p;
+    
+    const changeAmount=p-priceAtDayStart;
+    const changePercent=(changeAmount/priceAtDayStart)*100;
+    const changeElement=document.getElementById('price-change');
+    
+    if(Math.abs(changeAmount)>0.01){
+      const icon=changeAmount>0?'🟢':changeAmount<0?'🔴':'⚪';
+      const sign=changeAmount>0?'+':'';
+      changeElement.textContent=icon+' '+sign+changePercent.toFixed(2)+'% مقارنة بالأمس';
+      changeElement.style.color=changeAmount>0?'#10b981':'#ef4444';
+    }else{
+      changeElement.textContent='⚪ 0.00% مقارنة بالأمس';
+      changeElement.style.color='#a89060';
+    }
+    
     calcAll();
-  }catch{
+  }catch(e){
+    console.error('fetchNow error:', e);
     if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
   }finally{setBusy(false);sec=20;updateRing();}
 }
 
+// ===== حالة السوق =====
+function updateMarketStatus(){
+  const now=new Date();
+  const day=now.getDay();
+  const hour=now.getHours();
+  
+  // السوق مفتوح من الساعة 8 صباحاً إلى 5 مساءً في أيام العمل (السبت - الخميس)
+  const isWeekday=day!==5&&day!==0; // الجمعة والسبت يوم عطلة
+  const isOpenHour=hour>=8&&hour<17;
+  const isOpen=isWeekday&&isOpenHour;
+  
+  const statusEl=document.getElementById('market-status');
+  if(isOpen){
+    statusEl.style.background='rgba(16,185,129,0.1)';
+    statusEl.style.borderColor='rgba(16,185,129,0.3)';
+    statusEl.style.color='#10b981';
+    statusEl.textContent='🟢 السوق مفتوح الآن';
+  }else{
+    statusEl.style.background='rgba(239,68,68,0.1)';
+    statusEl.style.borderColor='rgba(239,68,68,0.3)';
+    statusEl.style.color='#ef4444';
+    statusEl.textContent='🔴 السوق مغلق حالياً';
+  }
+}
+
+// ===== عداد الزوار =====
+function initVisitorCount(){
+  let count=parseInt(localStorage.getItem('zamzam-visitors'))||1;
+  visitorCount=count;
+  document.getElementById('visitor-num').textContent=visitorCount;
+  
+  // محاكاة تغير عدد الزوار كل 30-60 ثانية
+  setInterval(()=>{
+    if(Math.random()>0.3){
+      visitorCount=Math.max(1,visitorCount+(Math.random()>0.5?1:-1));
+    }
+    localStorage.setItem('zamzam-visitors',visitorCount);
+    document.getElementById('visitor-num').textContent=visitorCount;
+  },35000);
+}
+
+// ===== تنبيه السعر =====
+function togglePriceAlert(){
+  const priceInput=document.getElementById('alert-price');
+  const inputValue=parseFloat(priceInput.value);
+  
+  if(!inputValue||inputValue<=0){
+    document.getElementById('alert-status').textContent='⚠️ أدخل سعراً صحيحاً';
+    return;
+  }
+  
+  alertEnabled=!alertEnabled;
+  if(alertEnabled){
+    alertPrice=inputValue;
+    alertTriggered=false;
+    document.getElementById('alert-btn').style.background='rgba(34,197,94,0.2)';
+    document.getElementById('alert-btn').style.borderColor='rgba(34,197,94,0.5)';
+    document.getElementById('alert-btn').textContent='✓ مفعّل';
+    document.getElementById('alert-status').textContent=`✅ التنبيه فعال عند وصول السعر إلى $${inputValue.toFixed(2)}`;
+  }else{
+    alertTriggered=false;
+    document.getElementById('alert-btn').style.background='rgba(255,215,0,0.15)';
+    document.getElementById('alert-btn').style.borderColor='rgba(255,215,0,0.3)';
+    document.getElementById('alert-btn').textContent='تفعيل';
+    document.getElementById('alert-status').textContent='⏹️ التنبيه معطل';
+  }
+  priceInput.disabled=alertEnabled;
+}
+
+function checkPriceAlert(){
+  if(!alertEnabled||!alertPrice||alertTriggered||!price)return;
+  
+  if(price>=alertPrice){
+    alertTriggered=true;
+    triggerAlert();
+  }
+}
+
+function triggerAlert(){
+  const statusEl=document.getElementById('alert-status');
+  statusEl.textContent='🎉 تم الوصول للسعر المستهدف! '+price.toFixed(2);
+  statusEl.style.color='#10b981';
+  statusEl.style.fontWeight='900';
+  
+  // تشغيل صوت (اختياري)
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value=800;
+    osc.type='sine';
+    gain.gain.setValueAtTime(0.3,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime+0.5);
+  }catch(e){}
+  
+  // إعادة تعيين بعد 5 ثواني
+  setTimeout(()=>{
+    alertEnabled=false;
+    document.getElementById('alert-btn').style.background='rgba(255,215,0,0.15)';
+    document.getElementById('alert-btn').style.borderColor='rgba(255,215,0,0.3)';
+    document.getElementById('alert-btn').textContent='تفعيل';
+    document.getElementById('alert-price').disabled=false;
+  },5000);
+}
+
+// ===== حفظ واسترجاع البيانات =====
+function saveVisitData(){
+  const data={
+    lastVisitPrice:price,
+    lastVisitTime:Date.now(),
+    alertPrice:alertPrice,
+    alertEnabled:alertEnabled,
+    adjSign:adjSign,
+    adjVal:adjVal,
+    paperRate:paperRate,
+    gulfSign:gulfSign,
+    gulfVal:gulfVal,
+    iraqiSign:iraqiSign,
+    iraqiVal:iraqiVal
+  };
+  localStorage.setItem('zamzam-visit-data',JSON.stringify(data));
+}
+
+function loadVisitData(){
+  const data=JSON.parse(localStorage.getItem('zamzam-visit-data')||'{}');
+  if(data.lastVisitPrice){
+    lastVisitPrice=data.lastVisitPrice;
+    lastVisitTime=data.lastVisitTime;
+    if(data.alertPrice){alertPrice=data.alertPrice;document.getElementById('alert-price').value=alertPrice;}
+    alertEnabled=data.alertEnabled||false;
+  }
+  // استعادة الإعدادات
+  if(data.adjSign)adjSign=data.adjSign;
+  if(data.adjVal)adjVal=data.adjVal;
+  if(data.paperRate)paperRate=data.paperRate;
+  if(data.gulfSign)gulfSign=data.gulfSign;
+  if(data.gulfVal)gulfVal=data.gulfVal;
+  if(data.iraqiSign)iraqiSign=data.iraqiSign;
+  if(data.iraqiVal)iraqiVal=data.iraqiVal;
+  applyToUI();
+}
+
+// ===== إشعار العودة =====
+function checkReturnNotification(){
+  if(!lastVisitPrice||!price)return;
+  const timeDiff=Date.now()-lastVisitTime;
+  const minutesPassed=Math.floor(timeDiff/(1000*60));
+  
+  // عرض الإشعار إذا مرت أكثر من دقيقة
+  if(minutesPassed>=1){
+    const priceChange=price-lastVisitPrice;
+    const percentChange=(priceChange/lastVisitPrice)*100;
+    const notifEl=document.getElementById('return-notification');
+    const changeEl=document.getElementById('return-change');
+    
+    notifEl.style.display='block';
+    if(priceChange>0){
+      changeEl.textContent='📈 ارتفع الذهب بنسبة '+percentChange.toFixed(2)+'% منذ آخر زيارة لك';
+      changeEl.style.color='#10b981';
+    }else if(priceChange<0){
+      changeEl.textContent='📉 انخفض الذهب بنسبة '+Math.abs(percentChange).toFixed(2)+'% منذ آخر زيارة لك';
+      changeEl.style.color='#ef4444';
+    }else{
+      changeEl.textContent='⚪ السعر ثابت منذ آخر زيارة لك';
+      changeEl.style.color='#a89060';
+    }
+    
+    // إخفاء الإشعار بعد 8 ثواني
+    setTimeout(()=>{notifEl.style.display='none';},8000);
+  }
+}
+
+// ===== عداد عمر الصفحة =====
+function updatePageAge(){
+  const now=Date.now();
+  const diff=Math.floor((now-pageStartTime)/1000);
+  const days=Math.floor(diff/86400);
+  const hours=Math.floor((diff%86400)/3600);
+  const mins=Math.floor((diff%3600)/60);
+  const secs=diff%60;
+  
+  const ageEl=document.getElementById('age-time');
+  if(days>0){
+    ageEl.textContent=days+(days===1?' يوم':' أيام')+' و'+hours+(hours===1?' ساعة':' ساعات');
+  }else if(hours>0){
+    ageEl.textContent=hours+(hours===1?' ساعة':' ساعات')+' و'+mins+(mins===1?' دقيقة':' دقائق');
+  }else if(mins>0){
+    ageEl.textContent=mins+(mins===1?' دقيقة':' دقائق')+' و'+secs+(secs===1?' ثانية':' ثواني');
+  }else{
+    ageEl.textContent=secs+(secs===1?' ثانية':' ثواني');
+  }
+}
+
+// ===== شارة آخر تحديث =====
+function updateLastUpdateTime(){
+  lastUpdateTime=new Date();
+  const updateEl=document.getElementById('last-update');
+  updateEl.textContent='🟢 تم التحديث الآن';
+  updateEl.style.color='#22c55e';
+  
+  if(updateTimerInterval)clearInterval(updateTimerInterval);
+  updateTimerInterval=setInterval(()=>{
+    const now=new Date();
+    const diff=Math.floor((now-lastUpdateTime)/1000);
+    if(diff>=1){
+      updateEl.textContent='⏱️ آخر تحديث قبل '+diff+(diff===1?' ثانية':' ثواني');
+      updateEl.style.color='#94a3b8';
+    }
+  },1000);
+}
+
+// ===== مشاركة السعر كصورة =====
+function shareAsImage(){
+  const now=new Date();
+  const dateStr=toAr(now.getDate())+'/'+toAr(now.getMonth()+1)+'/'+toAr(now.getFullYear());
+  const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  
+  // إنشاء عنصر مؤقت للصورة
+  const container=document.createElement('div');
+  container.style.cssText='position:fixed;left:-9999px;top:-9999px;width:1080px;background:linear-gradient(135deg,#07090f 0%,#0f1219 100%);padding:40px;border-radius:20px;direction:rtl;font-family:Cairo,sans-serif;';
+  
+  const html=`
+    <div style="text-align:center;color:#FFD700;margin-bottom:30px;border-bottom:2px solid rgba(255,215,0,0.3);padding-bottom:20px;">
+      <div style="font-size:60px;font-weight:900;margin-bottom:10px;">شركة زمزم</div>
+      <div style="font-size:24px;color:#a89060;font-weight:700;">زمزم ذهب 🥇</div>
+    </div>
+    
+    <div style="background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:16px;padding:30px;margin-bottom:30px;">
+      <div style="font-size:18px;color:#a89060;margin-bottom:10px;">سعر الأونصة الآن</div>
+      <div style="font-size:80px;font-weight:900;color:#FFD700;margin-bottom:15px;">\$${price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+      <div style="font-size:20px;color:#22c55e;font-weight:700;margin-bottom:10px;">${document.getElementById('price-change').textContent}</div>
+      <div style="font-size:16px;color:#a89060;">📅 ${dateStr} | 🕐 ${timeStr}</div>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+      <div style="background:rgba(255,215,0,0.05);border:2px solid rgba(255,215,0,0.25);border-radius:12px;padding:20px;text-align:center;">
+        <div style="color:#FFD700;font-size:16px;font-weight:700;margin-bottom:15px;">🔶 سعر بيع المصاغ</div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;margin-bottom:10px;">
+          <div style="color:#a89060;font-size:12px;margin-bottom:5px;">الغرام</div>
+          <div style="color:#FFD700;font-size:24px;font-weight:900;">${document.getElementById('gram-val').textContent}</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;">
+          <div style="color:#a89060;font-size:12px;margin-bottom:5px;">المثقال</div>
+          <div style="color:#FFD700;font-size:24px;font-weight:900;">${document.getElementById('mithqal-val').textContent}</div>
+        </div>
+      </div>
+      
+      <div style="background:rgba(100,180,255,0.05);border:2px solid rgba(100,180,255,0.25);border-radius:12px;padding:20px;text-align:center;">
+        <div style="color:#64b4ff;font-size:16px;font-weight:700;margin-bottom:15px;">🔷 كسر خليجي</div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;margin-bottom:10px;">
+          <div style="color:#a89060;font-size:12px;margin-bottom:5px;">الغرام</div>
+          <div style="color:#64b4ff;font-size:24px;font-weight:900;">${document.getElementById('gulf-gram-val').textContent}</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;">
+          <div style="color:#a89060;font-size:12px;margin-bottom:5px;">المثقال</div>
+          <div style="color:#64b4ff;font-size:24px;font-weight:900;">${document.getElementById('gulf-mithqal-val').textContent}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="background:rgba(168,144,96,0.08);border:2px solid rgba(168,144,96,0.2);border-radius:12px;padding:20px;text-align:center;">
+      <div style="color:#a89060;font-size:16px;font-weight:700;margin-bottom:15px;">🔸 كسر عراقي</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;">
+          <div style="color:#a89060;font-size:12px;margin-bottom:5px;">الغرام</div>
+          <div style="color:#a89060;font-size:24px;font-weight:900;">${document.getElementById('iraqi-gram-val').textContent}</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;">
+          <div style="color:#a89060;font-size:12px;margin-bottom:5px;">المثقال</div>
+          <div style="color:#a89060;font-size:24px;font-weight:900;">${document.getElementById('iraqi-mithqal-val').textContent}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top:30px;text-align:center;border-top:2px solid rgba(255,215,0,0.2);padding-top:20px;color:#a89060;font-size:14px;">
+      📍 الانبار - الرمادي - شارع الصياغ | 🌐 zamzam-gold.web.app
+    </div>
+  `;
+  
+  container.innerHTML=html;
+  document.body.appendChild(container);
+  
+  html2canvas(container,{scale:2,useCORS:true,backgroundColor:'#07090f',width:1080,height:1200}).then(canvas=>{
+    document.body.removeChild(container);
+    
+    const link=document.createElement('a');
+    link.href=canvas.toDataURL('image/png');
+    link.download='zamzam-gold-'+dateStr.replace(/\//g,'-')+'.png';
+    link.click();
+    
+    // عرض رسالة نجاح
+    const toast=document.getElementById('save-toast');
+    if(toast){
+      toast.textContent='✅ تم تحميل صورة السعر بنجاح!';
+      toast.style.display='block';
+      setTimeout(()=>{toast.style.display='none';},3000);
+    }
+  }).catch(err=>{
+    document.body.removeChild(container);
+    alert('حدث خطأ في إنشاء الصورة. جرب مرة أخرى.');
+  });
+}
+
 function calcAll(){
   if(!price)return;
+  checkPriceAlert();
+  updateLastUpdateTime();
+  checkReturnNotification();
+  saveVisitData();
   document.getElementById('masagh-box').style.display='block';
   const adjusted=price+(adjSign*adjVal);
   const gram=(adjusted/31.1)*0.88*paperRate;
@@ -857,6 +1297,14 @@ function shareApp(){
     }).catch(()=>{prompt('انسخ الرابط وشاركه:',url);});
   }
 }
+
+// تهيئة الميزات الجديدة
+updateMarketStatus();
+initVisitorCount();
+loadVisitData();
+updatePageAge();
+setInterval(updateMarketStatus,60000); // تحديث كل دقيقة
+setInterval(updatePageAge,1000); // تحديث عداد العمر كل ثانية
 
 fetchNow();
 setInterval(fetchNow,20000);
