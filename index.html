@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/2451494a-9b3b-486e-914f-c3b155508ca3">
+</script><link rel="manifest" href="blob:null/4576bf76-6ec0-4821-b12f-8f8fd6032dc4">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -330,8 +330,8 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
       <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 26.3894;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">16</text>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 39.5841;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">14</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -353,7 +353,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     </div>
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 3 ثواني</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 5 ثواني</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
@@ -386,12 +386,12 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 3 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 5 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٢٥</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٣٠</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٤٨٩</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٤٩٤</div></div>
     </div>
   </div>
 </div>
@@ -403,14 +403,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">09:57:57<span class="ampm"> AM</span></div>
+    <div id="clock">10:33:49<span class="ampm"> AM</span></div>
     <div id="datebox">٧ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
 
 <!-- عداد عمر الصفحة -->
 <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-  📅 الصفحة تعمل منذ <span id="age-time">46 ثواني</span>
+  📅 الصفحة تعمل منذ <span id="age-time">1 دقيقة و26 ثواني</span>
 </div>
 
 <!-- مؤشر حالة السوق -->
@@ -607,7 +607,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 
 
-<div id="save-toast" style="display: none;">✅ تم تحميل صورة السعر بنجاح!</div>
+<div id="save-toast" style="display: none;">✅ تم حفظ الصورة في الاستديو بنجاح!</div>
 <button id="screenshot-btn"></button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1220,24 +1220,60 @@ function shareAsImage(){
   document.body.appendChild(container);
   
   html2canvas(container,{scale:2,useCORS:true,backgroundColor:'#07090f',width:1080,height:1200}).then(canvas=>{
+    // محاولة حفظ في الاستديو مباشرة
+    canvas.toBlob(blob=>{
+      const filename='zamzam-gold-'+dateStr.replace(/\//g,'-')+'.png';
+      
+      // للأجهزة الذكية - مشاركة مباشرة للاستديو
+      if(navigator.share && navigator.canShare && blob){
+        const file=new File([blob],filename,{type:'image/png'});
+        if(navigator.canShare({files:[file]})){
+          navigator.share({
+            files:[file],
+            title:'صورة سعر الذهب',
+            text:'صورة سعر الذهب من شركة زمزم'
+          }).then(()=>{
+            showSaveToast('✅ تم حفظ الصورة في الاستديو بنجاح!');
+          }).catch(err=>{
+            fallbackDownload(blob,filename);
+          });
+        }else{
+          fallbackDownload(blob,filename);
+        }
+      }else{
+        fallbackDownload(blob,filename);
+      }
+    },'image/png',1.0);
+    
     document.body.removeChild(container);
-    
-    const link=document.createElement('a');
-    link.href=canvas.toDataURL('image/png');
-    link.download='zamzam-gold-'+dateStr.replace(/\//g,'-')+'.png';
-    link.click();
-    
-    // عرض رسالة نجاح
-    const toast=document.getElementById('save-toast');
-    if(toast){
-      toast.textContent='✅ تم تحميل صورة السعر بنجاح!';
-      toast.style.display='block';
-      setTimeout(()=>{toast.style.display='none';},3000);
-    }
   }).catch(err=>{
     document.body.removeChild(container);
     alert('حدث خطأ في إنشاء الصورة. جرب مرة أخرى.');
   });
+}
+
+// دالة بديلة للحفظ التقليدي
+function fallbackDownload(blob,filename){
+  const blobUrl=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.href=blobUrl;
+  link.download=filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(blobUrl);
+  
+  showSaveToast('✅ تم حفظ الصورة بنجاح!');
+}
+
+// دالة عرض رسالة النجاح
+function showSaveToast(message){
+  const toast=document.getElementById('save-toast');
+  if(toast){
+    toast.textContent=message;
+    toast.style.display='block';
+    setTimeout(()=>{toast.style.display='none';},3000);
+  }
 }
 
 function calcAll(){
