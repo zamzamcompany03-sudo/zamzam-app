@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/d60191b0-fde5-437a-a8a1-aa60c2a34cf5">
+</script><link rel="manifest" href="blob:null/85f9d829-6f44-496d-9863-0972bc05967c">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -330,8 +330,8 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
       <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 13.1947;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">18</text>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 112.155;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">3</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -347,13 +347,13 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     </div>
     
     <!-- إشعار العودة للصفحة -->
-    <div id="return-notification" style="display: block; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
+    <div id="return-notification" style="display: none; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
       <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
       <div id="return-change" style="font-size: 13px; color: rgb(168, 144, 96);">⚪ السعر ثابت منذ آخر زيارة لك</div>
     </div>
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 2 ثواني</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 17 ثواني</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
@@ -364,34 +364,34 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="section-wrap sell">
       <div class="section-title">🔶 سعر بيع المصاغ</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٨٦,٧٩٢</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٩٣٣,٩٦٢</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٨٧,٣٧٣</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٩٣٦,٨٦٩</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap gulf">
       <div class="section-title">🔷 شراء كسر خليجي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٨١,٥٩٦</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٩٠٧,٩٨٠</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٨١,٩٤٩</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٩٠٩,٧٤٧</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap iraqi">
       <div class="section-title">🔸 شراء كسر عراقي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٥٦,٥٩٦</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٨٢,٩٨٠</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٥٧,٩٤٩</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٨٩,٧٤٧</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
   </div>
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 1 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 23 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">١٢٠</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">١٨٨</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٥٨٤</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٦٥٢</div></div>
     </div>
   </div>
 </div>
@@ -403,22 +403,22 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">04:01:52<span class="ampm"> PM</span></div>
+    <div id="clock">11:42:24<span class="ampm"> PM</span></div>
     <div id="datebox">٧ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
 
 <!-- عداد عمر الصفحة -->
 <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-  📅 الصفحة تعمل منذ <span id="age-time">8 ثواني</span>
+  📅 الصفحة تعمل منذ <span id="age-time">7 دقائق و57 ثواني</span>
 </div>
 
 <!-- مؤشر حالة السوق -->
-<div id="market-status" style="margin-top:10px;padding:12px;border-radius:12px;text-align:center;font-size:14px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10b981;">🟢 السوق مفتوح الآن</div>
+<div id="market-status" style="margin-top: 10px; padding: 12px; border-radius: 12px; text-align: center; font-size: 14px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: rgb(239, 68, 68);">🔴 السوق مغلق حالياً</div>
 
 <!-- عداد الزوار -->
 <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
-  👥 يوجد الآن <span id="visitor-num">1</span> زائر داخل الصفحة
+  👥 يوجد الآن <span id="visitor-num">2</span> زائر داخل الصفحة
 </div>
 
 <!-- تنبيه السعر -->
@@ -437,13 +437,13 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 <button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
 
 <!-- مودال كلمة المرور - Firebase Auth -->
-<div id="password-modal">
+<div id="password-modal" class="">
   <div class="pw-box">
     <h3>🔐 الإعدادات المحمية</h3>
     <p>أدخل كلمة المرور</p>
     <input type="password" id="password-input" class="pw-input" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')confirmPassword()">
-    <div class="pw-err" id="password-error">❌ كلمة المرور غير صحيحة</div>
-    <div id="pw-loading">⏳ جار التحقق...</div>
+    <div class="pw-err" id="password-error" style="display: none;">❌ كلمة المرور غير صحيحة</div>
+    <div id="pw-loading" style="display: none;">⏳ جار التحقق...</div>
     <div class="pw-btns">
       <button id="cancel-pass-btn" onclick="closePasswordModal()">إلغاء</button>
       <button id="confirm-pass-btn" onclick="confirmPassword()">✅ تأكيد</button>
@@ -452,7 +452,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 </div>
 
 <!-- مودال الإعدادات -->
-<div id="modal-overlay" onclick="closeIfOutside(event)">
+<div id="modal-overlay" onclick="closeIfOutside(event)" class="">
   <div id="modal">
     <h3>⚙️ إعدادات السعر</h3>
     <div class="s-title sell">🔶 سعر بيع المصاغ</div>
@@ -516,7 +516,10 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
       </div>
     </div>
     
-    <button id="second-display-btn" onclick="openSecondDisplay()" style="width:100%;background:linear-gradient(135deg,rgba(30,144,255,0.2),rgba(30,144,255,0.1));border:1px solid rgba(30,144,255,0.3);color:#1e90ff;padding:12px;border-radius:8px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;margin-bottom:12px;font-size:14px;transition:all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg,rgba(30,144,255,0.3),rgba(30,144,255,0.15))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(30,144,255,0.2),rgba(30,144,255,0.1))'">🖥️ فتح شاشة العرض الثانية</button>
+    <button id="second-display-btn" onclick="openSecondDisplay()" style="width: 100%; background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(30, 144, 255, 0.1)); border: 1px solid rgba(30, 144, 255, 0.3); color: rgb(30, 144, 255); padding: 12px; border-radius: 8px; font-family: Cairo, sans-serif; font-weight: 700; cursor: pointer; margin-bottom: 12px; font-size: 14px; transition: 0.3s;" onmouseover="this.style.background='linear-gradient(135deg,rgba(30,144,255,0.3),rgba(30,144,255,0.15))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(30,144,255,0.2),rgba(30,144,255,0.1))'">🖥️ فتح شاشة العرض الثانية</button>
+    
+    <div class="s-title gen" style="margin-top:20px;border-top:1px solid rgba(255,215,0,0.1);padding-top:15px;">📊 التقييمات والملاحظات</div>
+    <button id="ratings-btn" onclick="showRatingsPanel()" style="width: 100%; background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1)); border: 1px solid rgba(255, 215, 0, 0.3); color: rgb(255, 215, 0); padding: 12px; border-radius: 8px; font-family: Cairo, sans-serif; font-weight: 700; cursor: pointer; margin-bottom: 12px; font-size: 14px; transition: 0.3s;" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,215,0,0.3),rgba(255,215,0,0.15))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.1))'">⭐ عرض التقييمات والملاحظات</button>
     
     <div class="modal-btns">
       <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
@@ -664,6 +667,102 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 <div id="save-toast"></div>
 <button id="screenshot-btn"></button>
+
+<!-- مودال التقييم (يظهر عند الزيارة الثالثة) -->
+<div id="rating-modal" style="position: fixed; inset: 0px; background: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; align-items: center; justify-content: center;">
+  <div style="background:#0a0d14;border:2px solid rgba(255,215,0,0.3);border-radius:20px;padding:24px;max-width:400px;width:90%;max-height:90vh;overflow-y:auto;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:40px;margin-bottom:12px;">⭐</div>
+      <h2 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:20px;margin:0;margin-bottom:8px;">كيف تقييمك للتطبيق؟</h2>
+      <p style="color:#a89060;font-family:Cairo,sans-serif;font-size:14px;margin:0;">رأيك مهم جداً لنا</p>
+    </div>
+    
+    <!-- النجوم -->
+    <div id="stars-container" style="display:flex;justify-content:center;gap:12px;margin-bottom:20px;">
+      <span class="rating-star" data-rating="1" style="font-size:32px;cursor:pointer;opacity:0.4;transition:all 0.2s;">⭐</span>
+      <span class="rating-star" data-rating="2" style="font-size:32px;cursor:pointer;opacity:0.4;transition:all 0.2s;">⭐</span>
+      <span class="rating-star" data-rating="3" style="font-size:32px;cursor:pointer;opacity:0.4;transition:all 0.2s;">⭐</span>
+      <span class="rating-star" data-rating="4" style="font-size:32px;cursor:pointer;opacity:0.4;transition:all 0.2s;">⭐</span>
+      <span class="rating-star" data-rating="5" style="font-size:32px;cursor:pointer;opacity:0.4;transition:all 0.2s;">⭐</span>
+    </div>
+    
+    <div id="selected-rating" style="text-align:center;color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;margin-bottom:15px;height:24px;"></div>
+    
+    <!-- نص الملاحظات -->
+    <textarea id="rating-comment" placeholder="شاركنا ملاحظاتك (اختياري)" style="width:100%;min-height:100px;padding:12px;border:1px solid rgba(255,215,0,0.3);border-radius:10px;background:rgba(0,0,0,0.3);color:#fff;font-family:Cairo,sans-serif;font-size:14px;resize:none;box-sizing:border-box;margin-bottom:15px;"></textarea>
+    
+    <!-- الأزرار -->
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeRatingModal()" style="flex:1;padding:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:8px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">تجاوز</button>
+      <button id="submit-rating-btn" onclick="submitRating()" disabled="" style="flex:1;padding:10px;background:rgba(255,215,0,0.2);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:8px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;opacity:0.5;">إرسال التقييم</button>
+    </div>
+  </div>
+</div>
+
+<!-- مودال عرض التقييمات في الإعدادات -->
+<div id="ratings-panel-modal" style="display: none; position: fixed; inset: 0px; background: rgba(0, 0, 0, 0.8); z-index: 9998; overflow-y: auto;">
+  <div style="position:relative;background:#0a0d14;border:1px solid rgba(255,215,0,0.2);border-radius:16px;max-width:600px;margin:20px auto;padding:20px;">
+    <button onclick="closeRatingsPanel()" style="position:absolute;top:15px;right:15px;background:rgba(255,215,0,0.2);border:1px solid rgba(255,215,0,0.3);color:#FFD700;width:35px;height:35px;border-radius:50%;cursor:pointer;font-size:18px;font-weight:700;">✕</button>
+    
+    <h2 style="color:#FFD700;font-family:Cairo,sans-serif;margin-top:0;margin-bottom:20px;text-align:center;">📊 التقييمات والملاحظات</h2>
+    
+    <div id="ratings-list-container" style="max-height: 500px; overflow-y: auto; display: block;">
+    <div style="background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(30,144,255,0.1));border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:15px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;font-family:Cairo,sans-serif;">
+        <div style="text-align:center;padding:10px;background:rgba(255,215,0,0.08);border-radius:8px;border:1px solid rgba(255,215,0,0.2);">
+          <div style="color:#FFD700;font-size:28px;font-weight:900;margin-bottom:5px;">1</div>
+          <div style="color:#a89060;font-size:12px;font-weight:700;">👥 زائرين فريدين</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:rgba(30,144,255,0.08);border-radius:8px;border:1px solid rgba(30,144,255,0.2);">
+          <div style="color:#64b4ff;font-size:28px;font-weight:900;margin-bottom:5px;">3</div>
+          <div style="color:#a89060;font-size:12px;font-weight:700;">📊 إجمالي الزيارات</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:rgba(34,197,94,0.08);border-radius:8px;border:1px solid rgba(34,197,94,0.2);grid-column:1/-1;">
+          <div style="color:#22c55e;font-size:20px;font-weight:900;margin-bottom:5px;">3.0</div>
+          <div style="color:#a89060;font-size:12px;font-weight:700;">📈 متوسط الزيارات لكل زائر</div>
+        </div>
+      </div>
+    </div>
+  
+      <div style="margin-bottom:20px;">
+        <h3 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:14px;margin:0 0 12px 0;">🖥️ الأجهزة النشطة:</h3>
+        <div style="max-height:200px;overflow-y:auto;">
+    
+        <div style="background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:8px;padding:8px;margin-bottom:8px;font-family:Cairo,sans-serif;font-size:12px;">
+          <div style="color:#FFD700;font-weight:700;margin-bottom:4px;">جهاز #1</div>
+          <div style="color:#a89060;">📅 أول زيارة: ٧&rlm;/٦&rlm;/٢٠٢٦</div>
+          <div style="color:#a89060;">📅 آخر زيارة: ٧&rlm;/٦&rlm;/٢٠٢٦</div>
+        </div>
+      
+        </div>
+      </div>
+    
+      <h3 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:14px;margin:0 0 12px 0;">⭐ التقييمات (1):</h3>
+    
+        <div style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:15px;margin-bottom:12px;position:relative;">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+            <div>
+              <div style="color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;font-size:16px;letter-spacing:2px;">⭐⭐⭐⭐⭐</div>
+              <div style="color:#a89060;font-family:Cairo,sans-serif;font-size:12px;margin-top:4px;">📅 ٧&rlm;/٦&rlm;/٢٠٢٦</div>
+            </div>
+            <button onclick="deleteRating(1780864306842)" style="background:rgba(255,100,100,0.2);border:1px solid rgba(255,100,100,0.3);color:#ff6464;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;font-weight:700;">✕</button>
+          </div>
+          
+          <div style="color:#64748b;font-family:Cairo,sans-serif;font-size:11px;margin-top:10px;">زيارة رقم: 1</div>
+        </div>
+      </div>
+    
+    <div id="no-ratings-msg" style="text-align: center; color: rgb(168, 144, 96); font-family: Cairo, sans-serif; padding: 40px 20px; display: none;">
+      <div style="font-size:48px;margin-bottom:15px;">📋</div>
+      <div>لا توجد تقييمات حتى الآن</div>
+    </div>
+    
+    <div style="margin-top:20px;display:flex;gap:10px;">
+      <button onclick="exportRatingsJSON()" id="export-json-btn" style="flex:1;padding:10px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:8px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">📥 تنزيل JSON</button>
+      <button onclick="clearAllRatings()" id="clear-ratings-btn" style="flex:1;padding:10px;background:rgba(255,100,100,0.15);border:1px solid rgba(255,100,100,0.3);color:#ff6464;border-radius:8px;font-family:Cairo,sans-serif;font-weight:700;cursor:pointer;">🗑️ حذف الكل</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1711,6 +1810,7 @@ initVisitorCount();
 loadVisitData();
 loadSavedPrices();
 updatePageAge();
+initCloudSync(); // تهيئة المزامنة السحابية ✅
 setInterval(updateMarketStatus,60000); // تحديث كل دقيقة
 setInterval(updatePageAge,1000); // تحديث عداد العمر كل ثانية
 
@@ -1811,6 +1911,428 @@ function closeSecondDisplay(){
 window.addEventListener('load', function(){
   loadDisplaySettings();
 });
+
+// ==================== مزامنة Firebase ====================
+
+// دالة رفع البيانات للسحابة
+function syncToFirebase(){
+  const deviceId = localStorage.getItem('zamzam-device-id') || 'unknown';
+  
+  // جلب البيانات من localStorage
+  let uniqueVisitors = [];
+  let ratings = [];
+  let visits = parseInt(localStorage.getItem('zamzam-visits') || '0');
+  
+  try {
+    uniqueVisitors = JSON.parse(localStorage.getItem('zamzam-unique-visitors') || '[]');
+    ratings = JSON.parse(localStorage.getItem('zamzam-ratings') || '[]');
+  } catch(e) {
+    console.log('خطأ في قراءة البيانات المحلية');
+  }
+  
+  // رفع البيانات إلى Firebase
+  db.ref('zamzam/data').set({
+    uniqueVisitors: uniqueVisitors,
+    ratings: ratings,
+    totalVisits: visits,
+    lastSync: new Date().toISOString(),
+    lastDevice: deviceId
+  }).then(() => {
+    console.log('✅ تم المزامنة للسحابة بنجاح');
+  }).catch((error) => {
+    console.log('⚠️ خطأ في رفع البيانات:', error.message);
+  });
+}
+
+// دالة سحب البيانات من السحابة
+function syncFromFirebase(){
+  const deviceId = localStorage.getItem('zamzam-device-id') || 'unknown';
+  
+  db.ref('zamzam/data').once('value', (snapshot) => {
+    if(snapshot.exists()){
+      const cloudData = snapshot.val();
+      
+      console.log('📥 جاري سحب البيانات من السحابة...');
+      
+      // تحديث البيانات المحلية من السحابة
+      if(cloudData.uniqueVisitors && Array.isArray(cloudData.uniqueVisitors)){
+        localStorage.setItem('zamzam-unique-visitors', JSON.stringify(cloudData.uniqueVisitors));
+      }
+      
+      if(cloudData.ratings && Array.isArray(cloudData.ratings)){
+        localStorage.setItem('zamzam-ratings', JSON.stringify(cloudData.ratings));
+      }
+      
+      if(cloudData.totalVisits){
+        localStorage.setItem('zamzam-visits', cloudData.totalVisits.toString());
+      }
+      
+      console.log('✅ تم سحب البيانات من السحابة بنجاح');
+      
+      // إعادة تحميل الصفحة إذا كانت هناك بيانات جديدة
+      if(cloudData.lastDevice !== deviceId){
+        console.log('🔄 بيانات جديدة من جهاز آخر - جاري التحديث...');
+        // تحديث العرض إن أمكن
+        if(document.getElementById('ratings-panel-modal') && document.getElementById('ratings-panel-modal').style.display === 'block'){
+          showRatingsPanel();
+        }
+      }
+    }
+  }).catch((error) => {
+    console.log('⚠️ خطأ في سحب البيانات:', error.message);
+  });
+}
+
+// دالة المزامنة المستمرة
+function initCloudSync(){
+  console.log('🔄 تهيئة المزامنة السحابية...');
+  
+  // سحب البيانات عند فتح الصفحة
+  syncFromFirebase();
+  
+  // رفع البيانات كل 10 ثواني (لضمان المزامنة المستمرة)
+  setInterval(() => {
+    syncToFirebase();
+  }, 10000);
+  
+  // رفع فوري عند أي تغيير
+  db.ref('zamzam/data').on('value', (snapshot) => {
+    if(snapshot.exists()){
+      const cloudData = snapshot.val();
+      const deviceId = localStorage.getItem('zamzam-device-id');
+      
+      // إذا كانت البيانات من جهاز آخر
+      if(cloudData.lastDevice !== deviceId){
+        // تحديث البيانات المحلية
+        if(cloudData.uniqueVisitors){
+          localStorage.setItem('zamzam-unique-visitors', JSON.stringify(cloudData.uniqueVisitors));
+        }
+        if(cloudData.ratings){
+          localStorage.setItem('zamzam-ratings', JSON.stringify(cloudData.ratings));
+        }
+        if(cloudData.totalVisits){
+          localStorage.setItem('zamzam-visits', cloudData.totalVisits.toString());
+        }
+        
+        console.log('🔄 تحديث البيانات من جهاز آخر');
+      }
+    }
+  });
+  
+  console.log('✅ المزامنة السحابية جاهزة');
+}
+
+// ====================================================================
+let selectedRating = 0;
+
+// تهيئة نظام التقييمات عند تحميل الصفحة
+function initRatingSystem(){
+  // تتبع الزيارات
+  trackVisit();
+  
+  // إضافة مستمعي الأحداث للنجوم
+  document.querySelectorAll('.rating-star').forEach(star => {
+    star.addEventListener('click', function(){
+      selectedRating = parseInt(this.dataset.rating);
+      updateStarsDisplay();
+      document.getElementById('submit-rating-btn').disabled = false;
+      document.getElementById('submit-rating-btn').style.opacity = '1';
+      document.getElementById('selected-rating').textContent = `${selectedRating} نجمات من 5`;
+    });
+    
+    star.addEventListener('mouseover', function(){
+      const hoverRating = parseInt(this.dataset.rating);
+      document.querySelectorAll('.rating-star').forEach((s, idx) => {
+        s.style.opacity = idx < hoverRating ? '1' : '0.4';
+      });
+    });
+  });
+  
+  document.getElementById('stars-container').addEventListener('mouseout', updateStarsDisplay);
+}
+
+function updateStarsDisplay(){
+  document.querySelectorAll('.rating-star').forEach((star, idx) => {
+    star.style.opacity = idx < selectedRating ? '1' : '0.4';
+  });
+}
+
+function generateDeviceId(){
+  // إنشاء معرّف فريد للجهاز
+  return 'device-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+}
+
+function trackVisit(){
+  // التحقق من وجود معرّف جهاز سابق
+  let deviceId = localStorage.getItem('zamzam-device-id');
+  let isNewDevice = false;
+  
+  if(!deviceId){
+    // جهاز جديد - إنشاء معرّف فريد له
+    deviceId = generateDeviceId();
+    localStorage.setItem('zamzam-device-id', deviceId);
+    isNewDevice = true;
+  }
+  
+  // زيادة عداد الزيارات الكلي
+  const totalVisits = parseInt(localStorage.getItem('zamzam-visits') || '0') + 1;
+  localStorage.setItem('zamzam-visits', totalVisits.toString());
+  
+  // إدارة قائمة الزائرين الفريدين
+  let uniqueVisitors = [];
+  try {
+    uniqueVisitors = JSON.parse(localStorage.getItem('zamzam-unique-visitors') || '[]');
+  } catch(e) {
+    uniqueVisitors = [];
+  }
+  
+  // التحقق إذا كان هذا الجهاز مسجل سابقاً
+  if(isNewDevice || !uniqueVisitors.find(v => v.deviceId === deviceId)){
+    uniqueVisitors.push({
+      deviceId: deviceId,
+      firstVisit: new Date().toISOString(),
+      lastVisit: new Date().toISOString()
+    });
+  } else {
+    // تحديث آخر زيارة للجهاز الموجود
+    const visitor = uniqueVisitors.find(v => v.deviceId === deviceId);
+    if(visitor){
+      visitor.lastVisit = new Date().toISOString();
+    }
+  }
+  
+  localStorage.setItem('zamzam-unique-visitors', JSON.stringify(uniqueVisitors));
+  localStorage.setItem('last-visit', new Date().toISOString());
+  
+  // مزامنة مع Firebase 🔄
+  syncToFirebase();
+  
+  // عرض مودال التقييم في الزيارة الثالثة (لهذا الجهاز)
+  if(totalVisits === 3 && !localStorage.getItem('rating-submitted')){
+    setTimeout(() => {
+      document.getElementById('rating-modal').style.display = 'flex';
+    }, 2000);
+  }
+}
+
+function closeRatingModal(){
+  document.getElementById('rating-modal').style.display = 'none';
+}
+
+function submitRating(){
+  if(selectedRating === 0) return;
+  
+  const comment = document.getElementById('rating-comment').value.trim();
+  const visits = parseInt(localStorage.getItem('zamzam-visits') || '0');
+  
+  // جلب التقييمات السابقة
+  let ratings = [];
+  try {
+    ratings = JSON.parse(localStorage.getItem('zamzam-ratings') || '[]');
+  } catch(e) {
+    ratings = [];
+  }
+  
+  // إضافة التقييم الجديد
+  const newRating = {
+    id: Date.now(),
+    stars: selectedRating,
+    comment: comment,
+    visitNumber: visits,
+    timestamp: new Date().toISOString(),
+    date: new Date().toLocaleDateString('ar-IQ')
+  };
+  
+  ratings.push(newRating);
+  localStorage.setItem('zamzam-ratings', JSON.stringify(ratings));
+  localStorage.setItem('rating-submitted', 'true');
+  
+  // مزامنة مع Firebase 🔄
+  syncToFirebase();
+  
+  // رسالة نجاح
+  const submitBtn = document.getElementById('submit-rating-btn');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = '✅ شكراً على تقييمك!';
+  submitBtn.style.background = 'rgba(34,197,94,0.3)';
+  submitBtn.style.borderColor = 'rgba(34,197,94,0.5)';
+  submitBtn.style.color = '#22c55e';
+  
+  setTimeout(() => {
+    closeRatingModal();
+    selectedRating = 0;
+  }, 1500);
+}
+
+function showRatingsPanel(){
+  const ratingsPanel = document.getElementById('ratings-panel-modal');
+  ratingsPanel.style.display = 'block';
+  
+  // جلب الإحصائيات
+  const totalVisits = parseInt(localStorage.getItem('zamzam-visits') || '0');
+  let uniqueVisitors = [];
+  try {
+    uniqueVisitors = JSON.parse(localStorage.getItem('zamzam-unique-visitors') || '[]');
+  } catch(e) {
+    uniqueVisitors = [];
+  }
+  
+  const uniqueCount = uniqueVisitors.length;
+  const avgVisitsPerUser = uniqueCount > 0 ? (totalVisits / uniqueCount).toFixed(1) : 0;
+  
+  // جلب التقييمات
+  let ratings = [];
+  try {
+    ratings = JSON.parse(localStorage.getItem('zamzam-ratings') || '[]');
+  } catch(e) {
+    ratings = [];
+  }
+  
+  const container = document.getElementById('ratings-list-container');
+  const noMsg = document.getElementById('no-ratings-msg');
+  
+  // إنشاء قسم الإحصائيات
+  let statsHtml = `
+    <div style="background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(30,144,255,0.1));border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:15px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;font-family:Cairo,sans-serif;">
+        <div style="text-align:center;padding:10px;background:rgba(255,215,0,0.08);border-radius:8px;border:1px solid rgba(255,215,0,0.2);">
+          <div style="color:#FFD700;font-size:28px;font-weight:900;margin-bottom:5px;">${uniqueCount}</div>
+          <div style="color:#a89060;font-size:12px;font-weight:700;">👥 زائرين فريدين</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:rgba(30,144,255,0.08);border-radius:8px;border:1px solid rgba(30,144,255,0.2);">
+          <div style="color:#64b4ff;font-size:28px;font-weight:900;margin-bottom:5px;">${totalVisits}</div>
+          <div style="color:#a89060;font-size:12px;font-weight:700;">📊 إجمالي الزيارات</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:rgba(34,197,94,0.08);border-radius:8px;border:1px solid rgba(34,197,94,0.2);grid-column:1/-1;">
+          <div style="color:#22c55e;font-size:20px;font-weight:900;margin-bottom:5px;">${avgVisitsPerUser}</div>
+          <div style="color:#a89060;font-size:12px;font-weight:700;">📈 متوسط الزيارات لكل زائر</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // إضافة قسم الأجهزة النشطة
+  if(uniqueVisitors.length > 0){
+    statsHtml += `
+      <div style="margin-bottom:20px;">
+        <h3 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:14px;margin:0 0 12px 0;">🖥️ الأجهزة النشطة:</h3>
+        <div style="max-height:200px;overflow-y:auto;">
+    `;
+    
+    uniqueVisitors.forEach((visitor, idx) => {
+      const firstDate = new Date(visitor.firstVisit).toLocaleDateString('ar-IQ');
+      const lastDate = new Date(visitor.lastVisit).toLocaleDateString('ar-IQ');
+      statsHtml += `
+        <div style="background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:8px;padding:8px;margin-bottom:8px;font-family:Cairo,sans-serif;font-size:12px;">
+          <div style="color:#FFD700;font-weight:700;margin-bottom:4px;">جهاز #${idx + 1}</div>
+          <div style="color:#a89060;">📅 أول زيارة: ${firstDate}</div>
+          <div style="color:#a89060;">📅 آخر زيارة: ${lastDate}</div>
+        </div>
+      `;
+    });
+    
+    statsHtml += `
+        </div>
+      </div>
+    `;
+  }
+  
+  // إذا كانت هناك تقييمات
+  if(ratings.length > 0){
+    container.style.display = 'block';
+    noMsg.style.display = 'none';
+    
+    // ترتيب التقييمات من الأحدث للأقدم
+    ratings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    let ratingsHtml = `
+      <h3 style="color:#FFD700;font-family:Cairo,sans-serif;font-size:14px;margin:0 0 12px 0;">⭐ التقييمات (${ratings.length}):</h3>
+    `;
+    
+    ratings.forEach((rating, idx) => {
+      const stars = '⭐'.repeat(rating.stars) + '☆'.repeat(5 - rating.stars);
+      ratingsHtml += `
+        <div style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:15px;margin-bottom:12px;position:relative;">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+            <div>
+              <div style="color:#FFD700;font-family:Cairo,sans-serif;font-weight:700;font-size:16px;letter-spacing:2px;">${stars}</div>
+              <div style="color:#a89060;font-family:Cairo,sans-serif;font-size:12px;margin-top:4px;">📅 ${rating.date}</div>
+            </div>
+            <button onclick="deleteRating(${rating.id})" style="background:rgba(255,100,100,0.2);border:1px solid rgba(255,100,100,0.3);color:#ff6464;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;font-weight:700;">✕</button>
+          </div>
+          ${rating.comment ? `<div style="color:#ccc;font-family:Cairo,sans-serif;font-size:13px;line-height:1.6;background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-top:10px;">"${rating.comment}"</div>` : ''}
+          <div style="color:#64748b;font-family:Cairo,sans-serif;font-size:11px;margin-top:10px;">زيارة رقم: ${rating.visitNumber}</div>
+        </div>
+      `;
+    });
+    
+    container.innerHTML = statsHtml + ratingsHtml;
+  } else {
+    // لا توجد تقييمات لكن قد توجد زيارات
+    container.innerHTML = statsHtml;
+    container.style.display = 'block';
+    noMsg.style.display = 'none';
+  }
+}
+
+function closeRatingsPanel(){
+  document.getElementById('ratings-panel-modal').style.display = 'none';
+}
+
+function deleteRating(id){
+  if(!confirm('هل تريد حذف هذا التقييم؟')) return;
+  
+  let ratings = [];
+  try {
+    ratings = JSON.parse(localStorage.getItem('zamzam-ratings') || '[]');
+  } catch(e) {
+    ratings = [];
+  }
+  
+  ratings = ratings.filter(r => r.id !== id);
+  localStorage.setItem('zamzam-ratings', JSON.stringify(ratings));
+  
+  // مزامنة مع Firebase 🔄
+  syncToFirebase();
+  
+  // إعادة تحميل التقييمات
+  showRatingsPanel();
+}
+
+function clearAllRatings(){
+  if(!confirm('هل أنت متأكد أنك تريد حذف جميع التقييمات؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+  
+  localStorage.setItem('zamzam-ratings', '[]');
+  
+  // مزامنة مع Firebase 🔄
+  syncToFirebase();
+  
+  showRatingsPanel();
+}
+
+function exportRatingsJSON(){
+  let ratings = [];
+  try {
+    ratings = JSON.parse(localStorage.getItem('zamzam-ratings') || '[]');
+  } catch(e) {
+    ratings = [];
+  }
+  
+  const dataStr = JSON.stringify(ratings, null, 2);
+  const dataBlob = new Blob([dataStr], {type: 'application/json'});
+  const url = URL.createObjectURL(dataBlob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `zamzam-ratings-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+// تهيئة النظام عند التحميل
+window.addEventListener('load', initRatingSystem);
+
 // ====================================================================
 </script>
 
