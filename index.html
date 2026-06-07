@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/4576bf76-6ec0-4821-b12f-8f8fd6032dc4">
+</script><link rel="manifest" href="blob:null/8db0c166-6a0d-40c3-ac46-22d6669b7c80">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -330,8 +330,8 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
       <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 39.5841;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">14</text>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 118.752;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">2</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -347,13 +347,13 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     </div>
     
     <!-- إشعار العودة للصفحة -->
-    <div id="return-notification" style="display: block; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
+    <div id="return-notification" style="display: none; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
       <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
       <div id="return-change" style="font-size: 13px; color: rgb(168, 144, 96);">⚪ السعر ثابت منذ آخر زيارة لك</div>
     </div>
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 5 ثواني</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 18 ثواني</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
@@ -364,34 +364,34 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="section-wrap sell">
       <div class="section-title">🔶 سعر بيع المصاغ</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٨٦,٧٩٢</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٩٣٣,٩٦٢</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٨٧,٤٠٠</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٩٣٧,٠٠٠</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap gulf">
       <div class="section-title">🔷 شراء كسر خليجي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٨١,٥٩٦</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٩٠٧,٩٨٠</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٨٢,٤٥٦</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٩١٢,٢٨٣</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap iraqi">
       <div class="section-title">🔸 شراء كسر عراقي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٥٦,٥٩٦</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٨٢,٩٨٠</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٥٧,٤٥٦</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٨٧,٢٨٣</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
   </div>
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 5 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 4 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٣٠</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">١١٣</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٤٩٤</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">٥٧٧</div></div>
     </div>
   </div>
 </div>
@@ -403,14 +403,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">10:33:49<span class="ampm"> AM</span></div>
+    <div id="clock">03:56:44<span class="ampm"> PM</span></div>
     <div id="datebox">٧ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
 
 <!-- عداد عمر الصفحة -->
 <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-  📅 الصفحة تعمل منذ <span id="age-time">1 دقيقة و26 ثواني</span>
+  📅 الصفحة تعمل منذ <span id="age-time">1 دقيقة و18 ثواني</span>
 </div>
 
 <!-- مؤشر حالة السوق -->
@@ -437,13 +437,13 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 <button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
 
 <!-- مودال كلمة المرور - Firebase Auth -->
-<div id="password-modal">
+<div id="password-modal" class="">
   <div class="pw-box">
     <h3>🔐 الإعدادات المحمية</h3>
     <p>أدخل كلمة المرور</p>
     <input type="password" id="password-input" class="pw-input" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')confirmPassword()">
-    <div class="pw-err" id="password-error">❌ كلمة المرور غير صحيحة</div>
-    <div id="pw-loading">⏳ جار التحقق...</div>
+    <div class="pw-err" id="password-error" style="display: none;">❌ كلمة المرور غير صحيحة</div>
+    <div id="pw-loading" style="display: none;">⏳ جار التحقق...</div>
     <div class="pw-btns">
       <button id="cancel-pass-btn" onclick="closePasswordModal()">إلغاء</button>
       <button id="confirm-pass-btn" onclick="confirmPassword()">✅ تأكيد</button>
@@ -452,7 +452,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 </div>
 
 <!-- مودال الإعدادات -->
-<div id="modal-overlay" onclick="closeIfOutside(event)">
+<div id="modal-overlay" onclick="closeIfOutside(event)" class="">
   <div id="modal">
     <h3>⚙️ إعدادات السعر</h3>
     <div class="s-title sell">🔶 سعر بيع المصاغ</div>
@@ -463,6 +463,61 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="s-row"><div class="s-lbl">فرق عن غرام الخليجي بالدينار</div><div class="s-inputs"><select id="iraqi-sign"><option value="1">+</option><option value="-1">-</option></select><input type="number" id="iraqi-val" placeholder="0" value="0" min="0"></div></div>
     <div class="s-title gen">💵 عام</div>
     <div class="s-row"><div class="s-lbl">سعر الورق (دينار عراقي)</div><input type="number" id="paper-rate" placeholder="1530000" value="1530000" min="1"></div>
+    <div class="s-title gen">🖥️ إعدادات الشاشة الثانية</div>
+    <div style="background:rgba(30,144,255,0.08);border:1px solid rgba(30,144,255,0.2);border-radius:8px;padding:15px;margin-bottom:15px;">
+      <div style="display:flex;flex-direction:column;gap:12px;font-family:Cairo,sans-serif;">
+        <!-- تفعيل الشاشة الثانية -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">🖥️ تفعيل الشاشة الثانية</label>
+          <input type="checkbox" id="display-enabled" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض الشعار -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">🏆 عرض شعار الشركة</label>
+          <input type="checkbox" id="display-logo" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض سعر البورصة -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">💵 عرض سعر البورصة</label>
+          <input type="checkbox" id="display-price" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض الأسعار -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">📊 عرض جدول الأسعار</label>
+          <input type="checkbox" id="display-prices-table" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض الساعة والتاريخ -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">🕐 عرض الساعة والتاريخ</label>
+          <input type="checkbox" id="display-time" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض بيع المصاغ -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">🔶 عرض بيع المصاغ</label>
+          <input type="checkbox" id="display-sell" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض الكسر الخليجي -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">🔷 عرض شراء الكسر الخليجي</label>
+          <input type="checkbox" id="display-gulf" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+        
+        <!-- عرض الكسر العراقي -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <label style="font-size:14px;color:#ccc;font-weight:700;">🔸 عرض شراء الكسر العراقي</label>
+          <input type="checkbox" id="display-iraqi" style="width:20px;height:20px;cursor:pointer;" checked="">
+        </div>
+      </div>
+    </div>
+    
+    <button id="second-display-btn" onclick="openSecondDisplay()" style="width: 100%; background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(30, 144, 255, 0.1)); border: 1px solid rgba(30, 144, 255, 0.3); color: rgb(30, 144, 255); padding: 12px; border-radius: 8px; font-family: Cairo, sans-serif; font-weight: 700; cursor: pointer; margin-bottom: 12px; font-size: 14px; transition: 0.3s;" onmouseover="this.style.background='linear-gradient(135deg,rgba(30,144,255,0.3),rgba(30,144,255,0.15))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(30,144,255,0.2),rgba(30,144,255,0.1))'">🖥️ فتح شاشة العرض الثانية</button>
+    
     <div class="modal-btns">
       <button id="cancel-btn" onclick="closeSettings()">إلغاء</button>
       <button id="apply-btn" onclick="applySettings()">✅ تطبيق</button>
@@ -607,7 +662,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 
 
-<div id="save-toast" style="display: none;">✅ تم حفظ الصورة في الاستديو بنجاح!</div>
+<div id="save-toast"></div>
 <button id="screenshot-btn"></button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -744,9 +799,16 @@ updateClock();
 setInterval(updateClock,1000);
 
 // ===== Firebase Settings =====
+let _listenerActive=true;
 function saveSettings(){
+  _listenerActive=false;
   const o={adjSign,adjVal,paperRate,gulfSign,gulfVal,iraqiSign,iraqiVal};
-  settingsRef.set(o);
+  // حفظ في localStorage كنسخة احتياطية فورية
+  localStorage.setItem('zamzam-settings', JSON.stringify(o));
+  // حفظ في Firebase مع إطالة وقت تعطيل الاستماع لمنع التضارب
+  settingsRef.set(o)
+    .then(()=>{setTimeout(()=>{_listenerActive=true;},6000);})
+    .catch(()=>{_listenerActive=true;});
 }
 function applyToUI(){
   document.getElementById('adj-sign').value=adjSign;
@@ -758,8 +820,27 @@ function applyToUI(){
   document.getElementById('iraqi-val').value=iraqiVal;
 }
 settingsRef.on('value',function(snapshot){
+  if(!_listenerActive)return;
   const o=snapshot.val();
-  if(o){adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;applyToUI();calcAll();}
+  if(o){
+    adjSign=o.adjSign??1;adjVal=o.adjVal??0;paperRate=o.paperRate??1530000;
+    gulfSign=o.gulfSign??1;gulfVal=o.gulfVal??0;iraqiSign=o.iraqiSign??1;iraqiVal=o.iraqiVal??0;
+    // تحديث النسخة الاحتياطية في localStorage
+    localStorage.setItem('zamzam-settings', JSON.stringify(o));
+    applyToUI();calcAll();
+  } else {
+    // Firebase فارغ - استعادة من localStorage
+    try{
+      const local=JSON.parse(localStorage.getItem('zamzam-settings')||'null');
+      if(local){
+        adjSign=local.adjSign??1;adjVal=local.adjVal??0;paperRate=local.paperRate??1530000;
+        gulfSign=local.gulfSign??1;gulfVal=local.gulfVal??0;iraqiSign=local.iraqiSign??1;iraqiVal=local.iraqiVal??0;
+        // رفع النسخة المحلية إلى Firebase
+        settingsRef.set(local).catch(()=>{});
+        applyToUI();calcAll();
+      }
+    }catch(e){}
+  }
 });
 
 function toArabicNum(n){
@@ -990,13 +1071,7 @@ function saveVisitData(){
     lastVisitTime:Date.now(),
     alertPrice:alertPrice,
     alertEnabled:alertEnabled,
-    adjSign:adjSign,
-    adjVal:adjVal,
-    paperRate:paperRate,
-    gulfSign:gulfSign,
-    gulfVal:gulfVal,
-    iraqiSign:iraqiSign,
-    iraqiVal:iraqiVal
+
   };
   localStorage.setItem('zamzam-visit-data',JSON.stringify(data));
   
@@ -1016,37 +1091,7 @@ function loadVisitData(){
     if(data.alertPrice){alertPrice=data.alertPrice;document.getElementById('alert-price').value=alertPrice;}
     alertEnabled=data.alertEnabled||false;
   }
-  // استعادة الإعدادات
-  if(data.adjSign)adjSign=data.adjSign;
-  if(data.adjVal)adjVal=data.adjVal;
-  if(data.paperRate)paperRate=data.paperRate;
-  if(data.gulfSign)gulfSign=data.gulfSign;
-  if(data.gulfVal)gulfVal=data.gulfVal;
-  if(data.iraqiSign)iraqiSign=data.iraqiSign;
-  if(data.iraqiVal)iraqiVal=data.iraqiVal;
-  applyToUI();
-  
-  // محاولة تحميل البيانات من Firebase إذا كانت متاحة
-  try{
-    const userId=localStorage.getItem('zamzam-user-id');
-    if(userId){
-      db.ref('user-data/'+userId).once('value',(snapshot)=>{
-        const firebaseData=snapshot.val();
-        if(firebaseData){
-          // تطبيق البيانات من Firebase
-          if(firebaseData.adjSign)adjSign=firebaseData.adjSign;
-          if(firebaseData.adjVal)adjVal=firebaseData.adjVal;
-          if(firebaseData.paperRate)paperRate=firebaseData.paperRate;
-          if(firebaseData.gulfSign)gulfSign=firebaseData.gulfSign;
-          if(firebaseData.gulfVal)gulfVal=firebaseData.gulfVal;
-          if(firebaseData.iraqiSign)iraqiSign=firebaseData.iraqiSign;
-          if(firebaseData.iraqiVal)iraqiVal=firebaseData.iraqiVal;
-          if(firebaseData.alertPrice)alertPrice=firebaseData.alertPrice;
-          applyToUI();
-        }
-      }).catch(()=>{});
-    }
-  }catch(e){}
+
 }
 
 // ===== إشعار العودة =====
@@ -1357,7 +1402,7 @@ function applySettings(){
   calcAll();
   closeSettings();
 }
-function openSettings(){document.getElementById('modal-overlay').classList.add('show');}
+function openSettings(){applyToUI();document.getElementById('modal-overlay').classList.add('show');}
 function closeSettings(){document.getElementById('modal-overlay').classList.remove('show');}
 function closeIfOutside(e){if(e.target===document.getElementById('modal-overlay'))closeSettings();}
 
@@ -1670,6 +1715,101 @@ setInterval(updatePageAge,1000); // تحديث عداد العمر كل ثاني
 fetchNow();
 setInterval(fetchNow,20000);
 setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
+
+// ==================== دوال شاشة العرض الثانية ====================
+function loadDisplaySettings(){
+  // تحميل الإعدادات المحفوظة
+  document.getElementById('display-enabled').checked = localStorage.getItem('display-enabled') !== 'false';
+  document.getElementById('display-logo').checked = localStorage.getItem('display-logo') !== 'false';
+  document.getElementById('display-price').checked = localStorage.getItem('display-price') !== 'false';
+  document.getElementById('display-prices-table').checked = localStorage.getItem('display-prices-table') !== 'false';
+  document.getElementById('display-time').checked = localStorage.getItem('display-time') !== 'false';
+  document.getElementById('display-sell').checked = localStorage.getItem('display-sell') !== 'false';
+  document.getElementById('display-gulf').checked = localStorage.getItem('display-gulf') !== 'false';
+  document.getElementById('display-iraqi').checked = localStorage.getItem('display-iraqi') !== 'false';
+}
+
+function saveDisplaySettings(){
+  // حفظ إعدادات الشاشة الثانية
+  localStorage.setItem('display-enabled', document.getElementById('display-enabled').checked);
+  localStorage.setItem('display-logo', document.getElementById('display-logo').checked);
+  localStorage.setItem('display-price', document.getElementById('display-price').checked);
+  localStorage.setItem('display-prices-table', document.getElementById('display-prices-table').checked);
+  localStorage.setItem('display-time', document.getElementById('display-time').checked);
+  localStorage.setItem('display-sell', document.getElementById('display-sell').checked);
+  localStorage.setItem('display-gulf', document.getElementById('display-gulf').checked);
+  localStorage.setItem('display-iraqi', document.getElementById('display-iraqi').checked);
+}
+
+function openSecondDisplay(){
+  // حفظ الإعدادات أولاً
+  saveDisplaySettings();
+  
+  // فتح الملف الجديد في نافذة منفصلة
+  const displayWindow = window.open('zamzam-display-screen.html', 'displayScreen', 'width=1600,height=900,menubar=no,toolbar=no,location=no,status=no');
+  
+  // التأكد من أن النافذة لم يتم حجبها
+  if (!displayWindow) {
+    alert('تم حجب النافذة المنبثقة. يرجى السماح بالنوافذ المنبثقة من هذا الموقع.');
+    return;
+  }
+  
+  // تحديث البيانات في النافذة الجديدة
+  setTimeout(() => {
+    syncDisplayData(displayWindow);
+  }, 1000);
+  
+  // تحديث البيانات كل 5 ثواني
+  setInterval(() => {
+    if (!displayWindow.closed) {
+      syncDisplayData(displayWindow);
+    }
+  }, 5000);
+}
+
+function syncDisplayData(displayWindow) {
+  if (displayWindow && !displayWindow.closed) {
+    try {
+      // مزامنة الأسعار
+      const goldPrice = document.getElementById('gold-val').innerText;
+      const sellGram = document.getElementById('usd-gram-val').innerText;
+      const sellMithqal = document.getElementById('usd-mithqal-val').innerText;
+      const gulfGram = document.getElementById('gulf-gram-val').innerText;
+      const gulfMithqal = document.getElementById('gulf-mithqal-val').innerText;
+      const iraqiGram = document.getElementById('iraqi-gram-val').innerText;
+      const iraqiMithqal = document.getElementById('iraqi-mithqal-val').innerText;
+      
+      // حفظ البيانات في localStorage
+      localStorage.setItem('goldPrice', goldPrice);
+      localStorage.setItem('sellGram', sellGram);
+      localStorage.setItem('sellMithqal', sellMithqal);
+      localStorage.setItem('gulfGram', gulfGram);
+      localStorage.setItem('gulfMithqal', gulfMithqal);
+      localStorage.setItem('iraqiGram', iraqiGram);
+      localStorage.setItem('iraqiMithqal', iraqiMithqal);
+      
+      // تحديث النافذة
+      if (displayWindow.updatePrices) {
+        displayWindow.updatePrices();
+      }
+    } catch(e) {
+      console.log('خطأ في مزامنة البيانات:', e);
+    }
+  }
+}
+
+function closeSecondDisplay(){
+  if(window.display2Interval){
+    clearInterval(window.display2Interval);
+    window.display2Interval=null;
+  }
+}
+
+// تحميل الإعدادات عند فتح الصفحة
+window.addEventListener('load', function(){
+  loadDisplaySettings();
+});
+// ====================================================================
 </script>
 
 
