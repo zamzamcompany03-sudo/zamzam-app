@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/d7e84312-d4f8-48e8-9d1f-a99de3665762"><link rel="manifest" href="blob:null/54381271-87bd-4e45-bb53-bfbe8bde195a">
+</script><link rel="manifest" href="blob:null/ce2578c7-0568-423f-90fb-e9fd53acc30f"><link rel="manifest" href="blob:null/54381271-87bd-4e45-bb53-bfbe8bde195a">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -329,9 +329,9 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   <div class="card-header">
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
-      <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 105.558;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">4</text>
+      <circle id="ring-spin" cx="26" cy="26" r="21" style="display: block;"></circle>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: none; stroke-dashoffset: 0;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: none;">20</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -343,7 +343,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="price-block">
       <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
         <div id="price-arrow" style="font-size: 28px; min-width: 30px; text-align: center;">📈</div>
-        <div id="price-val" class="price-down">4,108.50</div>
+        <div id="price-val" class="price-down dim">4,107.10</div>
       </div>
       <div class="unit">💵 سعر الأونصة الآن</div>
       <div id="price-change" style="color: rgb(16, 185, 129); font-size: 14px; font-weight: 700;">📊 +0.00% منذ الساعة 12 صباحاً</div>
@@ -352,11 +352,11 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <!-- إشعار العودة للصفحة -->
     <div id="return-notification" style="display: none; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
       <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
-      <div id="return-change" style="font-size: 13px; color: rgb(16, 185, 129);">📈 ارتفع الذهب بنسبة 0.38% منذ آخر زيارة لك</div>
+      <div id="return-change" style="font-size: 13px; color: rgb(16, 185, 129);">📈 ارتفع الذهب بنسبة 0.34% منذ آخر زيارة لك</div>
     </div>
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 16 ثواني</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 19 ثواني</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
@@ -367,34 +367,34 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="section-wrap sell">
       <div class="section-title">🔶 سعر بيع المصاغ</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٧٩,١٩٦</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٨٩٥,٩٨٠</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٧٩,٠٥٦</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٨٩٥,٢٨٠</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap gulf">
       <div class="section-title">🔷 شراء كسر خليجي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٧٣,١٤٥</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٨٦٥,٧٢٨</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٧٣,٠٠٦</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٨٦٥,٠٣١</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap iraqi">
       <div class="section-title">🔸 شراء كسر عراقي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٤٨,١٤٥</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٤٠,٧٢٨</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٤٨,٠٠٦</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٤٠,٠٣١</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
   </div>
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 5 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 1 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٥٦</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٦٧</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">١٬١٥٣</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">١٬١٦٤</div></div>
     </div>
   </div>
 </div>
@@ -406,14 +406,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">10:36:16<span class="ampm"> AM</span></div>
+    <div id="clock">10:43:48<span class="ampm"> AM</span></div>
     <div id="datebox">١١ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
 
 <!-- عداد عمر الصفحة -->
 <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-  📅 الصفحة تعمل منذ <span id="age-time">1 دقيقة و36 ثواني</span>
+  📅 الصفحة تعمل منذ <span id="age-time">20 ثواني</span>
 </div>
 
 <!-- مؤشر حالة السوق -->
@@ -421,7 +421,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 <!-- عداد الزوار -->
 <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
-  👥 يوجد الآن <span id="visitor-num">2</span> زائر داخل الصفحة
+  👥 يوجد الآن <span id="visitor-num">3</span> زائر داخل الصفحة
 </div>
 
 
@@ -658,7 +658,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 
 
-<div id="save-toast" style="display: none;">✅ تم المشاركة بنجاح!</div>
+<div id="save-toast"></div>
 <button id="screenshot-btn"></button>
 
 <!-- مودال التقييم (يظهر عند الزيارة الثالثة) -->
@@ -1834,6 +1834,33 @@ updatePageAge();
 initCloudSync(); // تهيئة المزامنة السحابية ✅
 setInterval(updateMarketStatus,60000); // تحديث كل دقيقة
 setInterval(updatePageAge,1000); // تحديث عداد العمر كل ثانية
+
+// ===== حذف البيانات القديمة من localStorage =====
+function cleanOldData(){
+  try {
+    // احذف البيانات القديمة من التحديثات السابقة
+    localStorage.removeItem('mithqal-last-hour');
+    localStorage.removeItem('mithqal-day-start');
+    
+    // احذف price-at-noon القديمة إذا كانت من يوم سابق
+    const today=new Date().toDateString();
+    let priceAtNoonData=null;
+    try {
+      priceAtNoonData=JSON.parse(localStorage.getItem('price-at-noon')||'{}');
+    } catch(e) {}
+    
+    // إذا كانت البيانات من يوم سابق، احذفها
+    if(priceAtNoonData && priceAtNoonData.date && priceAtNoonData.date!==today){
+      localStorage.removeItem('price-at-noon');
+    }
+  }catch(e){}
+}
+
+// نظّف البيانات عند التحميل
+cleanOldData();
+
+// نظّف البيانات مرة كل ساعة
+setInterval(cleanOldData,3600000);
 
 fetchNow();
 setInterval(fetchNow,20000);
