@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/ce2578c7-0568-423f-90fb-e9fd53acc30f"><link rel="manifest" href="blob:null/54381271-87bd-4e45-bb53-bfbe8bde195a">
+</script><link rel="manifest" href="blob:null/0588d658-5f4a-4d24-8117-d3a951e1443c"><link rel="manifest" href="blob:null/54381271-87bd-4e45-bb53-bfbe8bde195a">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -330,8 +330,8 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
       <circle id="ring-spin" cx="26" cy="26" r="21" style="display: block;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: none; stroke-dashoffset: 0;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: none;">20</text>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: none; stroke-dashoffset: 125.35;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: none;">1</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -343,20 +343,20 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="price-block">
       <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
         <div id="price-arrow" style="font-size: 28px; min-width: 30px; text-align: center;">📈</div>
-        <div id="price-val" class="price-down dim">4,107.10</div>
+        <div id="price-val" class="price-up dim">4,097.90</div>
       </div>
       <div class="unit">💵 سعر الأونصة الآن</div>
-      <div id="price-change" style="color: rgb(16, 185, 129); font-size: 14px; font-weight: 700;">📊 +0.00% منذ الساعة 12 صباحاً</div>
+      <div id="price-change" style="color: rgb(16, 185, 129); font-size: 14px; font-weight: 700;">➡️ 0.00% منذ الساعة 12 صباحاً</div>
     </div>
     
     <!-- إشعار العودة للصفحة -->
     <div id="return-notification" style="display: none; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
       <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
-      <div id="return-change" style="font-size: 13px; color: rgb(16, 185, 129);">📈 ارتفع الذهب بنسبة 0.34% منذ آخر زيارة لك</div>
+      <div id="return-change" style="font-size: 13px; color: rgb(16, 185, 129);">📈 ارتفع الذهب بنسبة 0.12% منذ آخر زيارة لك</div>
     </div>
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 19 ثواني</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 9 ثواني</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
@@ -389,12 +389,12 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 20 ثانية · 1 تحديث</span>
+      <span id="count-label">كل 10 ثواني · 152 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٦٧</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">٩١</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">١٬١٦٤</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">١٬١٨٨</div></div>
     </div>
   </div>
 </div>
@@ -406,14 +406,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">10:43:48<span class="ampm"> AM</span></div>
+    <div id="clock">11:32:46<span class="ampm"> AM</span></div>
     <div id="datebox">١١ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
 
 <!-- عداد عمر الصفحة -->
 <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-  📅 الصفحة تعمل منذ <span id="age-time">20 ثواني</span>
+  📅 الصفحة تعمل منذ <span id="age-time">31 دقائق و15 ثواني</span>
 </div>
 
 <!-- مؤشر حالة السوق -->
@@ -421,7 +421,7 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 <!-- عداد الزوار -->
 <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
-  👥 يوجد الآن <span id="visitor-num">3</span> زائر داخل الصفحة
+  👥 يوجد الآن <span id="visitor-num">1</span> زائر داخل الصفحة
 </div>
 
 
@@ -743,7 +743,7 @@ const viewsRef=db.ref('views');
 const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
-let price=null,count=0,sec=20;
+let price=null,count=0,sec=10;
 let prevPrice=null,lastUpdateDate=new Date().toDateString(),priceAtDayStart=null;
 let mithqalAtDayStart=null;  // سعر المثقال من أمس (للمقارنة)
 // تم حذف متغيرات التنبيه
@@ -936,7 +936,7 @@ async function fetchNow(){
     document.getElementById('price-area').style.display='block';
     const priceElement=document.getElementById('price-val');
     priceElement.textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    document.getElementById('count-label').textContent='كل 20 ثانية · '+count+' تحديث';
+    document.getElementById('count-label').textContent='كل 10 ثواني · '+count+' تحديث';
     document.getElementById('error-box').style.display='none';
     
     // تأثير بصري: وميض + لون
@@ -970,7 +970,7 @@ async function fetchNow(){
     calcAll();
   }catch{
     if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
-  }finally{setBusy(false);sec=20;updateRing();}
+  }finally{setBusy(false);sec=10;updateRing();}
 }
 
 // ===== حالة السوق =====
@@ -1437,47 +1437,37 @@ function calcAll(){
     priceAtNoonData={};
   }
   
-  // إذا كان اليوم جديد ولا يوجد سعر محفوظ للـ 12 صباحاً
-  if(priceAtNoonData.date!==today) {
-    // إذا كنا في الساعة 12 صباحاً (0:00 إلى 0:59)
-    if(currentHour===0) {
-      priceAtNoonData={mithqalValue:currentMithqalPrice,date:today};
-      localStorage.setItem('price-at-noon',JSON.stringify(priceAtNoonData));
-      // حفظ في Firebase أيضاً للمزامنة بين الأجهزة
-      try{
-        db.ref('price-at-noon').set(priceAtNoonData).catch(()=>{});
-      }catch(e){}
-    }
-    // إذا لم نكن في الساعة 12 صباحاً (التطبيق فُتح بعد الـ 12 صباحاً)
-    else {
-      // حفظ السعر الحالي كسعر بداية اليوم
-      priceAtNoonData={mithqalValue:currentMithqalPrice,date:today};
-      localStorage.setItem('price-at-noon',JSON.stringify(priceAtNoonData));
-      try{
-        db.ref('price-at-noon').set(priceAtNoonData).catch(()=>{});
-      }catch(e){}
-    }
+  // إذا لم يكن هناك سعر محفوظ اليوم، حفظ السعر الحالي
+  if(!priceAtNoonData.date || priceAtNoonData.date!==today) {
+    priceAtNoonData={mithqalValue:currentMithqalPrice,date:today};
+    localStorage.setItem('price-at-noon',JSON.stringify(priceAtNoonData));
+    // حفظ في Firebase أيضاً للمزامنة بين الأجهزة
+    try{
+      db.ref('price-at-noon').set(priceAtNoonData).catch(()=>{});
+    }catch(e){}
   }
   
   // الحصول على سعر المثقال في الـ 12 صباحاً
   const noonMithqalPrice=priceAtNoonData.mithqalValue||currentMithqalPrice;
   
-  // حساب الفرق في المبلغ المالي (سعر المثقال الحالي - سعر المثقال في الـ 12 صباحاً)
+  // حساب نسبة التغير في سعر المثقال من الساعة 12 صباحاً
   const moneyDifference=currentMithqalPrice-noonMithqalPrice;
+  const percentChange=(moneyDifference/noonMithqalPrice)*100;
   const changeElement=document.getElementById('price-change');
   const arrowElement=document.getElementById('price-arrow');
   
-  if(Math.abs(moneyDifference)>0.1){
-    const sign=moneyDifference>0?'+':'';
-    const arrow=moneyDifference>0?'📈':'📉';
-    const diffFormatted=toArabicNum(Math.round(Math.abs(moneyDifference)));
-    arrowElement.textContent=arrow;
-    changeElement.textContent=arrow+' '+sign+diffFormatted+' د.ع منذ الساعة 12 صباحاً';
-    changeElement.style.color=moneyDifference>0?'#10b981':'#ef4444';
-  }else{
-    arrowElement.textContent='➡️';
-    changeElement.textContent='➡️ 0 د.ع منذ الساعة 12 صباحاً';
-    changeElement.style.color='#a89060';
+  if(changeElement && arrowElement){
+    if(Math.abs(percentChange)>0.01){
+      const sign=percentChange>0?'+':'';
+      const arrow=percentChange>0?'📈':'📉';
+      arrowElement.textContent=arrow;
+      changeElement.textContent=arrow+' '+sign+percentChange.toFixed(2)+'% منذ الساعة 12 صباحاً';
+      changeElement.style.color=percentChange>0?'#10b981':'#ef4444';
+    }else{
+      arrowElement.textContent='➡️';
+      changeElement.textContent='➡️ 0.00% منذ الساعة 12 صباحاً';
+      changeElement.style.color='#a89060';
+    }
   }
 }
 
@@ -1863,8 +1853,8 @@ cleanOldData();
 setInterval(cleanOldData,3600000);
 
 fetchNow();
-setInterval(fetchNow,20000);
-setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
+setInterval(fetchNow,10000);
+setInterval(()=>{sec=sec>1?sec-1:10;updateRing();},1000);
 
 // ==================== دوال شاشة العرض الثانية ====================
 function loadDisplaySettings(){
