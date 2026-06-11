@@ -1,4 +1,4 @@
-<html lang="ar" dir="rtl" style="--bg: #0a2a2a;"><head>
+<html lang="ar" dir="rtl" style="--bg: #100808;"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07090f">
@@ -32,7 +32,7 @@
   link.rel='manifest'; link.href=url;
   document.head.appendChild(link);
 })();
-</script><link rel="manifest" href="blob:null/3a987ce7-779d-4d96-a4ce-13cb65a5e0cc"><link rel="manifest" href="blob:null/54381271-87bd-4e45-bb53-bfbe8bde195a">
+</script><link rel="manifest" href="blob:null/492a40ba-39b4-4e75-a915-0d8406dd6239">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -330,8 +330,8 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <svg id="ring" viewBox="0 0 52 52">
       <circle id="ring-track" cx="26" cy="26" r="21"></circle>
       <circle id="ring-spin" cx="26" cy="26" r="21" style="display: none;"></circle>
-      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 72.5708;"></circle>
-      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">9</text>
+      <circle id="ring-fill" cx="26" cy="26" r="21" style="stroke-dasharray: 131.947; display: block; stroke-dashoffset: 39.5841;"></circle>
+      <text id="ring-text" x="26" y="31" text-anchor="middle" style="display: block;">14</text>
     </svg>
   </div>
   <div id="loading" style="display: none;">جار جلب السعر…</div>
@@ -341,22 +341,19 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
   </div>
   <div id="price-area" style="display: block;">
     <div class="price-block">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-        <div id="price-arrow" style="font-size: 28px; min-width: 30px; text-align: center;">📈</div>
-        <div id="price-val" class="price-down">4,087.10</div>
-      </div>
+      <div id="price-val" class="price-down">4,087.80</div>
       <div class="unit">💵 سعر الأونصة الآن</div>
-      <div id="price-change" style="color: rgb(16, 185, 129); font-size: 14px; font-weight: 700;">➡️ 0.00% منذ الساعة 12 صباحاً</div>
+      <div id="price-change" style="color: rgb(239, 68, 68);">🔴 -0.03% مقارنة بالأمس</div>
     </div>
     
     <!-- إشعار العودة للصفحة -->
     <div id="return-notification" style="display: block; margin-top: 12px; padding: 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-family: Cairo, sans-serif; color: rgb(59, 130, 246); font-weight: 700;">
       <div style="font-size:14px;margin-bottom:6px;">👋 أهلاً بعودتك!</div>
-      <div id="return-change" style="font-size: 13px; color: rgb(239, 68, 68);">📉 انخفض الذهب بنسبة 0.14% منذ آخر زيارة لك</div>
+      <div id="return-change" style="font-size: 13px; color: rgb(239, 68, 68);">📉 انخفض الذهب بنسبة 0.13% منذ آخر زيارة لك</div>
     </div>
     
     <!-- شارة آخر تحديث -->
-    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(34, 197, 94);">🟢 تم التحديث الآن</div>
+    <div id="last-update" style="margin-top: 10px; padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; font-family: Cairo, sans-serif; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: rgb(148, 163, 184);">⏱️ آخر تحديث قبل 6 ثواني</div>
     
     <!-- زر مشاركة الصورة -->
     <button id="share-price-btn" onclick="shareAsImage()" style="width:100%;margin-top:10px;padding:12px;background:rgba(100,180,255,0.15);border:1px solid rgba(100,180,255,0.3);color:#64b4ff;border-radius:12px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:13px;transition:all 0.3s;">
@@ -367,37 +364,37 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <div class="section-wrap sell">
       <div class="section-title">🔶 سعر بيع المصاغ</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٧٩,٢٨٣</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٨٩٦,٤١٨</div><div class="masagh-currency">دينار عراقي</div><div id="mithqal-decrease-badge" style="display:none;margin-top:6px;color:#ef4444;font-size:11px;font-weight:700;">📉 انخفاض منذ آخر زيارة</div></div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gram-val">١٧٨,٢٨١</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="mithqal-val">٨٩١,٤٠٦</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap gulf">
       <div class="section-title">🔷 شراء كسر خليجي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٧٣,٢٣٢</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٨٦٦,١٦٣</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="gulf-gram-val">١٧٢,٢٣٥</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="gulf-mithqal-val">٨٦١,١٧٩</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
     <div class="section-wrap iraqi">
       <div class="section-title">🔸 شراء كسر عراقي</div>
       <div class="masagh-row">
-        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٤٨,٢٣٢</div><div class="masagh-currency">دينار عراقي</div></div>
-        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٤١,١٦٣</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر الغرام</div><div class="masagh-val" id="iraqi-gram-val">١٤٧,٢٣٥</div><div class="masagh-currency">دينار عراقي</div></div>
+        <div class="masagh-cell"><div class="masagh-label">سعر المثقال</div><div class="masagh-val" id="iraqi-mithqal-val">٧٣٦,١٧٩</div><div class="masagh-currency">دينار عراقي</div></div>
       </div>
     </div>
   </div>
   <div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
     <div class="footer-row">
       <button id="settings-btn" onclick="openPasswordModal()">⚙️ إعدادات</button>
-      <span id="count-label">كل 10 ثواني · 1 تحديث</span>
+      <span id="count-label">كل 20 ثانية · 2 تحديث</span>
     </div>
     <div class="views-row">
-      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">١١٥</div></div>
+      <div class="view-item"><div class="view-lbl">👁️ مشاهدات اليوم</div><div class="view-val" id="today-views">١٢٥</div></div>
       <div class="views-divider"></div>
-      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">١٬٢١٢</div></div>
+      <div class="view-item"><div class="view-lbl">📊 إجمالي المشاهدات</div><div class="view-val" id="total-views">١٬٢٢٢</div></div>
     </div>
   </div>
-
+</div>
 
 <!-- ساعة + تاريخ + كاميرا -->
 <div class="clock-box">
@@ -406,14 +403,14 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
     <span>مشاركة</span>
   </button>
   <div class="clock-inner">
-    <div id="clock">12:15:47<span class="ampm"> PM</span></div>
+    <div id="clock">12:20:51<span class="ampm"> PM</span></div>
     <div id="datebox">١١ / ٦ / ٢٠٢٦</div>
   </div>
 </div>
 
 <!-- عداد عمر الصفحة -->
 <div id="page-age" style="margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-size:12px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(168,144,96,0.08);border:1px solid rgba(168,144,96,0.2);color:#a89060;">
-  📅 الصفحة تعمل منذ <span id="age-time">7 ثواني</span>
+  📅 الصفحة تعمل منذ <span id="age-time">26 ثواني</span>
 </div>
 
 <!-- مؤشر حالة السوق -->
@@ -421,10 +418,20 @@ body{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;al
 
 <!-- عداد الزوار -->
 <div id="visitors-count" style="margin-top:8px;padding:10px;border-radius:12px;text-align:center;font-size:13px;font-weight:700;font-family:Cairo,sans-serif;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.2);color:#64b4ff;">
-  👥 يوجد الآن <span id="visitor-num">2</span> زائر داخل الصفحة
+  👥 يوجد الآن <span id="visitor-num">1</span> زائر داخل الصفحة
 </div>
 
-
+<!-- تنبيه السعر -->
+<div id="alert-section" style="margin-top:10px;padding:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;">
+  <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;font-size:13px;font-weight:700;color:#FFD700;font-family:Cairo,sans-serif;">
+    🔔 تنبيه السعر
+  </div>
+  <div style="display:flex;gap:6px;">
+    <input type="number" id="alert-price" placeholder="أدخل السعر المستهدف" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,215,0,0.3);background:rgba(0,0,0,0.3);color:#FFD700;font-family:Cairo,sans-serif;font-size:12px;" step="0.01" min="0">
+    <button id="alert-btn" onclick="togglePriceAlert()" style="padding:8px 14px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#FFD700;border-radius:8px;cursor:pointer;font-weight:700;font-family:Cairo,sans-serif;font-size:12px;transition:all 0.3s;">تفعيل</button>
+  </div>
+  <div id="alert-status" style="margin-top:6px;font-size:11px;color:#a89060;font-family:Cairo,sans-serif;min-height:14px;"></div>
+</div>
 
 <!-- زر التطبيق -->
 <button id="install-btn" onclick="showInstallModal()">📲 أضف التطبيق على شاشتك الرئيسية</button>
@@ -743,10 +750,10 @@ const viewsRef=db.ref('views');
 const C=2*Math.PI*21;
 const ringFill=document.getElementById('ring-fill'),ringText=document.getElementById('ring-text'),ringSpin=document.getElementById('ring-spin');
 ringFill.style.strokeDasharray=C;
-let price=null,count=0,sec=10;
+let price=null,count=0,sec=20;
 let prevPrice=null,lastUpdateDate=new Date().toDateString(),priceAtDayStart=null;
 let mithqalAtDayStart=null;  // سعر المثقال من أمس (للمقارنة)
-// تم حذف متغيرات التنبيه
+let alertEnabled=false,alertPrice=null,alertTriggered=false;
 let lastUpdateTime=null,updateTimerInterval=null;
 let pageStartTime=Date.now(),lastVisitPrice=null,lastVisitTime=null;
 let pageAgeInterval=null;
@@ -899,16 +906,6 @@ settingsRef.on('value',function(snapshot){
   if(o){applySettings_obj(o);}
 });
 
-// جلب سعر الساعة 12 صباحاً من Firebase والـ localStorage
-db.ref('price-at-noon').once('value')
-  .then(function(snapshot){
-    const firebaseData=snapshot.val();
-    if(firebaseData){
-      localStorage.setItem('price-at-noon',JSON.stringify(firebaseData));
-    }
-  })
-  .catch(function(){});
-
 function toArabicNum(n){
   const num=Math.floor(n/1000);const str=num.toString();const d=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
   let w='';for(let i=0;i<str.length;i++){if(i>0&&(str.length-i)%3===0)w+=',';w+=str[i];}
@@ -936,7 +933,7 @@ async function fetchNow(){
     document.getElementById('price-area').style.display='block';
     const priceElement=document.getElementById('price-val');
     priceElement.textContent=price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    document.getElementById('count-label').textContent='كل 10 ثواني · '+count+' تحديث';
+    document.getElementById('count-label').textContent='كل 20 ثانية · '+count+' تحديث';
     document.getElementById('error-box').style.display='none';
     
     // تأثير بصري: وميض + لون
@@ -970,7 +967,7 @@ async function fetchNow(){
     calcAll();
   }catch{
     if(!price){document.getElementById('loading').style.display='none';document.getElementById('error-box').style.display='block';}
-  }finally{setBusy(false);sec=10;updateRing();}
+  }finally{setBusy(false);sec=20;updateRing();}
 }
 
 // ===== حالة السوق =====
@@ -1050,17 +1047,82 @@ function initVisitorCount(){
   }
 }
 
+// ===== تنبيه السعر =====
+function togglePriceAlert(){
+  const priceInput=document.getElementById('alert-price');
+  const inputValue=parseFloat(priceInput.value);
+  
+  if(!inputValue||inputValue<=0){
+    document.getElementById('alert-status').textContent='⚠️ أدخل سعراً صحيحاً';
+    return;
+  }
+  
+  alertEnabled=!alertEnabled;
+  if(alertEnabled){
+    alertPrice=inputValue;
+    alertTriggered=false;
+    document.getElementById('alert-btn').style.background='rgba(34,197,94,0.2)';
+    document.getElementById('alert-btn').style.borderColor='rgba(34,197,94,0.5)';
+    document.getElementById('alert-btn').textContent='✓ مفعّل';
+    document.getElementById('alert-status').textContent=`✅ التنبيه فعال عند وصول السعر إلى $${inputValue.toFixed(2)}`;
+  }else{
+    alertTriggered=false;
+    document.getElementById('alert-btn').style.background='rgba(255,215,0,0.15)';
+    document.getElementById('alert-btn').style.borderColor='rgba(255,215,0,0.3)';
+    document.getElementById('alert-btn').textContent='تفعيل';
+    document.getElementById('alert-status').textContent='⏹️ التنبيه معطل';
+  }
+  priceInput.disabled=alertEnabled;
+}
+
+function checkPriceAlert(){
+  if(!alertEnabled||!alertPrice||alertTriggered||!price)return;
+  
+  if(price>=alertPrice){
+    alertTriggered=true;
+    triggerAlert();
+  }
+}
+
+function triggerAlert(){
+  const statusEl=document.getElementById('alert-status');
+  statusEl.textContent='🎉 تم الوصول للسعر المستهدف! '+price.toFixed(2);
+  statusEl.style.color='#10b981';
+  statusEl.style.fontWeight='900';
+  
+  // تشغيل صوت (اختياري)
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value=800;
+    osc.type='sine';
+    gain.gain.setValueAtTime(0.3,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime+0.5);
+  }catch(e){}
+  
+  // إعادة تعيين بعد 5 ثواني
+  setTimeout(()=>{
+    alertEnabled=false;
+    document.getElementById('alert-btn').style.background='rgba(255,215,0,0.15)';
+    document.getElementById('alert-btn').style.borderColor='rgba(255,215,0,0.3)';
+    document.getElementById('alert-btn').textContent='تفعيل';
+    document.getElementById('alert-price').disabled=false;
+  },5000);
+}
+
 // ===== حفظ واسترجاع البيانات =====
 function saveVisitData(){
-  // حساب سعر المثقال الحالي
-  const currentMithqalVal = document.getElementById('mithqal-val').textContent;
-  
   const data={
     lastVisitPrice:price,
     lastVisitTime:Date.now(),
     alertPrice:alertPrice,
     alertEnabled:alertEnabled,
-    lastMithqalPrice:currentMithqalVal,
+
   };
   localStorage.setItem('zamzam-visit-data',JSON.stringify(data));
   
@@ -1107,18 +1169,6 @@ function checkReturnNotification(){
       changeEl.textContent='⚪ السعر ثابت منذ آخر زيارة لك';
       changeEl.style.color='#a89060';
     }
-    
-    // ===== عرض مؤشر انخفاض المثقال =====
-    const currentMithqalVal = document.getElementById('mithqal-val').textContent;
-    const lastMithqalVal = localStorage.getItem('zamzam-last-mithqal');
-    
-    if(lastMithqalVal && currentMithqalVal < lastMithqalVal){
-      const mithqalBadge = document.getElementById('mithqal-decrease-badge');
-      if(mithqalBadge) mithqalBadge.style.display='block';
-    }
-    
-    // حفظ المثقال الحالي
-    localStorage.setItem('zamzam-last-mithqal', currentMithqalVal);
     
     // إخفاء الإشعار بعد 8 ثواني
     setTimeout(()=>{notifEl.style.display='none';},8000);
@@ -1196,91 +1246,13 @@ function updateLastUpdateTime(){
 
 // ===== مشاركة السعر كصورة =====
 function shareAsImage(){
-  try {
-    // التحقق من تحميل html2canvas
-    if(typeof html2canvas==='undefined'){
-      showSaveToast('⚠️ جاري تحميل مكتبة الصور...');
-      setTimeout(shareAsImage,2000);
-      return;
-    }
-    
-    const now=new Date();
-    const dateStr=toAr(now.getDate())+'/'+toAr(now.getMonth()+1)+'/'+toAr(now.getFullYear());
-    const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-    
-    // إنشاء عنصر مؤقت للصورة
-    const container=document.createElement('div');
-    container.style.cssText='position:fixed;left:-9999px;top:-9999px;width:1080px;height:auto;background:linear-gradient(135deg,#07090f 0%,#0f1219 100%);padding:40px;border-radius:20px;direction:rtl;font-family:Cairo,sans-serif;';
-    
-    const html=`
-      <div style="text-align:center;color:#FFD700;margin-bottom:30px;border-bottom:2px solid rgba(255,215,0,0.3);padding-bottom:20px;">
-        <div style="font-size:28px;font-weight:900;">شركة زمزم 💎</div>
-        <div style="font-size:16px;margin-top:8px;color:#a89060;">أسعار ذهب حقيقية مباشرة</div>
-      </div>
-      
-      <div style="background:rgba(255,215,0,0.05);border:2px solid rgba(255,215,0,0.2);border-radius:15px;padding:30px;margin-bottom:20px;text-align:center;">
-        <div style="color:#FFD700;font-size:48px;font-weight:900;margin:15px 0;">${document.getElementById('price-val')?.textContent||'N/A'}</div>
-        <div style="color:#10b981;font-size:18px;font-weight:700;margin:10px 0;">سعر الأونصة الآن 💵</div>
-        <div style="color:#10b981;font-size:16px;margin-top:10px;">${document.getElementById('price-change')?.textContent||'التحديث جاري...'}</div>
-      </div>
-      
-      <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:15px;margin-bottom:20px;">
-        <div style="color:#10b981;font-size:14px;text-align:center;font-weight:700;">
-          ⏰ ${timeStr} | 📅 ${dateStr}
-        </div>
-      </div>
-      
-      <div style="color:#a89060;font-size:12px;text-align:center;margin-top:20px;border-top:1px solid rgba(255,215,0,0.2);padding-top:15px;">
-        شركة زمزم للذهب - الرمادي - الأنبار - شارع الصياغ
-      </div>
-    `;
-    
-    container.innerHTML=html;
-    document.body.appendChild(container);
-    
-    showSaveToast('⏳ جاري إنشاء الصورة...');
-    
-    html2canvas(container,{
-      scale:2,
-      useCORS:true,
-      backgroundColor:'#07090f',
-      logging:false,
-      allowTaint:true
-    }).then(canvas=>{
-      document.body.removeChild(container);
-      
-      canvas.toBlob(blob=>{
-        if(!blob){
-          showSaveToast('❌ فشل إنشاء الصورة');
-          return;
-        }
-        
-        const filename='zamzam-gold-'+dateStr.replace(/\//g,'-')+'.png';
-        
-        // محاولة المشاركة
-        if(navigator.share){
-          const file=new File([blob],filename,{type:'image/png'});
-          navigator.share({
-            files:[file],
-            title:'سعر الذهب من زمزم',
-            text:'صورة سعر الذهب'
-          }).then(()=>{
-            showSaveToast('✅ تم المشاركة بنجاح!');
-          }).catch(()=>{
-            fallbackDownload(blob,filename);
-          });
-        }else{
-          fallbackDownload(blob,filename);
-        }
-      },'image/png',0.95);
-    }).catch(err=>{
-      document.body.removeChild(container);
-      showSaveToast('❌ خطأ: جرب مرة أخرى');
-    });
-    
-  }catch(e){
-    showSaveToast('❌ حدث خطأ في المشاركة');
-  }
+  const now=new Date();
+  const dateStr=toAr(now.getDate())+'/'+toAr(now.getMonth()+1)+'/'+toAr(now.getFullYear());
+  const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  
+  // إنشاء عنصر مؤقت للصورة
+  const container=document.createElement('div');
+  container.style.cssText='position:fixed;left:-9999px;top:-9999px;width:1080px;background:linear-gradient(135deg,#07090f 0%,#0f1219 100%);padding:40px;border-radius:20px;direction:rtl;font-family:Cairo,sans-serif;';
   
   const html=`
     <div style="text-align:center;color:#FFD700;margin-bottom:30px;border-bottom:2px solid rgba(255,215,0,0.3);padding-bottom:20px;">
@@ -1402,6 +1374,7 @@ function showSaveToast(message){
 
 function calcAll(){
   if(!price)return;
+  checkPriceAlert();
   updateLastUpdateTime();
   checkReturnNotification();
   saveVisitData();
@@ -1436,53 +1409,31 @@ function calcAll(){
   document.getElementById('iraqi-gram-val').textContent=iraqiGramVal;
   document.getElementById('iraqi-mithqal-val').textContent=iraqiMithqalVal;
   
-  // حساب المقارنة بناءً على سعر المثقال من الساعة 12 صباحاً
-  const currentTime=new Date();
-  const currentHour=currentTime.getHours();
-  const today=currentTime.toDateString();
+  // حساب المقارنة بناءً على سعر المثقال من سعر بيع المصاغ (24 ساعة الماضية)
+  const currentMithqal=gram*5;  // سعر المثقال الحالي
   
-  // سعر المثقال الحالي (بيع المصاغ)
-  const currentMithqalPrice=gram*5;
-  
-  // الحصول على سعر المثقال في الـ 12 صباحاً من localStorage
-  let priceAtNoonData=null;
-  try {
-    priceAtNoonData=JSON.parse(localStorage.getItem('price-at-noon')||'{}');
-  } catch(e) {
-    priceAtNoonData={};
+  // حفظ سعر المثقال عند أول تحديث لكل يوم
+  if(!mithqalAtDayStart){
+    mithqalAtDayStart=currentMithqal;
+    localStorage.setItem('mithqal-day-start',mithqalAtDayStart.toString());
   }
   
-  // إذا لم يكن هناك سعر محفوظ اليوم، حفظ السعر الحالي
-  if(!priceAtNoonData.date || priceAtNoonData.date!==today) {
-    priceAtNoonData={mithqalValue:currentMithqalPrice,date:today};
-    localStorage.setItem('price-at-noon',JSON.stringify(priceAtNoonData));
-    // حفظ في Firebase أيضاً للمزامنة بين الأجهزة
-    try{
-      db.ref('price-at-noon').set(priceAtNoonData).catch(()=>{});
-    }catch(e){}
-  }
+  // استرجاع سعر المثقال من أمس من localStorage
+  let previousMithqal=parseFloat(localStorage.getItem('mithqal-day-start')||mithqalAtDayStart);
   
-  // الحصول على سعر المثقال في الـ 12 صباحاً
-  const noonMithqalPrice=priceAtNoonData.mithqalValue||currentMithqalPrice;
-  
-  // حساب نسبة التغير في سعر المثقال من الساعة 12 صباحاً
-  const moneyDifference=currentMithqalPrice-noonMithqalPrice;
-  const percentChange=(moneyDifference/noonMithqalPrice)*100;
+  // حساب نسبة التغير
+  const changeAmount=currentMithqal-previousMithqal;
+  const changePercent=(changeAmount/previousMithqal)*100;
   const changeElement=document.getElementById('price-change');
-  const arrowElement=document.getElementById('price-arrow');
   
-  if(changeElement && arrowElement){
-    if(Math.abs(percentChange)>0.01){
-      const sign=percentChange>0?'+':'';
-      const arrow=percentChange>0?'📈':'📉';
-      arrowElement.textContent=arrow;
-      changeElement.textContent=arrow+' '+sign+percentChange.toFixed(2)+'% منذ الساعة 12 صباحاً';
-      changeElement.style.color=percentChange>0?'#10b981':'#ef4444';
-    }else{
-      arrowElement.textContent='➡️';
-      changeElement.textContent='➡️ 0.00% منذ الساعة 12 صباحاً';
-      changeElement.style.color='#a89060';
-    }
+  if(Math.abs(changeAmount)>0.01){
+    const icon=changeAmount>0?'🟢':changeAmount<0?'🔴':'⚪';
+    const sign=changeAmount>0?'+':'';
+    changeElement.textContent=icon+' '+sign+changePercent.toFixed(2)+'% مقارنة بالأمس';
+    changeElement.style.color=changeAmount>0?'#10b981':'#ef4444';
+  }else{
+    changeElement.textContent='⚪ 0.00% مقارنة بالأمس';
+    changeElement.style.color='#a89060';
   }
 }
 
@@ -1495,37 +1446,26 @@ function openPasswordModal(){
 }
 function closePasswordModal(){
   document.getElementById('password-modal').classList.remove('show');
-  // إغلاق الإعدادات أيضاً إذا كانت مفتوحة
-  closeSettings();
+  auth.signOut();
 }
-function confirmPassword(){
+async function confirmPassword(){
   const pw=document.getElementById('password-input').value.trim();
-  if(!pw){
-    document.getElementById('password-error').style.display='block';
-    return;
-  }
-  
-  // كلمة المرور الافتراضية: 1234
-  const correctPassword='1234';
-  
+  if(!pw)return;
   document.getElementById('password-error').style.display='none';
   document.getElementById('pw-loading').style.display='block';
   document.getElementById('confirm-pass-btn').disabled=true;
-  
-  // محاكاة تأخير قصير
-  setTimeout(() => {
-    if(pw === correctPassword){
-      document.getElementById('password-modal').classList.remove('show');
-      document.getElementById('pw-loading').style.display='none';
-      document.getElementById('confirm-pass-btn').disabled=false;
-      openSettings();
-    }else{
-      document.getElementById('pw-loading').style.display='none';
-      document.getElementById('confirm-pass-btn').disabled=false;
-      document.getElementById('password-error').style.display='block';
-      document.getElementById('password-input').value='';
-    }
-  }, 300);
+  try{
+    await auth.signInWithEmailAndPassword('zamzamcompany0@gmail.com', pw);
+    document.getElementById('pw-loading').style.display='none';
+    document.getElementById('confirm-pass-btn').disabled=false;
+    closePasswordModal();
+    openSettings();
+  }catch(e){
+    document.getElementById('pw-loading').style.display='none';
+    document.getElementById('confirm-pass-btn').disabled=false;
+    document.getElementById('password-error').style.display='block';
+    document.getElementById('password-input').value='';
+  }
 }
 
 function applySettings(){
@@ -1851,36 +1791,9 @@ initCloudSync(); // تهيئة المزامنة السحابية ✅
 setInterval(updateMarketStatus,60000); // تحديث كل دقيقة
 setInterval(updatePageAge,1000); // تحديث عداد العمر كل ثانية
 
-// ===== حذف البيانات القديمة من localStorage =====
-function cleanOldData(){
-  try {
-    // احذف البيانات القديمة من التحديثات السابقة
-    localStorage.removeItem('mithqal-last-hour');
-    localStorage.removeItem('mithqal-day-start');
-    
-    // احذف price-at-noon القديمة إذا كانت من يوم سابق
-    const today=new Date().toDateString();
-    let priceAtNoonData=null;
-    try {
-      priceAtNoonData=JSON.parse(localStorage.getItem('price-at-noon')||'{}');
-    } catch(e) {}
-    
-    // إذا كانت البيانات من يوم سابق، احذفها
-    if(priceAtNoonData && priceAtNoonData.date && priceAtNoonData.date!==today){
-      localStorage.removeItem('price-at-noon');
-    }
-  }catch(e){}
-}
-
-// نظّف البيانات عند التحميل
-cleanOldData();
-
-// نظّف البيانات مرة كل ساعة
-setInterval(cleanOldData,3600000);
-
 fetchNow();
-setInterval(fetchNow,10000);
-setInterval(()=>{sec=sec>1?sec-1:10;updateRing();},1000);
+setInterval(fetchNow,20000);
+setInterval(()=>{sec=sec>1?sec-1:20;updateRing();},1000);
 
 // ==================== دوال شاشة العرض الثانية ====================
 function loadDisplaySettings(){
@@ -2420,45 +2333,7 @@ function exportRatingsJSON(){
 window.addEventListener('load', initRatingSystem);
 
 // ====================================================================
-// نظام تغيير الخلفية كل 24 ساعة 🎨
-function initializeDailyBackgroundColor() {
-  // مجموعة الألوان الجميلة
-  const colors = [
-    '#0a0a1a', // الأزرق الداكن (الأصلي)
-    '#1a0a0a', // الأحمر الداكن
-    '#0a1a0a', // الأخضر الداكن
-    '#1a1a0a', // الأصفر الداكن
-    '#0a0a2a', // الأزرق الملكي
-    '#2a0a1a', // الوردي الداكن
-    '#0a2a2a', // السماوي الداكن
-    '#0a0a3a', // الأزرق الأعمق
-    '#2a1a0a', // البرتقالي الداكن
-    '#0a1a1a', // التركواز الداكن
-    '#1a2a0a', // الزيتي الداكن
-    '#2a0a2a'  // الأرجواني الداكن
-  ];
-  
-  // حساب رقم اليوم من السنة
-  const today = new Date();
-  const startOfYear = new Date(today.getFullYear(), 0, 0);
-  const diff = today - startOfYear;
-  const oneDay = 1000 * 60 * 60 * 24;
-  const dayOfYear = Math.floor(diff / oneDay);
-  
-  // اختيار اللون بناءً على اليوم
-  const colorIndex = dayOfYear % colors.length;
-  const selectedColor = colors[colorIndex];
-  
-  // تطبيق اللون على CSS variable
-  document.documentElement.style.setProperty('--bg', selectedColor);
-}
-
-// تشغيل عند التحميل
-window.addEventListener('load', initializeDailyBackgroundColor);
-
-// ====================================================================
 </script>
-
 
 
 </body></html>
