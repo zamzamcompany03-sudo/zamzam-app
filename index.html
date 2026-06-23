@@ -1939,13 +1939,12 @@
         });
 
         function openSettings() {
-            _settingsOpen = true;
             if (!_authReady) {
-                setTimeout(openSettings, 100);
+                setTimeout(openSettings, 150);
                 return;
             }
             if (_authUser) {
-                // مسجل دخول - افتح الإعدادات مباشرة
+                _settingsOpen = true;
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
             } else {
