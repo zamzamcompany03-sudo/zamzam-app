@@ -1932,6 +1932,13 @@
         let _settingsInterval = null;
         let _authUser = null;
 
+        function showAuthModal() {
+            let am = document.getElementById('auth-modal');
+            if (!am) return;
+            am.style.display = 'flex';
+            am.style.visibility = 'visible';
+        }
+
         function openSettings() {
             showAuthModal();
         }
