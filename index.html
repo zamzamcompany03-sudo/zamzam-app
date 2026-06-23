@@ -1939,17 +1939,19 @@
         });
 
         function openSettings() {
-            let am = document.getElementById('auth-modal');
-            am.style.display = 'flex';
-            am.style.position = 'fixed';
-            am.style.top = '0';
-            am.style.left = '0';
-            am.style.width = '100%';
-            am.style.height = '100%';
-            am.style.zIndex = '999999';
-            am.style.alignItems = 'center';
-            am.style.justifyContent = 'center';
-            am.style.background = 'rgba(0,0,0,0.85)';
+            _settingsOpen = true;
+            if (!_authReady) {
+                setTimeout(openSettings, 100);
+                return;
+            }
+            if (_authUser) {
+                // مسجل دخول - افتح الإعدادات مباشرة
+                document.getElementById('settingsPanel').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+            } else {
+                // غير مسجل - اعرض نافذة تسجيل الدخول
+                document.getElementById('auth-modal').style.display = 'flex';
+            }
         }
 
         function closeAuthModal() {
@@ -1974,18 +1976,12 @@
             btn.disabled = true;
 
             try {
-                let snap = await database.ref('zamzam-company/adminAuth').once('value');
-                let adminData = snap.val();
-                if (adminData && email === adminData.email && pass === adminData.password) {
-                    closeAuthModal();
-                    _settingsOpen = true;
-                    document.getElementById('settingsPanel').classList.add('active');
-                    document.getElementById('overlay').classList.add('active');
-                } else {
-                    errEl.textContent = 'إيميل أو كلمة مرور غلط';
-                }
+                await auth.signInWithEmailAndPassword(email, pass);
+                closeAuthModal();
+                document.getElementById('settingsPanel').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
             } catch(e) {
-                errEl.textContent = 'خطأ في الاتصال، حاول مجدداً';
+                errEl.textContent = 'إيميل أو كلمة مرور غلط';
             }
 
             btn.textContent = 'دخول';
@@ -3523,7 +3519,7 @@
     </div>
 
     <!-- نافذة تسجيل الدخول -->
-    <div id="auth-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999999;align-items:center;justify-content:center;">
+    <div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;">
         <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;">
             <div style="font-size:28px;margin-bottom:8px;">🔐</div>
             <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
