@@ -1937,21 +1937,25 @@
             _authReady = true;
             _authUser = user;
         });
+        // إذا Firebase ما رد خلال 3 ثواني، اعتبره جاهز
+        setTimeout(() => { _authReady = true; }, 3000);
 
         function openSettings() {
-            if (!_authReady) {
-                setTimeout(openSettings, 150);
+            // إذا Firebase جاهز - افتح مباشرة
+            if (_authReady) {
+                if (_authUser) {
+                    _settingsOpen = true;
+                    document.getElementById('settingsPanel').classList.add('active');
+                    document.getElementById('overlay').classList.add('active');
+                } else {
+                    let am = document.getElementById('auth-modal');
+                    am.style.cssText = 'display:flex !important;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;';
+                }
                 return;
             }
-            if (_authUser) {
-                _settingsOpen = true;
-                document.getElementById('settingsPanel').classList.add('active');
-                document.getElementById('overlay').classList.add('active');
-            } else {
-                // غير مسجل - اعرض نافذة تسجيل الدخول
-                let am = document.getElementById('auth-modal');
-                am.style.cssText = 'display:flex !important;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;';
-            }
+            // Firebase لم يجاوب بعد - اعرض نافذة تسجيل الدخول مباشرة بدون انتظار
+            let am = document.getElementById('auth-modal');
+            am.style.cssText = 'display:flex !important;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;';
         }
 
         function closeAuthModal() {
