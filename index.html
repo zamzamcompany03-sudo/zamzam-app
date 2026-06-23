@@ -1940,7 +1940,16 @@
 
         function openSettings() {
             let am = document.getElementById('auth-modal');
-            am.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;';
+            am.style.display = 'flex';
+            am.style.position = 'fixed';
+            am.style.top = '0';
+            am.style.left = '0';
+            am.style.width = '100%';
+            am.style.height = '100%';
+            am.style.zIndex = '999999';
+            am.style.alignItems = 'center';
+            am.style.justifyContent = 'center';
+            am.style.background = 'rgba(0,0,0,0.85)';
         }
 
         function closeAuthModal() {
@@ -3514,7 +3523,7 @@
     </div>
 
     <!-- نافذة تسجيل الدخول -->
-    <div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;">
+    <div id="auth-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999999;align-items:center;justify-content:center;">
         <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;">
             <div style="font-size:28px;margin-bottom:8px;">🔐</div>
             <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
