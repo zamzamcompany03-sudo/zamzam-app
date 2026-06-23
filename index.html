@@ -1928,40 +1928,12 @@
 
         // SETTINGS
         // حالة Auth - false = لم يتحقق بعد
-        let _authReady = false;
         let _settingsOpen = false;
         let _settingsInterval = null;
         let _authUser = null;
 
-        auth.onAuthStateChanged(user => {
-            _authReady = true;
-            _authUser = user;
-        });
-
-        function showAuthModal() {
-            let am = document.getElementById('auth-modal');
-            if (!am) return;
-            am.style.display = 'flex';
-            am.style.visibility = 'visible';
-            am.style.zIndex = '99999';
-            am.style.position = 'fixed';
-            am.style.top = '0';
-            am.style.left = '0';
-            am.style.right = '0';
-            am.style.bottom = '0';
-            am.style.alignItems = 'center';
-            am.style.justifyContent = 'center';
-            am.style.background = 'rgba(0,0,0,0.85)';
-        }
-
         function openSettings() {
-            if (_authReady && _authUser) {
-                _settingsOpen = true;
-                document.getElementById('settingsPanel').classList.add('active');
-                document.getElementById('overlay').classList.add('active');
-            } else {
-                showAuthModal();
-            }
+            showAuthModal();
         }
 
                 function closeAuthModal() {
@@ -1986,12 +1958,20 @@
             btn.disabled = true;
 
             try {
-                await auth.signInWithEmailAndPassword(email, pass);
-                closeAuthModal();
-                document.getElementById('settingsPanel').classList.add('active');
-                document.getElementById('overlay').classList.add('active');
+                // جلب بيانات الدخول من Firebase Database
+                let snap = await database.ref('zamzam-company/adminAuth').once('value');
+                let adminData = snap.val();
+                
+                if (adminData && email === adminData.email && pass === adminData.password) {
+                    closeAuthModal();
+                    _settingsOpen = true;
+                    document.getElementById('settingsPanel').classList.add('active');
+                    document.getElementById('overlay').classList.add('active');
+                } else {
+                    errEl.textContent = 'إيميل أو كلمة مرور غلط';
+                }
             } catch(e) {
-                errEl.textContent = 'إيميل أو كلمة مرور غلط';
+                errEl.textContent = 'خطأ في الاتصال، حاول مجدداً';
             }
 
             btn.textContent = 'دخول';
@@ -1999,7 +1979,7 @@
         }
 
         function doLogout() {
-            auth.signOut();
+            // لا شي
         }
 
         function closeSettings() {
