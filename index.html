@@ -1991,19 +1991,16 @@
             btn.textContent = 'جاري التحقق...';
             btn.disabled = true;
             const inputHash = await hashPassword(pass);
-            // كلمة مرور الإدارة محفوظة في Firebase
-            database.ref('zamzam-company/adminAuth/passHash').once('value', snap => {
-                const storedHash = snap.val();
-                if (storedHash && inputHash === storedHash) {
-                    closeAuthModal();
-                    document.getElementById('settingsPanel').classList.add('active');
-                    document.getElementById('overlay').classList.add('active');
-                } else {
-                    errEl.textContent = 'كلمة المرور غير صحيحة';
-                }
-                btn.textContent = 'دخول';
-                btn.disabled = false;
-            });
+            const correctHash = await hashPassword('saad12345IF#');
+            if (inputHash === correctHash) {
+                closeAuthModal();
+                document.getElementById('settingsPanel').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+            } else {
+                errEl.textContent = 'كلمة المرور غير صحيحة';
+            }
+            btn.textContent = 'دخول';
+            btn.disabled = false;
         }
 
         function closeSettings() {
