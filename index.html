@@ -1945,6 +1945,55 @@
         // SETTINGS - نظام SHA-256 بدون Firebase Auth
         let _settingsOpen = false;
 
+        // ===== دوال مساعدة =====
+        function deleteProduct(node, id) {
+            if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
+            if (!confirm('هل تريد حذف هذا المنتج؟')) return;
+            database.ref('zamzam-company/' + node + '/' + id).remove();
+        }
+
+        function setProductStatus(node, id, status) {
+            if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
+            if (status === 'sold' || status === 'reserved') {
+                // احذف بعد 6 ساعات
+                let deleteAt = Date.now() + (6 * 60 * 60 * 1000);
+                database.ref('zamzam-company/' + node + '/' + id).update({ status: status, deleteAt: deleteAt });
+                // جدول الحذف
+                setTimeout(() => {
+                    database.ref('zamzam-company/' + node + '/' + id).remove();
+                }, 6 * 60 * 60 * 1000);
+            } else {
+                database.ref('zamzam-company/' + node + '/' + id).update({ status: 'available', deleteAt: null });
+            }
+        }
+
+        function getStatusBadge(status) {
+            if (status === 'sold') return '<div style="position:absolute;top:40px;right:8px;background:rgba(220,50,50,0.95);border-radius:20px;padding:3px 10px;font-size:11px;color:#fff;font-weight:700;">🔴 تم البيع</div>';
+            if (status === 'reserved') return '<div style="position:absolute;top:40px;right:8px;background:rgba(255,150,0,0.95);border-radius:20px;padding:3px 10px;font-size:11px;color:#fff;font-weight:700;">🟡 تم الحجز</div>';
+            return '<div style="position:absolute;top:40px;right:8px;background:rgba(40,180,40,0.95);border-radius:20px;padding:3px 10px;font-size:11px;color:#fff;font-weight:700;">🟢 متوفر الآن</div>';
+        }
+
+        function getStatusButtons(node, id, status) {
+            if (!isAdmin()) return '';
+            return `<div style="position:absolute;bottom:60px;left:0;right:0;display:flex;gap:4px;padding:0 6px;">
+                <button onclick="event.stopPropagation();setProductStatus('${node}','${id}','available')" style="flex:1;padding:4px 2px;background:${status==='available'?'#28b428':'rgba(40,180,40,0.4)'};border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟢</button>
+                <button onclick="event.stopPropagation();setProductStatus('${node}','${id}','reserved')" style="flex:1;padding:4px 2px;background:${status==='reserved'?'#ff9600':'rgba(255,150,0,0.4)'};border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟡</button>
+                <button onclick="event.stopPropagation();setProductStatus('${node}','${id}','sold')" style="flex:1;padding:4px 2px;background:${status==='sold'?'#dc3232':'rgba(220,50,50,0.4)'};border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🔴</button>
+            </div>`;
+        }
+
+        function isAdmin() {
+            var expiry = sessionStorage.getItem('zmzm_auth_expiry');
+            return expiry && Date.now() < parseInt(expiry);
+        }
+
+        function trackView(node, id) {
+            var key = 'zmzm_viewed_' + id;
+            if (sessionStorage.getItem(key)) return;
+            sessionStorage.setItem(key, '1');
+            database.ref('zamzam-company/' + node + '/' + id + '/views').transaction(v => (v || 0) + 1);
+        }
+
         // دالة مساعدة لتشفير SHA-256
         async function hashPassword(pass) {
             const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
@@ -2193,15 +2242,23 @@
                 grid.innerHTML = products.map(p => {
                     let remaining = Math.ceil((p.expiresAt - now) / (1000 * 60 * 60 * 24));
                     let fmt = n => Math.round(n).toLocaleString('ar-IQ');
+                    let views = p.views || 0;
+                    let status = p.status || 'available';
+                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('scrap-offers','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
                     return `
                     <div onclick="openScrapModal('${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #4CAF50;position:relative;">
                         <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #4CAF50;border-radius:20px;padding:3px 8px;font-size:11px;color:#4CAF50;">⏰ ${remaining} يوم</div>
-                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 8px;">
+                        ${getStatusBadge(status)}
+                        ${adminBtns}
+                        ${getStatusButtons('scrap-offers', p.id, status)}
+                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;line-height:1.3;">${p.desc.substring(0,40)}${p.desc.length>40?'...':''}</div>
-                            <div style="font-size:12px;color:#4CAF50;font-weight:bold;margin-top:3px;">${fmt(p.price)} دينار</div>
+                            <div style="font-size:12px;color:#4CAF50;font-weight:bold;margin-top:2px;">${fmt(p.price)} دينار</div>
+                            <div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ${views.toLocaleString('ar-IQ')} مشاهدة</div>
                         </div>
                     </div>`;
+                }).join('');
                 }).join('');
 
                 window._scrapData = {};
@@ -2210,6 +2267,7 @@
         }
 
         function openScrapModal(id) {
+            trackView('scrap-offers', id);
             let p = window._scrapData[id];
             if (!p) return;
 
@@ -2483,14 +2541,22 @@
                 grid.innerHTML = products.map(p => {
                     let remaining = Math.ceil((p.expiresAt - now) / (1000 * 60 * 60 * 24));
                     let imgSrc = p.imageUrl || p.imageBase64 || '';
+                    let views = p.views || 0;
+                    let status = p.status || 'available';
+                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('exclusive-offers','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
                     return `
                     <div onclick="openProductModal('${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #333;position:relative;">
                         <img src="${imgSrc}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #D4AF37;border-radius:20px;padding:3px 8px;font-size:11px;color:#D4AF37;">⏰ ${remaining} يوم</div>
-                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 8px;">
+                        ${getStatusBadge(status)}
+                        ${adminBtns}
+                        ${getStatusButtons('exclusive-offers', p.id, status)}
+                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;line-height:1.3;">${p.desc.substring(0,40)}${p.desc.length>40?'...':''}</div>
+                            <div style="font-size:10px;color:#aaa;margin-top:2px;">👁 ${views.toLocaleString('ar-IQ')} مشاهدة</div>
                         </div>
                     </div>`;
+                }).join('');
                 }).join('');
 
                 // حفظ المنتجات للوصول لاحقاً
@@ -2501,6 +2567,7 @@
 
         function openProductModal(id) {
             let p = window._offersData[id];
+            trackView('exclusive-offers', id);
             if (!p) return;
 
             let sellGram = parseFloat(localStorage.getItem('lastSellGram') || 0);
@@ -2863,14 +2930,22 @@
                 let fmt = n => Math.round(n).toLocaleString('ar-IQ');
                 grid.innerHTML = products.map(p => {
                     let rem = Math.ceil((p.expiresAt - now) / (1000*60*60*24));
+                    let views = p.views || 0;
+                    let status = p.status || 'available';
+                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('silver-offers','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
                     return `<div onclick="openWatchModal('silver','${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #C0C0C0;position:relative;">
                         <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #C0C0C0;border-radius:20px;padding:3px 8px;font-size:11px;color:#C0C0C0;">⏰ ${rem} يوم</div>
-                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 8px;">
+                        ${getStatusBadge(status)}
+                        ${adminBtns}
+                        ${getStatusButtons('silver-offers', p.id, status)}
+                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;">${p.desc.substring(0,35)}${p.desc.length>35?'...':''}</div>
                             <div style="font-size:12px;color:#C0C0C0;font-weight:bold;margin-top:2px;">${fmt(p.finalPrice)} دينار</div>
+                            <div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ${views.toLocaleString('ar-IQ')} مشاهدة</div>
                         </div>
                     </div>`;
+                }).join('');
                 }).join('');
                 window._silverData = {};
                 products.forEach(p => window._silverData[p.id] = p);
@@ -2899,12 +2974,19 @@
                 let fmt = n => Math.round(n).toLocaleString('ar-IQ');
                 grid.innerHTML = products.map(p => {
                     let rem = Math.ceil((p.expiresAt - now) / (1000*60*60*24));
+                    let views = p.views || 0;
+                    let status = p.status || 'available';
+                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('${dbPath}','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
                     return `<div onclick="openWatchModal('${type}','${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid ${color};position:relative;">
                         <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/></svg>'">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid ${color};border-radius:20px;padding:3px 8px;font-size:11px;color:${color};">⏰ ${rem} يوم</div>
-                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 8px;">
+                        ${getStatusBadge(status)}
+                        ${adminBtns}
+                        ${getStatusButtons(dbPath, p.id, status)}
+                        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;">${p.desc.substring(0,35)}${p.desc.length>35?'...':''}</div>
                             <div style="font-size:12px;color:${color};font-weight:bold;margin-top:2px;">${fmt(p.finalPrice)} دينار</div>
+                            <div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ${views.toLocaleString('ar-IQ')} مشاهدة</div>
                         </div>
                     </div>`;
                 }).join('');
@@ -2915,6 +2997,8 @@
         }
 
         function openWatchModal(type, id) {
+            let node = type === 'watches' ? 'watches-offers' : 'glasses-offers';
+            trackView(node, id);
             let p, color, label, emoji;
             if (type === 'silver') {
                 p = window._silverData && window._silverData[id];
