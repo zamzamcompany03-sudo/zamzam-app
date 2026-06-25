@@ -1960,17 +1960,33 @@
         // ===== زر المستخدم 👤 =====
         function openSettings() {
             _settingsOpen = true;
-            var m = document.getElementById('auth-modal');
-            m.style.display = 'flex';
-            document.getElementById('auth-password').value = '';
-            document.getElementById('auth-error').textContent = '';
+            var pass = prompt('أدخل كلمة المرور:');
+            if (!pass) return;
+            hashPassword(pass).then(function(inputHash) {
+                hashPassword('saad12345IF#').then(function(correctHash) {
+                    if (inputHash === correctHash) {
+                        document.getElementById('settingsPanel').classList.add('active');
+                        document.getElementById('overlay').classList.add('active');
+                    } else {
+                        alert('كلمة المرور غير صحيحة');
+                    }
+                });
+            });
         }
 
         function openUserLogin() {
-            var m = document.getElementById('user-modal');
-            m.style.display = 'flex';
-            document.getElementById('user-password').value = '';
-            document.getElementById('user-error').textContent = '';
+            var pass = prompt('أدخل كلمة المرور:');
+            if (!pass) return;
+            hashPassword(pass).then(function(inputHash) {
+                hashPassword('saad12345IF#').then(function(correctHash) {
+                    if (inputHash === correctHash) {
+                        document.getElementById('settingsPanel').classList.add('active');
+                        document.getElementById('overlay').classList.add('active');
+                    } else {
+                        alert('كلمة المرور غير صحيحة');
+                    }
+                });
+            });
         }
 
         function closeUserModal() {
