@@ -2445,7 +2445,7 @@
                 <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:15px;">
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #4CAF50;">
-                    <div style="color:#4CAF50;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل القطعة</div>
+                    <div style="color:#4CAF50;font-size:15px;font-weight:bold;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span>📋 تفاصيل القطعة</span>${isAdmin() ? '<button onclick="openEditModal(\'scrap-offers\',\''+p.id+'\')" style="background:#4CAF50;border:none;border-radius:8px;padding:5px 12px;color:#000;font-size:12px;font-weight:700;cursor:pointer;">✏️ تعديل</button>' : ''}</div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الوزن</span><span style="color:#fff;font-size:13px;">${p.weight} غرام</span></div>
                     <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #444;margin-top:4px;"><span style="color:#4CAF50;font-size:14px;font-weight:bold;">السعر الكلي</span><span style="color:#4CAF50;font-size:18px;font-weight:bold;">${fmt(p.price)} دينار</span></div>
@@ -2750,7 +2750,10 @@
                 <img src="${imgSrc}" style="width:100%;border-radius:14px;margin-bottom:15px;">
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #333;">
-                    <div style="color:#D4AF37;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل المنتج</div>
+                    <div style="color:#D4AF37;font-size:15px;font-weight:bold;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+                        <span>📋 تفاصيل المنتج</span>
+                        ${isAdmin() ? `<button onclick="openEditModal('exclusive-offers','${p.id}')" style="background:#D4AF37;border:none;border-radius:8px;padding:5px 12px;color:#000;font-size:12px;font-weight:700;cursor:pointer;">✏️ تعديل</button>` : ''}
+                    </div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الوزن</span><span style="color:#fff;font-size:13px;">${p.weight} غرام</span></div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">سعر الذهب</span><span style="color:#FFD700;font-size:13px;">${fmt(goldAmount)} دينار</span></div>
@@ -3194,7 +3197,7 @@
             document.getElementById('watch-modal-content').innerHTML = `
                 <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:15px;">
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid ${color};">
-                    <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;">${emoji} ${label} — تفاصيل المنتج</div>
+                    <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span>${emoji} ${label} — تفاصيل المنتج</span>${isAdmin() ? '<button onclick="openEditModal(\''+node+'\',\''+id+'\')" style="background:'+color+';border:none;border-radius:8px;padding:5px 12px;color:#000;font-size:12px;font-weight:700;cursor:pointer;">✏️ تعديل</button>' : ''}</div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
                     ${priceRows}
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الخصم (${p.discount}%)</span><span style="color:#ff6b6b;">- ${fmt(p.discountAmt || p.discountAmt)} دينار</span></div>
