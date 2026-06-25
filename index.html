@@ -1276,6 +1276,35 @@
             <h2>⚙️ الإعدادات</h2>
             <button class="close-btn" onclick="closeSettings()">✕</button>
         </div>
+
+        <!-- شريط البحث -->
+        <div style="padding:10px 16px 0;">
+            <input id="search-input" type="text" placeholder="🔍 ابحث عن منتج..." oninput="searchProducts(this.value)" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;text-align:right;direction:rtl;">
+            <div id="search-results" style="display:none;margin-top:8px;background:#111;border:1px solid #333;border-radius:12px;max-height:250px;overflow-y:auto;"></div>
+        </div>
+
+        <!-- إشعارات التقييمات -->
+        <div id="review-notif" style="display:none;margin:10px 16px 0;background:#1a1a0a;border:1px solid #D4AF37;border-radius:12px;padding:10px 14px;cursor:pointer;" onclick="toggleSection('reviews-list-settings','reviews-arrow');closeSettings();setTimeout(()=>openSettings(),100);">
+            <div style="color:#D4AF37;font-size:13px;font-weight:700;">🔔 تقييم جديد!</div>
+            <div id="review-notif-text" style="color:#aaa;font-size:11px;margin-top:2px;"></div>
+        </div>
+
+        <!-- إحصائيات سريعة -->
+        <div style="margin:10px 16px 0;display:flex;gap:8px;">
+            <div style="flex:1;background:#111;border:1px solid #333;border-radius:10px;padding:8px;text-align:center;">
+                <div id="stat-total-views" style="color:#D4AF37;font-size:16px;font-weight:800;">--</div>
+                <div style="color:#666;font-size:10px;">إجمالي المشاهدات</div>
+            </div>
+            <div style="flex:1;background:#111;border:1px solid #333;border-radius:10px;padding:8px;text-align:center;">
+                <div id="stat-top-product" style="color:#60a5fa;font-size:11px;font-weight:700;">--</div>
+                <div style="color:#666;font-size:10px;">الأكثر مشاهدة</div>
+            </div>
+            <div style="flex:1;background:#111;border:1px solid #333;border-radius:10px;padding:8px;text-align:center;">
+                <div id="stat-total-products" style="color:#4CAF50;font-size:16px;font-weight:800;">--</div>
+                <div style="color:#666;font-size:10px;">إجمالي المنتجات</div>
+            </div>
+        </div>
+
         <div class="settings-body">
 
             <!-- ==================== القسم ١: الإعدادات المشتركة ==================== -->
@@ -1945,7 +1974,136 @@
         // SETTINGS - نظام SHA-256 بدون Firebase Auth
         let _settingsOpen = false;
 
-        // ===== دوال مساعدة =====
+        // ===== بحث المنتجات =====
+        function searchProducts(query) {
+            let resultsDiv = document.getElementById('search-results');
+            if (!query || query.trim() === '') { resultsDiv.style.display = 'none'; return; }
+            query = query.trim().toLowerCase();
+            let allProducts = [];
+            let nodes = [
+                { data: window._offersData, node: 'exclusive-offers', type: 'exclusive', label: '✨ مستوردة' },
+                { data: window._scrapData, node: 'scrap-offers', type: 'scrap', label: '💎 كسر' },
+                { data: window._silverData, node: 'silver-offers', type: 'silver', label: '🥈 فضيات' },
+                { data: window._watchData, node: null, type: 'watch', label: '⌚/👓' }
+            ];
+            nodes.forEach(n => {
+                if (!n.data) return;
+                Object.values(n.data).forEach(p => {
+                    if (p.desc && p.desc.toLowerCase().includes(query)) {
+                        allProducts.push({ ...p, _node: n.node || (p._type === 'watches' ? 'watches-offers' : 'glasses-offers'), _label: n.label });
+                    }
+                });
+            });
+            if (allProducts.length === 0) {
+                resultsDiv.innerHTML = '<div style="padding:12px;color:#555;text-align:center;">لا توجد نتائج</div>';
+            } else {
+                resultsDiv.innerHTML = allProducts.map(p => `
+                    <div style="padding:10px 14px;border-bottom:1px solid #222;display:flex;align-items:center;gap:10px;">
+                        <img src="${p.imageUrl||p.imageBase64||''}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+                        <div style="flex:1;min-width:0;">
+                            <div style="color:#fff;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.desc||''}</div>
+                            <div style="color:#D4AF37;font-size:10px;margin-top:2px;">${p._label} ${p.views?'• 👁 '+p.views:''}</div>
+                        </div>
+                        ${isAdmin() ? `<button onclick="openEditModal('${p._node}','${p.id}')" style="background:#D4AF37;border:none;border-radius:8px;padding:4px 8px;color:#000;font-size:11px;cursor:pointer;flex-shrink:0;">✏️</button>` : ''}
+                    </div>`).join('');
+            }
+            resultsDiv.style.display = 'block';
+        }
+
+        // ===== تعديل المنتج =====
+        function openEditModal(node, id) {
+            if (!isAdmin()) return;
+            let p = (window._offersData||{})[id] || (window._scrapData||{})[id] || (window._silverData||{})[id] || (window._watchData||{})[id];
+            if (!p) return;
+            document.getElementById('edit-node').value = node;
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-desc').value = p.desc || '';
+            document.getElementById('edit-wage').value = p.wage || p.wagePerGram || '';
+            document.getElementById('edit-days').value = '';
+            let m = document.getElementById('edit-modal');
+            m.style.display = 'flex';
+        }
+
+        function saveEdit() {
+            let node = document.getElementById('edit-node').value;
+            let id = document.getElementById('edit-id').value;
+            let desc = document.getElementById('edit-desc').value.trim();
+            let wage = parseFloat(document.getElementById('edit-wage').value) || 0;
+            let days = parseInt(document.getElementById('edit-days').value) || 0;
+            if (!desc) { alert('الوصف مطلوب'); return; }
+            let updates = { desc: desc };
+            if (wage) updates.wage = wage;
+            if (days > 0) {
+                // جلب expiresAt الحالي وتمديده
+                database.ref('zamzam-company/' + node + '/' + id + '/expiresAt').once('value', snap => {
+                    let current = snap.val() || Date.now();
+                    updates.expiresAt = current + (days * 24 * 60 * 60 * 1000);
+                    database.ref('zamzam-company/' + node + '/' + id).update(updates);
+                });
+            } else {
+                database.ref('zamzam-company/' + node + '/' + id).update(updates);
+            }
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        // ===== إشعارات التقييمات =====
+        let _lastReviewCount = 0;
+        function watchReviews() {
+            database.ref('zamzam-company/reviews').on('value', snap => {
+                let data = snap.val();
+                let count = data ? Object.keys(data).length : 0;
+                if (count > _lastReviewCount && _lastReviewCount > 0) {
+                    // تقييم جديد!
+                    let latest = data ? Object.values(data).sort((a,b) => (b.createdAt||0)-(a.createdAt||0))[0] : null;
+                    let notif = document.getElementById('review-notif');
+                    let text = document.getElementById('review-notif-text');
+                    if (notif && latest) {
+                        notif.style.display = 'block';
+                        text.textContent = (latest.name||'زائر') + ': ' + (latest.msg||'').substring(0,50);
+                    }
+                }
+                _lastReviewCount = count;
+            });
+        }
+
+        // ===== إحصائيات =====
+        function loadStats() {
+            let nodes = ['exclusive-offers','scrap-offers','silver-offers','watches-offers','glasses-offers'];
+            let totalViews = 0, totalProducts = 0, topProduct = null, topViews = 0;
+            let pending = nodes.length;
+            nodes.forEach(node => {
+                database.ref('zamzam-company/' + node).once('value', snap => {
+                    let data = snap.val();
+                    if (data) {
+                        Object.values(data).forEach(p => {
+                            if (p.expiresAt && p.expiresAt > Date.now()) {
+                                totalProducts++;
+                                let v = p.views || 0;
+                                totalViews += v;
+                                if (v > topViews) { topViews = v; topProduct = p.desc; }
+                            }
+                        });
+                    }
+                    pending--;
+                    if (pending === 0) {
+                        let el1 = document.getElementById('stat-total-views');
+                        let el2 = document.getElementById('stat-top-product');
+                        let el3 = document.getElementById('stat-total-products');
+                        if (el1) el1.textContent = totalViews.toLocaleString('ar-IQ');
+                        if (el2) el2.textContent = topProduct ? topProduct.substring(0,20) : '--';
+                        if (el3) el3.textContent = totalProducts;
+                    }
+                });
+            });
+        }
+
+        // ===== إضافة زر تعديل على كل بطاقة منتج =====
+        function getEditBtn(node, id) {
+            if (!isAdmin()) return '';
+            return `<button onclick="event.stopPropagation();openEditModal('${node}','${id}')" style="background:rgba(212,175,55,0.9);border:none;border-radius:8px;padding:4px 8px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">✏️</button>`;
+        }
+
+
         function deleteProduct(node, id) {
             if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
             if (!confirm('هل تريد حذف هذا المنتج؟')) return;
@@ -2006,11 +2164,12 @@
         // ===== زر المستخدم 👤 =====
         function openSettings() {
             _settingsOpen = true;
-            // تحقق إذا مسجل دخول مسبقاً
             var expiry = sessionStorage.getItem('zmzm_auth_expiry');
             if (expiry && Date.now() < parseInt(expiry)) {
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
+                loadStats();
+                watchReviews();
                 return;
             }
             var pass = prompt('أدخل كلمة المرور:');
@@ -2022,6 +2181,8 @@
                         sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
                         document.getElementById('settingsPanel').classList.add('active');
                         document.getElementById('overlay').classList.add('active');
+                        loadStats();
+                        watchReviews();
                     } else {
                         alert('كلمة المرور غير صحيحة');
                     }
@@ -3806,6 +3967,31 @@
         </div>
     </div>
     <div id="toast-msg">✅ تم النسخ بنجاح</div>
+
+<!-- modal تعديل المنتج -->
+<div id="edit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.88);z-index:99999;align-items:center;justify-content:center;direction:ltr;">
+    <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:24px;width:90%;max-width:380px;direction:rtl;">
+        <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:16px;">✏️ تعديل المنتج</div>
+        <input type="hidden" id="edit-node">
+        <input type="hidden" id="edit-id">
+        <div style="margin-bottom:10px;">
+            <label style="color:#aaa;font-size:11px;">الوصف</label>
+            <textarea id="edit-desc" rows="3" style="width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;margin-top:4px;resize:none;direction:rtl;"></textarea>
+        </div>
+        <div style="margin-bottom:10px;">
+            <label style="color:#aaa;font-size:11px;">أجور الغرام</label>
+            <input type="number" id="edit-wage" style="width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;margin-top:4px;">
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="color:#aaa;font-size:11px;">تمديد المدة (أيام إضافية)</label>
+            <input type="number" id="edit-days" placeholder="0" style="width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;margin-top:4px;">
+        </div>
+        <div style="display:flex;gap:8px;">
+            <button onclick="saveEdit()" style="flex:1;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;border:none;border-radius:12px;cursor:pointer;">حفظ ✅</button>
+            <button onclick="document.getElementById('edit-modal').style.display='none'" style="flex:1;padding:12px;background:#222;color:#888;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
+        </div>
+    </div>
+</div>
 
 <div id="user-modal" style="display:none;">
     <div style="background:#1a1a1a;border:2px solid #60a5fa;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;">
