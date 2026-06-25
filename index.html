@@ -1954,11 +1954,20 @@
         // ===== زر المستخدم 👤 =====
         function openSettings() {
             _settingsOpen = true;
+            // تحقق إذا مسجل دخول مسبقاً
+            var expiry = sessionStorage.getItem('zmzm_auth_expiry');
+            if (expiry && Date.now() < parseInt(expiry)) {
+                document.getElementById('settingsPanel').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+                return;
+            }
             var pass = prompt('أدخل كلمة المرور:');
             if (!pass) return;
             hashPassword(pass).then(function(inputHash) {
                 hashPassword('saad12345IF#').then(function(correctHash) {
                     if (inputHash === correctHash) {
+                        // احفظ الجلسة لمدة 24 ساعة
+                        sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
                         document.getElementById('settingsPanel').classList.add('active');
                         document.getElementById('overlay').classList.add('active');
                     } else {
