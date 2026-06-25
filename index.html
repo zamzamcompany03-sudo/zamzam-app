@@ -639,7 +639,7 @@
             font-family: "Segoe UI", Tahoma, sans-serif;
             text-shadow: 0 2px 12px rgba(255,255,255,0.15);
         }
-        #auth-modal, #user-modal {
+        #auth-modal, #user-modal, #edit-modal {
             display: none;
             position: fixed !important;
             top: 0 !important;
@@ -2014,13 +2014,13 @@
         function openEditModal(node, id) {
             if (!isAdmin()) return;
             let p = (window._offersData||{})[id] || (window._scrapData||{})[id] || (window._silverData||{})[id] || (window._watchData||{})[id];
-            if (!p) return;
+            if (!p) { alert('لم يتم العثور على المنتج'); return; }
             document.getElementById('edit-node').value = node;
             document.getElementById('edit-id').value = id;
             document.getElementById('edit-desc').value = p.desc || '';
             document.getElementById('edit-wage').value = p.wage || p.wagePerGram || '';
             document.getElementById('edit-days').value = '';
-            let m = document.getElementById('edit-modal');
+            var m = document.getElementById('edit-modal');
             m.style.display = 'flex';
         }
 
