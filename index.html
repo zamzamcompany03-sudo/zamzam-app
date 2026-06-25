@@ -639,7 +639,8 @@
             font-family: "Segoe UI", Tahoma, sans-serif;
             text-shadow: 0 2px 12px rgba(255,255,255,0.15);
         }
-        #auth-modal, #user-modal, #edit-modal {
+
+        #auth-modal, #user-modal {
             display: none;
             position: fixed !important;
             top: 0 !important;
@@ -899,6 +900,10 @@
         <div onclick="openSettings()" style="flex:0.7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:6px 3px;">
             <div style="font-size:17px;">⚙️</div>
             <div style="font-size:8px;color:#555;text-align:center;font-weight:600;">إعدادات</div>
+        </div>
+        <div onclick="showPage('about')" style="flex:0.7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:6px 3px;">
+            <div style="font-size:17px;">📖</div>
+            <div style="font-size:8px;color:#888;text-align:center;font-weight:600;">شرح</div>
         </div>
 
     </div>
@@ -1268,7 +1273,7 @@
             <div id="watch-modal-content"></div>
         </div>
     </div>
-    <div class="overlay" id="overlay" onclick="closeSettings();closeUserPanel();"></div>
+    <div class="overlay" id="overlay" onclick="closeSettings()"></div>
 
     <!-- SETTINGS PANEL -->
     <div class="settings-panel" id="settingsPanel">
@@ -1276,35 +1281,6 @@
             <h2>⚙️ الإعدادات</h2>
             <button class="close-btn" onclick="closeSettings()">✕</button>
         </div>
-
-        <!-- شريط البحث -->
-        <div style="padding:10px 16px 0;">
-            <input id="search-input" type="text" placeholder="🔍 ابحث عن منتج..." oninput="searchProducts(this.value)" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;text-align:right;direction:rtl;">
-            <div id="search-results" style="display:none;margin-top:8px;background:#111;border:1px solid #333;border-radius:12px;max-height:250px;overflow-y:auto;"></div>
-        </div>
-
-        <!-- إشعارات التقييمات -->
-        <div id="review-notif" style="display:none;margin:10px 16px 0;background:#1a1a0a;border:1px solid #D4AF37;border-radius:12px;padding:10px 14px;cursor:pointer;" onclick="toggleSection('reviews-list-settings','reviews-arrow');closeSettings();setTimeout(()=>openSettings(),100);">
-            <div style="color:#D4AF37;font-size:13px;font-weight:700;">🔔 تقييم جديد!</div>
-            <div id="review-notif-text" style="color:#aaa;font-size:11px;margin-top:2px;"></div>
-        </div>
-
-        <!-- إحصائيات سريعة -->
-        <div style="margin:10px 16px 0;display:flex;gap:8px;">
-            <div style="flex:1;background:#111;border:1px solid #333;border-radius:10px;padding:8px;text-align:center;">
-                <div id="stat-total-views" style="color:#D4AF37;font-size:16px;font-weight:800;">--</div>
-                <div style="color:#666;font-size:10px;">إجمالي المشاهدات</div>
-            </div>
-            <div style="flex:1;background:#111;border:1px solid #333;border-radius:10px;padding:8px;text-align:center;">
-                <div id="stat-top-product" style="color:#60a5fa;font-size:11px;font-weight:700;">--</div>
-                <div style="color:#666;font-size:10px;">الأكثر مشاهدة</div>
-            </div>
-            <div style="flex:1;background:#111;border:1px solid #333;border-radius:10px;padding:8px;text-align:center;">
-                <div id="stat-total-products" style="color:#4CAF50;font-size:16px;font-weight:800;">--</div>
-                <div style="color:#666;font-size:10px;">إجمالي المنتجات</div>
-            </div>
-        </div>
-
         <div class="settings-body">
 
             <!-- ==================== القسم ١: الإعدادات المشتركة ==================== -->
@@ -1974,135 +1950,35 @@
         // SETTINGS - نظام SHA-256 بدون Firebase Auth
         let _settingsOpen = false;
 
-        // ===== بحث المنتجات =====
-        function searchProducts(query) {
-            let resultsDiv = document.getElementById('search-results');
-            if (!query || query.trim() === '') { resultsDiv.style.display = 'none'; return; }
-            query = query.trim().toLowerCase();
-            let allProducts = [];
-            let nodes = [
-                { data: window._offersData, node: 'exclusive-offers', type: 'exclusive', label: '✨ مستوردة' },
-                { data: window._scrapData, node: 'scrap-offers', type: 'scrap', label: '💎 كسر' },
-                { data: window._silverData, node: 'silver-offers', type: 'silver', label: '🥈 فضيات' },
-                { data: window._watchData, node: null, type: 'watch', label: '⌚/👓' }
-            ];
-            nodes.forEach(n => {
-                if (!n.data) return;
-                Object.values(n.data).forEach(p => {
-                    if (p.desc && p.desc.toLowerCase().includes(query)) {
-                        allProducts.push({ ...p, _node: n.node || (p._type === 'watches' ? 'watches-offers' : 'glasses-offers'), _label: n.label });
-                    }
-                });
-            });
-            if (allProducts.length === 0) {
-                resultsDiv.innerHTML = '<div style="padding:12px;color:#555;text-align:center;">لا توجد نتائج</div>';
-            } else {
-                resultsDiv.innerHTML = allProducts.map(p => `
-                    <div style="padding:10px 14px;border-bottom:1px solid #222;display:flex;align-items:center;gap:10px;">
-                        <img src="${p.imageUrl||p.imageBase64||''}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;">
-                        <div style="flex:1;min-width:0;">
-                            <div style="color:#fff;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.desc||''}</div>
-                            <div style="color:#D4AF37;font-size:10px;margin-top:2px;">${p._label} ${p.views?'• 👁 '+p.views:''}</div>
-                        </div>
-                        ${isAdmin() ? `<button onclick="openEditModal('${p._node}','${p.id}')" style="background:#D4AF37;border:none;border-radius:8px;padding:4px 8px;color:#000;font-size:11px;cursor:pointer;flex-shrink:0;">✏️</button>` : ''}
-                    </div>`).join('');
-            }
-            resultsDiv.style.display = 'block';
+        async function hashPassword(pass) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
         }
 
-        // ===== تعديل المنتج =====
-        function openEditModal(node, id) {
-            if (!isAdmin()) return;
-            let p = (window._offersData||{})[id] || (window._scrapData||{})[id] || (window._silverData||{})[id] || (window._watchData||{})[id];
-            if (!p) { alert('لم يتم العثور على المنتج'); return; }
-            document.getElementById('edit-node').value = node;
-            document.getElementById('edit-id').value = id;
-            document.getElementById('edit-desc').value = p.desc || '';
-            document.getElementById('edit-wage').value = p.wage || p.wagePerGram || '';
-            document.getElementById('edit-days').value = '';
-            var m = document.getElementById('edit-modal');
-            m.style.display = 'flex';
+        function isAdmin() {
+            var expiry = sessionStorage.getItem('zmzm_auth_expiry');
+            return expiry && Date.now() < parseInt(expiry);
         }
 
-        function saveEdit() {
-            let node = document.getElementById('edit-node').value;
-            let id = document.getElementById('edit-id').value;
-            let desc = document.getElementById('edit-desc').value.trim();
-            let wage = parseFloat(document.getElementById('edit-wage').value) || 0;
-            let days = parseInt(document.getElementById('edit-days').value) || 0;
-            if (!desc) { alert('الوصف مطلوب'); return; }
-            let updates = { desc: desc };
-            if (wage) updates.wage = wage;
-            if (days > 0) {
-                // جلب expiresAt الحالي وتمديده
-                database.ref('zamzam-company/' + node + '/' + id + '/expiresAt').once('value', snap => {
-                    let current = snap.val() || Date.now();
-                    updates.expiresAt = current + (days * 24 * 60 * 60 * 1000);
-                    database.ref('zamzam-company/' + node + '/' + id).update(updates);
-                });
-            } else {
-                database.ref('zamzam-company/' + node + '/' + id).update(updates);
-            }
-            document.getElementById('edit-modal').style.display = 'none';
+        function trackView(node, id) {
+            var key = 'zmzm_viewed_' + id;
+            if (sessionStorage.getItem(key)) return;
+            sessionStorage.setItem(key, '1');
+            database.ref('zamzam-company/' + node + '/' + id + '/views').transaction(function(v) { return (v||0)+1; });
         }
 
-        // ===== إشعارات التقييمات =====
-        let _lastReviewCount = 0;
-        function watchReviews() {
-            database.ref('zamzam-company/reviews').on('value', snap => {
-                let data = snap.val();
-                let count = data ? Object.keys(data).length : 0;
-                if (count > _lastReviewCount && _lastReviewCount > 0) {
-                    // تقييم جديد!
-                    let latest = data ? Object.values(data).sort((a,b) => (b.createdAt||0)-(a.createdAt||0))[0] : null;
-                    let notif = document.getElementById('review-notif');
-                    let text = document.getElementById('review-notif-text');
-                    if (notif && latest) {
-                        notif.style.display = 'block';
-                        text.textContent = (latest.name||'زائر') + ': ' + (latest.msg||'').substring(0,50);
-                    }
-                }
-                _lastReviewCount = count;
-            });
-        }
 
-        // ===== إحصائيات =====
-        function loadStats() {
-            let nodes = ['exclusive-offers','scrap-offers','silver-offers','watches-offers','glasses-offers'];
-            let totalViews = 0, totalProducts = 0, topProduct = null, topViews = 0;
-            let pending = nodes.length;
-            nodes.forEach(node => {
-                database.ref('zamzam-company/' + node).once('value', snap => {
-                    let data = snap.val();
-                    if (data) {
-                        Object.values(data).forEach(p => {
-                            if (p.expiresAt && p.expiresAt > Date.now()) {
-                                totalProducts++;
-                                let v = p.views || 0;
-                                totalViews += v;
-                                if (v > topViews) { topViews = v; topProduct = p.desc; }
-                            }
-                        });
-                    }
-                    pending--;
-                    if (pending === 0) {
-                        let el1 = document.getElementById('stat-total-views');
-                        let el2 = document.getElementById('stat-top-product');
-                        let el3 = document.getElementById('stat-total-products');
-                        if (el1) el1.textContent = totalViews.toLocaleString('ar-IQ');
-                        if (el2) el2.textContent = topProduct ? topProduct.substring(0,20) : '--';
-                        if (el3) el3.textContent = totalProducts;
-                    }
-                });
-            });
-        }
-
-        // ===== إضافة زر تعديل على كل بطاقة منتج =====
-        function getEditBtn(node, id) {
+        function makeDeleteBtn(node, id) {
             if (!isAdmin()) return '';
-            return `<button onclick="event.stopPropagation();openEditModal('${node}','${id}')" style="background:rgba(212,175,55,0.9);border:none;border-radius:8px;padding:4px 8px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">✏️</button>`;
+            var btn = document.createElement('div');
+            btn.style.cssText = 'position:absolute;top:8px;left:8px;';
+            var b = document.createElement('button');
+            b.innerHTML = '🗑';
+            b.style.cssText = 'background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 6px;color:#fff;font-size:11px;cursor:pointer;';
+            b.onclick = function(e) { e.stopPropagation(); deleteProduct(node, id); };
+            btn.appendChild(b);
+            return btn.outerHTML;
         }
-
 
         function deleteProduct(node, id) {
             if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
@@ -2111,17 +1987,12 @@
         }
 
         function setProductStatus(node, id, status) {
-            if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
+            if (!isAdmin()) return;
             if (status === 'sold' || status === 'reserved') {
-                // احذف بعد 6 ساعات
-                let deleteAt = Date.now() + (6 * 60 * 60 * 1000);
-                database.ref('zamzam-company/' + node + '/' + id).update({ status: status, deleteAt: deleteAt });
-                // جدول الحذف
-                setTimeout(() => {
-                    database.ref('zamzam-company/' + node + '/' + id).remove();
-                }, 6 * 60 * 60 * 1000);
+                database.ref('zamzam-company/' + node + '/' + id).update({ status: status });
+                setTimeout(function() { database.ref('zamzam-company/' + node + '/' + id).remove(); }, 6*60*60*1000);
             } else {
-                database.ref('zamzam-company/' + node + '/' + id).update({ status: 'available', deleteAt: null });
+                database.ref('zamzam-company/' + node + '/' + id).update({ status: 'available' });
             }
         }
 
@@ -2136,40 +2007,20 @@
             var bgG = status==='available' ? '#28b428' : 'rgba(40,180,40,0.4)';
             var bgY = status==='reserved' ? '#ff9600' : 'rgba(255,150,0,0.4)';
             var bgR = status==='sold' ? '#dc3232' : 'rgba(220,50,50,0.4)';
-            return '<div style="position:absolute;bottom:60px;left:0;right:0;display:flex;gap:4px;padding:0 6px;">' +
-                '<button onclick="event.stopPropagation();setProductStatus(\''+node+'\',\''+id+'\',\'available\')" style="flex:1;padding:4px 2px;background:'+bgG+';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟢</button>' +
-                '<button onclick="event.stopPropagation();setProductStatus(\''+node+'\',\''+id+'\',\'reserved\')" style="flex:1;padding:4px 2px;background:'+bgY+';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟡</button>' +
-                '<button onclick="event.stopPropagation();setProductStatus(\''+node+'\',\''+id+'\',\'sold\')" style="flex:1;padding:4px 2px;background:'+bgR+';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🔴</button>' +
-                '</div>';
+            var n = node; var i = id;
+            return '<div style="position:absolute;bottom:55px;left:0;right:0;display:flex;gap:4px;padding:0 6px;">'
+                + '<button onclick="event.stopPropagation();setProductStatus(\'' + n + '\',\'' + i + '\',\'available\')" style="flex:1;padding:4px 2px;background:' + bgG + ';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟢</button>'
+                + '<button onclick="event.stopPropagation();setProductStatus(\'' + n + '\',\'' + i + '\',\'reserved\')" style="flex:1;padding:4px 2px;background:' + bgY + ';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟡</button>'
+                + '<button onclick="event.stopPropagation();setProductStatus(\'' + n + '\',\'' + i + '\',\'sold\')" style="flex:1;padding:4px 2px;background:' + bgR + ';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🔴</button>'
+                + '</div>';
         }
 
-        function isAdmin() {
-            var expiry = sessionStorage.getItem('zmzm_auth_expiry');
-            return expiry && Date.now() < parseInt(expiry);
-        }
-
-        function trackView(node, id) {
-            var key = 'zmzm_viewed_' + id;
-            if (sessionStorage.getItem(key)) return;
-            sessionStorage.setItem(key, '1');
-            database.ref('zamzam-company/' + node + '/' + id + '/views').transaction(v => (v || 0) + 1);
-        }
-
-        // دالة مساعدة لتشفير SHA-256
-        async function hashPassword(pass) {
-            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-        }
-
-        // ===== زر المستخدم 👤 =====
         function openSettings() {
             _settingsOpen = true;
             var expiry = sessionStorage.getItem('zmzm_auth_expiry');
             if (expiry && Date.now() < parseInt(expiry)) {
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
-                loadStats();
-                watchReviews();
                 return;
             }
             var pass = prompt('أدخل كلمة المرور:');
@@ -2177,12 +2028,9 @@
             hashPassword(pass).then(function(inputHash) {
                 hashPassword('saad12345IF#').then(function(correctHash) {
                     if (inputHash === correctHash) {
-                        // احفظ الجلسة لمدة 24 ساعة
                         sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
                         document.getElementById('settingsPanel').classList.add('active');
                         document.getElementById('overlay').classList.add('active');
-                        loadStats();
-                        watchReviews();
                     } else {
                         alert('كلمة المرور غير صحيحة');
                     }
@@ -2190,66 +2038,36 @@
             });
         }
 
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        function doLogin() {}
+        function doLogout() {}
+
         function openUserLogin() {
-            var pass = prompt('أدخل كلمة المرور:');
-            if (!pass) return;
-            hashPassword(pass).then(function(inputHash) {
-                hashPassword('saad12345IF#').then(function(correctHash) {
-                    if (inputHash === correctHash) {
-                        document.getElementById('settingsPanel').classList.add('active');
-                        document.getElementById('overlay').classList.add('active');
-                    } else {
-                        alert('كلمة المرور غير صحيحة');
-                    }
-                });
-            });
+            var m = document.getElementById('user-modal');
+            m.style.display = 'flex';
         }
 
         function closeUserModal() {
             document.getElementById('user-modal').style.display = 'none';
-            document.getElementById('user-password').value = '';
-            document.getElementById('user-error').textContent = '';
         }
 
         async function doUserLogin() {
             var pass = document.getElementById('user-password').value;
             var errEl = document.getElementById('user-error');
             if (!pass) { errEl.textContent = 'أدخل كلمة المرور'; return; }
-            const inputHash = await hashPassword(pass);
-            const correctHash = await hashPassword('saad12345IF#');
+            var inputHash = await hashPassword(pass);
+            var correctHash = await hashPassword('saad12345IF#');
             if (inputHash === correctHash) {
                 closeUserModal();
+                sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
             } else {
                 errEl.textContent = 'كلمة المرور غير صحيحة';
             }
-        }
-
-        function closeAuthModal() {
-            document.getElementById('auth-modal').style.display = 'none';
-            document.getElementById('auth-error').textContent = '';
-            document.getElementById('auth-password').value = '';
-        }
-
-        async function doLogin() {
-            let pass = document.getElementById('auth-password').value;
-            let errEl = document.getElementById('auth-error');
-            let btn = document.getElementById('auth-login-btn');
-            if (!pass) { errEl.textContent = 'أدخل كلمة المرور'; return; }
-            btn.textContent = 'جاري التحقق...';
-            btn.disabled = true;
-            const inputHash = await hashPassword(pass);
-            const correctHash = await hashPassword('saad12345IF#');
-            if (inputHash === correctHash) {
-                closeAuthModal();
-                document.getElementById('settingsPanel').classList.add('active');
-                document.getElementById('overlay').classList.add('active');
-            } else {
-                errEl.textContent = 'كلمة المرور غير صحيحة';
-            }
-            btn.textContent = 'دخول';
-            btn.disabled = false;
         }
 
         function closeSettings() {
@@ -2406,9 +2224,9 @@
                 grid.innerHTML = products.map(p => {
                     let remaining = Math.ceil((p.expiresAt - now) / (1000 * 60 * 60 * 24));
                     let fmt = n => Math.round(n).toLocaleString('ar-IQ');
-                    let views = p.views || 0;
                     let status = p.status || 'available';
-                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('scrap-offers','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
+                    let views = p.views || 0;
+                    let adminBtns = makeDeleteBtn('scrap-offers', p.id);
                     return `
                     <div onclick="openScrapModal('${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #4CAF50;position:relative;">
                         <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;">
@@ -2419,7 +2237,7 @@
                         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;line-height:1.3;">${p.desc.substring(0,40)}${p.desc.length>40?'...':''}</div>
                             <div style="font-size:12px;color:#4CAF50;font-weight:bold;margin-top:2px;">${fmt(p.price)} دينار</div>
-                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ' + views.toLocaleString("ar-IQ") + ' مشاهدة</div>' : ''}
+                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ' + views.toLocaleString('ar-IQ') + ' مشاهدة</div>' : ''}
                         </div>
                     </div>`;
                 }).join('');
@@ -2445,7 +2263,7 @@
                 <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:15px;">
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #4CAF50;">
-                    <div style="color:#4CAF50;font-size:15px;font-weight:bold;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span>📋 تفاصيل القطعة</span>${isAdmin() ? '<button onclick="openEditModal(\'scrap-offers\',\''+p.id+'\')" style="background:#4CAF50;border:none;border-radius:8px;padding:5px 12px;color:#000;font-size:12px;font-weight:700;cursor:pointer;">✏️ تعديل</button>' : ''}</div>
+                    <div style="color:#4CAF50;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل القطعة</div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الوزن</span><span style="color:#fff;font-size:13px;">${p.weight} غرام</span></div>
                     <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #444;margin-top:4px;"><span style="color:#4CAF50;font-size:14px;font-weight:bold;">السعر الكلي</span><span style="color:#4CAF50;font-size:18px;font-weight:bold;">${fmt(p.price)} دينار</span></div>
@@ -2704,9 +2522,9 @@
                 grid.innerHTML = products.map(p => {
                     let remaining = Math.ceil((p.expiresAt - now) / (1000 * 60 * 60 * 24));
                     let imgSrc = p.imageUrl || p.imageBase64 || '';
-                    let views = p.views || 0;
                     let status = p.status || 'available';
-                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('exclusive-offers','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
+                    let views = p.views || 0;
+                    let adminBtns = makeDeleteBtn('exclusive-offers', p.id);
                     return `
                     <div onclick="openProductModal('${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #333;position:relative;">
                         <img src="${imgSrc}" style="width:100%;aspect-ratio:1;object-fit:cover;">
@@ -2716,7 +2534,7 @@
                         ${getStatusButtons('exclusive-offers', p.id, status)}
                         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;line-height:1.3;">${p.desc.substring(0,40)}${p.desc.length>40?'...':''}</div>
-                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:2px;">👁 ' + views.toLocaleString("ar-IQ") + ' مشاهدة</div>' : ''}
+                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:2px;">👁 ' + views.toLocaleString('ar-IQ') + ' مشاهدة</div>' : ''}
                         </div>
                     </div>`;
                 }).join('');
@@ -2729,8 +2547,8 @@
 
         function openProductModal(id) {
             let p = window._offersData[id];
-            trackView('exclusive-offers', id);
             if (!p) return;
+            trackView('exclusive-offers', id);
 
             let sellGram = parseFloat(localStorage.getItem('lastSellGram') || 0);
             let goldAmount = sellGram * p.weight;
@@ -2750,10 +2568,7 @@
                 <img src="${imgSrc}" style="width:100%;border-radius:14px;margin-bottom:15px;">
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #333;">
-                    <div style="color:#D4AF37;font-size:15px;font-weight:bold;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
-                        <span>📋 تفاصيل المنتج</span>
-                        ${isAdmin() ? `<button onclick="openEditModal('exclusive-offers','${p.id}')" style="background:#D4AF37;border:none;border-radius:8px;padding:5px 12px;color:#000;font-size:12px;font-weight:700;cursor:pointer;">✏️ تعديل</button>` : ''}
-                    </div>
+                    <div style="color:#D4AF37;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل المنتج</div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الوزن</span><span style="color:#fff;font-size:13px;">${p.weight} غرام</span></div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">سعر الذهب</span><span style="color:#FFD700;font-size:13px;">${fmt(goldAmount)} دينار</span></div>
@@ -3095,9 +2910,9 @@
                 let fmt = n => Math.round(n).toLocaleString('ar-IQ');
                 grid.innerHTML = products.map(p => {
                     let rem = Math.ceil((p.expiresAt - now) / (1000*60*60*24));
-                    let views = p.views || 0;
                     let status = p.status || 'available';
-                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('silver-offers','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
+                    let views = p.views || 0;
+                    let adminBtns = makeDeleteBtn('silver-offers', p.id);
                     return `<div onclick="openWatchModal('silver','${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #C0C0C0;position:relative;">
                         <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #C0C0C0;border-radius:20px;padding:3px 8px;font-size:11px;color:#C0C0C0;">⏰ ${rem} يوم</div>
@@ -3107,7 +2922,7 @@
                         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;">${p.desc.substring(0,35)}${p.desc.length>35?'...':''}</div>
                             <div style="font-size:12px;color:#C0C0C0;font-weight:bold;margin-top:2px;">${fmt(p.finalPrice)} دينار</div>
-                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ' + views.toLocaleString("ar-IQ") + ' مشاهدة</div>' : ''}
+                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ' + views.toLocaleString('ar-IQ') + ' مشاهدة</div>' : ''}
                         </div>
                     </div>`;
                 }).join('');
@@ -3138,9 +2953,9 @@
                 let fmt = n => Math.round(n).toLocaleString('ar-IQ');
                 grid.innerHTML = products.map(p => {
                     let rem = Math.ceil((p.expiresAt - now) / (1000*60*60*24));
-                    let views = p.views || 0;
                     let status = p.status || 'available';
-                    let adminBtns = isAdmin() ? `<div style="position:absolute;top:8px;left:8px;"><button onclick="event.stopPropagation();deleteProduct('${dbPath}','${p.id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 8px;color:#fff;font-size:11px;cursor:pointer;">🗑</button></div>` : '';
+                    let views = p.views || 0;
+                    let adminBtns = makeDeleteBtn(dbPath, p.id);
                     return `<div onclick="openWatchModal('${type}','${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid ${color};position:relative;">
                         <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/></svg>'">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid ${color};border-radius:20px;padding:3px 8px;font-size:11px;color:${color};">⏰ ${rem} يوم</div>
@@ -3150,7 +2965,7 @@
                         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px 8px 4px;">
                             <div style="font-size:11px;color:#fff;">${p.desc.substring(0,35)}${p.desc.length>35?'...':''}</div>
                             <div style="font-size:12px;color:${color};font-weight:bold;margin-top:2px;">${fmt(p.finalPrice)} دينار</div>
-                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ' + views.toLocaleString("ar-IQ") + ' مشاهدة</div>' : ''}
+                            ${isAdmin() ? '<div style="font-size:10px;color:#aaa;margin-top:1px;">👁 ' + views.toLocaleString('ar-IQ') + ' مشاهدة</div>' : ''}
                         </div>
                     </div>`;
                 }).join('');
@@ -3161,7 +2976,7 @@
         }
 
         function openWatchModal(type, id) {
-            let node = type === 'watches' ? 'watches-offers' : 'glasses-offers';
+            let node = type==='watches'?'watches-offers':(type==='glasses'?'glasses-offers':'silver-offers');
             trackView(node, id);
             let p, color, label, emoji;
             if (type === 'silver') {
@@ -3197,7 +3012,7 @@
             document.getElementById('watch-modal-content').innerHTML = `
                 <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:15px;">
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid ${color};">
-                    <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span>${emoji} ${label} — تفاصيل المنتج</span>${isAdmin() ? '<button onclick="openEditModal(\''+node+'\',\''+id+'\')" style="background:'+color+';border:none;border-radius:8px;padding:5px 12px;color:#000;font-size:12px;font-weight:700;cursor:pointer;">✏️ تعديل</button>' : ''}</div>
+                    <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;">${emoji} ${label} — تفاصيل المنتج</div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
                     ${priceRows}
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الخصم (${p.discount}%)</span><span style="color:#ff6b6b;">- ${fmt(p.discountAmt || p.discountAmt)} دينار</span></div>
@@ -3813,14 +3628,14 @@
         </div>
     </div>
 
-
-    <div id="auth-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;">
-        <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;">
-            <div style="font-size:28px;margin-bottom:8px;">🔐</div>
             <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
             <div style="color:#666;font-size:11px;margin-bottom:20px;">هذا القسم خاص بالإدارة فقط</div>
+
+            <input id="auth-email" type="email" placeholder="الإيميل" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;text-align:right;direction:rtl;">
             <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
+
             <div id="auth-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
+
             <button id="auth-login-btn" onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
             <button onclick="closeAuthModal()" style="width:100%;padding:10px;background:transparent;color:#666;font-size:13px;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
         </div>
@@ -3971,33 +3786,8 @@
     </div>
     <div id="toast-msg">✅ تم النسخ بنجاح</div>
 
-<!-- modal تعديل المنتج -->
-<div id="edit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.88);z-index:99999;align-items:center;justify-content:center;direction:ltr;">
-    <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:24px;width:90%;max-width:380px;direction:rtl;">
-        <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:16px;">✏️ تعديل المنتج</div>
-        <input type="hidden" id="edit-node">
-        <input type="hidden" id="edit-id">
-        <div style="margin-bottom:10px;">
-            <label style="color:#aaa;font-size:11px;">الوصف</label>
-            <textarea id="edit-desc" rows="3" style="width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;margin-top:4px;resize:none;direction:rtl;"></textarea>
-        </div>
-        <div style="margin-bottom:10px;">
-            <label style="color:#aaa;font-size:11px;">أجور الغرام</label>
-            <input type="number" id="edit-wage" style="width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;margin-top:4px;">
-        </div>
-        <div style="margin-bottom:16px;">
-            <label style="color:#aaa;font-size:11px;">تمديد المدة (أيام إضافية)</label>
-            <input type="number" id="edit-days" placeholder="0" style="width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;box-sizing:border-box;margin-top:4px;">
-        </div>
-        <div style="display:flex;gap:8px;">
-            <button onclick="saveEdit()" style="flex:1;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;border:none;border-radius:12px;cursor:pointer;">حفظ ✅</button>
-            <button onclick="document.getElementById('edit-modal').style.display='none'" style="flex:1;padding:12px;background:#222;color:#888;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
-        </div>
-    </div>
-</div>
-
 <div id="user-modal" style="display:none;">
-    <div style="background:#1a1a1a;border:2px solid #60a5fa;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;">
+    <div style="background:#1a1a1a;border:2px solid #60a5fa;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
         <div style="font-size:28px;margin-bottom:8px;">👤</div>
         <div style="color:#60a5fa;font-size:16px;font-weight:800;margin-bottom:4px;">دخول المستخدم</div>
         <input id="user-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
@@ -4008,7 +3798,7 @@
 </div>
 
 <div id="auth-modal" style="display:none;">
-    <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;">
+    <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
         <div style="font-size:28px;margin-bottom:8px;">🔐</div>
         <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
         <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
