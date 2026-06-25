@@ -1975,11 +1975,14 @@
 
         function getStatusButtons(node, id, status) {
             if (!isAdmin()) return '';
-            return `<div style="position:absolute;bottom:60px;left:0;right:0;display:flex;gap:4px;padding:0 6px;">
-                <button onclick="event.stopPropagation();setProductStatus('${node}','${id}','available')" style="flex:1;padding:4px 2px;background:${status==='available'?'#28b428':'rgba(40,180,40,0.4)'};border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟢</button>
-                <button onclick="event.stopPropagation();setProductStatus('${node}','${id}','reserved')" style="flex:1;padding:4px 2px;background:${status==='reserved'?'#ff9600':'rgba(255,150,0,0.4)'};border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟡</button>
-                <button onclick="event.stopPropagation();setProductStatus('${node}','${id}','sold')" style="flex:1;padding:4px 2px;background:${status==='sold'?'#dc3232':'rgba(220,50,50,0.4)'};border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🔴</button>
-            </div>`;
+            var bgG = status==='available' ? '#28b428' : 'rgba(40,180,40,0.4)';
+            var bgY = status==='reserved' ? '#ff9600' : 'rgba(255,150,0,0.4)';
+            var bgR = status==='sold' ? '#dc3232' : 'rgba(220,50,50,0.4)';
+            return '<div style="position:absolute;bottom:60px;left:0;right:0;display:flex;gap:4px;padding:0 6px;">' +
+                '<button onclick="event.stopPropagation();setProductStatus(\''+node+'\',\''+id+'\',\'available\')" style="flex:1;padding:4px 2px;background:'+bgG+';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟢</button>' +
+                '<button onclick="event.stopPropagation();setProductStatus(\''+node+'\',\''+id+'\',\'reserved\')" style="flex:1;padding:4px 2px;background:'+bgY+';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🟡</button>' +
+                '<button onclick="event.stopPropagation();setProductStatus(\''+node+'\',\''+id+'\',\'sold\')" style="flex:1;padding:4px 2px;background:'+bgR+';border:none;border-radius:8px;color:#fff;font-size:10px;cursor:pointer;">🔴</button>' +
+                '</div>';
         }
 
         function isAdmin() {
