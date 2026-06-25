@@ -1619,367 +1619,6 @@
 
         </div>
 
-    <div class="settings-panel" id="userPanel">
-        <div class="settings-header">
-            <h2>👤 لوحة المستخدم</h2>
-            <button class="close-btn" onclick="closeUserPanel()">✕</button>
-        </div>
-        <div class="settings-body">
-
-            <!-- ==================== القسم ١: الإعدادات المشتركة ==================== -->
-            <div class="settings-section">
-                <h3 onclick="toggleSection('u-shared-all','u-shared-all-arrow')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;">
-                    <span>💵 اعدادات الأسعار</span>
-                    <span id="u-shared-all-arrow" style="color:#D4AF37;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="u-shared-all" style="display:none;margin-top:16px;">
-
-                    <!-- سعر الورقة -->
-                    <div class="input-group">
-                        <label>سعر الورقة (دينار عراقي)</label>
-                        <input type="number" id="set-paperRate" value="1550" placeholder="مثال: 1550">
-                    </div>
-
-                    <!-- بيع المصوغات -->
-                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:12px;border:1px solid #2a2a2a;">
-                        <div style="color:#D4AF37;font-size:13px;font-weight:700;margin-bottom:10px;">🥇 بيع المصوغات الذهبية</div>
-                        <div class="input-group" style="margin-bottom:0;">
-                            <label>تعديل على سعر الأونصة (+ أو -)</label>
-                            <div class="input-row">
-                                <button class="sign-btn active-plus" id="sell-sign-btn" onclick="toggleSign('sell')">+</button>
-                                <input type="number" id="set-sellAdj" value="0" placeholder="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- شراء الخليجي -->
-                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:12px;border:1px solid #2a2a2a;">
-                        <div style="color:#60a5fa;font-size:13px;font-weight:700;margin-bottom:10px;">🛒 شراء الذهب الخليجي</div>
-                        <div class="input-group" style="margin-bottom:0;">
-                            <label>تعديل على سعر الأونصة (+ أو -)</label>
-                            <div class="input-row">
-                                <button class="sign-btn active-plus" id="buyGulf-sign-btn" onclick="toggleSign('buyGulf')">+</button>
-                                <input type="number" id="set-buyGulfAdj" value="0" placeholder="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- شراء العراقي -->
-                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:16px;border:1px solid #2a2a2a;">
-                        <div style="color:#4CAF50;font-size:13px;font-weight:700;margin-bottom:10px;">🛒 شراء الذهب العراقي</div>
-                        <div class="input-group" style="margin-bottom:0;">
-                            <label>الفرق عن سعر الخليجي (+ أو -)</label>
-                            <div class="input-row">
-                                <button class="sign-btn active-minus" id="buyIraqiExtra-sign-btn" onclick="toggleSign('buyIraqiExtra')">-</button>
-                                <input type="number" id="set-buyIraqiExtra" value="25000" placeholder="مثال: 25000">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="save-btn" onclick="saveSettings()">💾 حفظ وتطبيق</button>
-                    <div class="saved-msg" id="savedMsg">✅ تم الحفظ بنجاح!</div>
-                </div>
-            </div>
-
-            <!-- ==================== القسم ٢: العروض الحصرية ==================== -->
-            <div class="settings-section" style="margin-top:14px;">
-                <h3 onclick="toggleSection('offers-all','offers-all-arrow')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;">
-                    <span>✨ اعداد نشر بضاعة مستوردة</span>
-                    <span id="offers-all-arrow" style="color:#D4AF37;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="offers-all" style="display:none;margin-top:16px;">
-
-                    <div class="input-group">
-                        <label>صورة المنتج</label>
-                        <input type="file" id="prod-image" accept="image/*" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:13px;">
-                        <div id="prod-image-preview" style="margin-top:8px;border-radius:10px;overflow:hidden;display:none;">
-                            <img id="prod-img-preview-el" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوصف</label>
-                        <textarea id="prod-desc" rows="3" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;resize:none;" placeholder="مثال: خاتم ذهب عيار 21..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوزن بالغرام</label>
-                        <input type="number" id="prod-weight" step="0.01" placeholder="مثال: 5.5" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>أجور الغرام (دينار)</label>
-                        <input type="number" id="prod-wage" placeholder="مثال: 15000" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>نسبة الخصم على الأجور (%)</label>
-                        <input type="number" id="prod-discount" placeholder="مثال: 10" min="0" max="100" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>مدة العرض (أيام)</label>
-                        <input type="number" id="prod-days" placeholder="مثال: 2" min="1" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div id="prod-preview-prices" style="display:none;background:#0a0a0a;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #333;">
-                        <div style="font-size:12px;color:#888;margin-bottom:8px;">معاينة الأسعار:</div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">سعر الذهب</span><span id="prev-gold" style="color:#FFD700;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">مبلغ الأجور</span><span id="prev-wages" style="color:#FFD700;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">المبلغ قبل الخصم</span><span id="prev-before" style="color:#FFD700;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">مبلغ الخصم</span><span id="prev-discount-amt" style="color:#ff6b6b;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;border-top:1px solid #333;padding-top:8px;margin-top:4px;"><span style="color:#D4AF37;font-size:13px;font-weight:bold;">السعر النهائي</span><span id="prev-final" style="color:#4CAF50;font-size:15px;font-weight:bold;">--</span></div>
-                    </div>
-
-                    <button class="save-btn" onclick="calcProductPreview()" style="background:#333;color:#D4AF37;margin-bottom:10px;">🔢 احسب الأسعار</button>
-                    <button class="save-btn" onclick="publishProduct()">🚀 نشر المنتج</button>
-
-                    <div id="prod-progress-wrap" style="display:none;margin-top:12px;">
-                        <div style="background:#222;border-radius:20px;height:10px;overflow:hidden;margin-bottom:6px;">
-                            <div id="prod-progress-bar" style="height:100%;width:0%;background:#D4AF37;border-radius:20px;transition:width 0.3s;"></div>
-                        </div>
-                        <div id="prod-progress-txt" style="text-align:center;font-size:13px;color:#D4AF37;"></div>
-                    </div>
-                    <div id="prod-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
-                </div>
-            </div>
-
-            <!-- ==================== القسم ٣: الكسر النضيف ==================== -->
-            <div class="settings-section" style="margin-top:14px;border-color:#4CAF50;">
-                <h3 onclick="toggleSection('scrap-all','scrap-all-arrow')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#4CAF50;">
-                    <span>💎 اعداد نشر صور الكسر</span>
-                    <span id="scrap-all-arrow" style="color:#4CAF50;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="scrap-all" style="display:none;margin-top:16px;">
-
-                    <div class="input-group">
-                        <label>صورة القطعة</label>
-                        <input type="file" id="scrap-image" accept="image/*" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:13px;">
-                        <div id="scrap-image-preview" style="margin-top:8px;border-radius:10px;overflow:hidden;display:none;">
-                            <img id="scrap-img-preview-el" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوصف</label>
-                        <textarea id="scrap-desc" rows="3" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;resize:none;" placeholder="مثال: كسر ذهب عيار 21..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوزن بالغرام</label>
-                        <input type="number" id="scrap-weight" step="0.01" placeholder="مثال: 3.75" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>السعر الكلي (دينار عراقي)</label>
-                        <input type="number" id="scrap-price" placeholder="مثال: 1930000" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>مدة العرض (أيام)</label>
-                        <input type="number" id="scrap-days" placeholder="مثال: 1" min="1" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <button class="save-btn" onclick="publishScrap()" style="background:#4CAF50;color:#fff;">🚀 نشر القطعة</button>
-
-                    <div id="scrap-progress-wrap" style="display:none;margin-top:12px;">
-                        <div style="background:#222;border-radius:20px;height:10px;overflow:hidden;margin-bottom:6px;">
-                            <div id="scrap-progress-bar" style="height:100%;width:0%;background:#4CAF50;border-radius:20px;transition:width 0.3s;"></div>
-                        </div>
-                        <div id="scrap-progress-txt" style="text-align:center;font-size:13px;color:#4CAF50;"></div>
-                    </div>
-                    <div id="scrap-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
-                </div>
-            </div>
-
-            <!-- ==================== القسم ٤: الفضيات ==================== -->
-            <div class="settings-section" style="margin-top:14px;border-color:#C0C0C0;">
-                <h3 onclick="toggleSection('silver-all','silver-all-arrow')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#C0C0C0;">
-                    <span>🥈 اعداد نشر فضيات</span>
-                    <span id="silver-all-arrow" style="color:#C0C0C0;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="silver-all" style="display:none;margin-top:16px;">
-
-                    <div class="input-group">
-                        <label>صورة المنتج</label>
-                        <input type="file" id="silver-image" accept="image/*" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:13px;">
-                        <div id="silver-image-preview" style="margin-top:8px;border-radius:10px;overflow:hidden;display:none;">
-                            <img id="silver-img-preview-el" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوصف</label>
-                        <textarea id="silver-desc" rows="3" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;resize:none;" placeholder="مثال: سلسلة فضة عيار 925..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوزن بالغرام</label>
-                        <input type="number" id="silver-weight" step="0.01" placeholder="مثال: 10.5" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>سعر الغرام (دينار عراقي)</label>
-                        <input type="number" id="silver-price-gram" placeholder="مثال: 14000" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>نسبة الخصم (%)</label>
-                        <input type="number" id="silver-discount" placeholder="مثال: 10" min="0" max="100" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <!-- معاينة الأسعار -->
-                    <div id="silver-preview-prices" style="display:none;background:#0a0a0a;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #333;">
-                        <div style="font-size:12px;color:#888;margin-bottom:8px;">معاينة الأسعار:</div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">المبلغ قبل الخصم</span><span id="silver-prev-before" style="color:#C0C0C0;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">مبلغ الخصم</span><span id="silver-prev-discount-amt" style="color:#ff6b6b;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;border-top:1px solid #333;padding-top:8px;margin-top:4px;"><span style="color:#C0C0C0;font-size:13px;font-weight:bold;">السعر النهائي</span><span id="silver-prev-final" style="color:#4CAF50;font-size:15px;font-weight:bold;">--</span></div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>مدة العرض (أيام)</label>
-                        <input type="number" id="silver-days" placeholder="مثال: 3" min="1" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-                    <button class="save-btn" onclick="calcSilverPreview()" style="background:#333;color:#C0C0C0;margin-bottom:10px;">🔢 احسب الأسعار</button>
-
-                    <button class="save-btn" onclick="publishSilver()" style="background:linear-gradient(135deg,#C0C0C0,#888);color:#000;">🚀 نشر المنتج</button>
-
-                    <div id="silver-progress-wrap" style="display:none;margin-top:12px;">
-                        <div style="background:#222;border-radius:20px;height:10px;overflow:hidden;margin-bottom:6px;">
-                            <div id="silver-progress-bar" style="height:100%;width:0%;background:#C0C0C0;border-radius:20px;transition:width 0.3s;"></div>
-                        </div>
-                        <div id="silver-progress-txt" style="text-align:center;font-size:13px;color:#C0C0C0;"></div>
-                    </div>
-                    <div id="silver-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
-                </div>
-            </div>
-
-            <!-- ==================== القسم ٥: الساعات ==================== -->
-            <div class="settings-section" style="margin-top:14px;border-color:#60a5fa;">
-                <h3 onclick="toggleSection('watches-all','watches-all-arrow')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#60a5fa;">
-                    <span>⌚ اعداد نشر ساعات</span>
-                    <span id="watches-all-arrow" style="color:#60a5fa;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="watches-all" style="display:none;margin-top:16px;">
-
-                    <div class="input-group">
-                        <label>صورة الساعة</label>
-                        <input type="file" id="watch-image" accept="image/*" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:13px;">
-                        <div id="watch-image-preview" style="margin-top:8px;border-radius:10px;overflow:hidden;display:none;">
-                            <img id="watch-img-preview-el" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوصف</label>
-                        <textarea id="watch-desc" rows="3" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;resize:none;" placeholder="مثال: ساعة كاسيو G-Shock أصلية..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>المبلغ قبل الخصم (دينار عراقي)</label>
-                        <input type="number" id="watch-price" placeholder="مثال: 500000" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;" oninput="document.getElementById('watch-preview-prices').style.display='none'">
-                    </div>
-
-                    <div class="input-group">
-                        <label>نسبة الخصم (%)</label>
-                        <input type="number" id="watch-discount" placeholder="مثال: 10" min="0" max="100" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;" oninput="document.getElementById('watch-preview-prices').style.display='none'">
-                    </div>
-
-                    <!-- معاينة الأسعار -->
-                    <div id="watch-preview-prices" style="display:none;background:#0a0a0a;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #1e88e5;">
-                        <div style="font-size:12px;color:#888;margin-bottom:8px;">معاينة الأسعار:</div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">المبلغ قبل الخصم</span><span id="watch-prev-before" style="color:#60a5fa;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">مبلغ الخصم</span><span id="watch-prev-discount-amt" style="color:#ff6b6b;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;border-top:1px solid #333;padding-top:8px;margin-top:4px;"><span style="color:#60a5fa;font-size:13px;font-weight:bold;">السعر النهائي</span><span id="watch-prev-final" style="color:#4CAF50;font-size:15px;font-weight:bold;">--</span></div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>مدة العرض (أيام)</label>
-                        <input type="number" id="watch-days" placeholder="مثال: 3" min="1" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <button class="save-btn" onclick="calcWatchPreview()" style="background:#333;color:#60a5fa;margin-bottom:10px;">🔢 احسب الأسعار</button>
-                    <button class="save-btn" onclick="publishWatch()" style="background:linear-gradient(135deg,#1e88e5,#1565c0);color:#fff;">🚀 نشر الساعة</button>
-
-                    <div id="watch-progress-wrap" style="display:none;margin-top:12px;">
-                        <div style="background:#222;border-radius:20px;height:10px;overflow:hidden;margin-bottom:6px;">
-                            <div id="watch-progress-bar" style="height:100%;width:0%;background:#60a5fa;border-radius:20px;transition:width 0.3s;"></div>
-                        </div>
-                        <div id="watch-progress-txt" style="text-align:center;font-size:13px;color:#60a5fa;"></div>
-                    </div>
-                    <div id="watch-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
-                </div>
-            </div>
-
-            <!-- ==================== القسم ٦: النضارات ==================== -->
-            <div class="settings-section" style="margin-top:14px;border-color:#a78bfa;">
-                <h3 onclick="toggleSection('glasses-all','glasses-all-arrow')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#a78bfa;">
-                    <span>🕶️ اعداد نشر نضارات</span>
-                    <span id="glasses-all-arrow" style="color:#a78bfa;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="glasses-all" style="display:none;margin-top:16px;">
-
-                    <div class="input-group">
-                        <label>صورة النضارة</label>
-                        <input type="file" id="glasses-image" accept="image/*" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:13px;">
-                        <div id="glasses-image-preview" style="margin-top:8px;border-radius:10px;overflow:hidden;display:none;">
-                            <img id="glasses-img-preview-el" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>الوصف</label>
-                        <textarea id="glasses-desc" rows="3" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;resize:none;" placeholder="مثال: نضارة راي بان أصلية..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>المبلغ قبل الخصم (دينار عراقي)</label>
-                        <input type="number" id="glasses-price" placeholder="مثال: 150000" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <div class="input-group">
-                        <label>نسبة الخصم (%)</label>
-                        <input type="number" id="glasses-discount" placeholder="مثال: 10" min="0" max="100" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <!-- معاينة الأسعار -->
-                    <div id="glasses-preview-prices" style="display:none;background:#0a0a0a;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #7c3aed;">
-                        <div style="font-size:12px;color:#888;margin-bottom:8px;">معاينة الأسعار:</div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">المبلغ قبل الخصم</span><span id="glasses-prev-before" style="color:#a78bfa;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#999;font-size:12px;">مبلغ الخصم</span><span id="glasses-prev-discount-amt" style="color:#ff6b6b;font-size:13px;font-weight:bold;">--</span></div>
-                        <div style="display:flex;justify-content:space-between;border-top:1px solid #333;padding-top:8px;margin-top:4px;"><span style="color:#a78bfa;font-size:13px;font-weight:bold;">السعر النهائي</span><span id="glasses-prev-final" style="color:#4CAF50;font-size:15px;font-weight:bold;">--</span></div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>مدة العرض (أيام)</label>
-                        <input type="number" id="glasses-days" placeholder="مثال: 3" min="1" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;text-align:center;">
-                    </div>
-
-                    <button class="save-btn" onclick="calcGlassesPreview()" style="background:#333;color:#a78bfa;margin-bottom:10px;">🔢 احسب الأسعار</button>
-                    <button class="save-btn" onclick="publishGlasses()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;">🚀 نشر النضارة</button>
-
-                    <div id="glasses-progress-wrap" style="display:none;margin-top:12px;">
-                        <div style="background:#222;border-radius:20px;height:10px;overflow:hidden;margin-bottom:6px;">
-                            <div id="glasses-progress-bar" style="height:100%;width:0%;background:#a78bfa;border-radius:20px;transition:width 0.3s;"></div>
-                        </div>
-                        <div id="glasses-progress-txt" style="text-align:center;font-size:13px;color:#a78bfa;"></div>
-                    </div>
-                    <div id="glasses-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
-                </div>
-            </div>
-
-            <div class="settings-section" style="margin-top:14px;">
-                <h3 onclick="toggleReviews()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;">
-                    <span>⭐ تقييمات الزوار</span>
-                    <span id="u-reviews-arrow" style="color:#D4AF37;font-size:22px;transition:transform 0.3s;">▼</span>
-                </h3>
-                <div id="u-reviews-list-settings" style="display:none;margin-top:14px;"></div>
-                <button onclick="localStorage.removeItem('zmzm_visits');localStorage.removeItem('zmzm_reviewed');alert('تم إعادة تعيين العداد');" style="margin-top:10px;width:100%;padding:10px;background:#333;color:#888;border:1px solid #444;border-radius:10px;cursor:pointer;font-size:12px;">🔄 إعادة تعيين عداد التقييم</button>
-            </div>
-
-    </div>
-
-
     <!-- ===== FIREBASE ===== -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js" crossorigin="anonymous"></script>
@@ -2291,26 +1930,19 @@
             }
         }
 
-        // SETTINGS
-        // حالة Auth - false = لم يتحقق بعد
-        let _authReady = false;
+        // SETTINGS - نظام SHA-256 بدون Firebase Auth
         let _settingsOpen = false;
-        let _settingsInterval = null;
-        let _authUser = null;
 
-        auth.onAuthStateChanged(user => {
-            _authReady = true;
-            _authUser = user;
-        });
-
-        function closeUserPanel() {
-            document.getElementById('userPanel').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
+        // دالة مساعدة لتشفير SHA-256
+        async function hashPassword(pass) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
         }
 
+        // ===== زر المستخدم 👤 =====
         function openUserLogin() {
             var modal = document.getElementById('user-modal');
-            modal.style.display = 'flex';
+            modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;';
             document.getElementById('user-password').value = '';
             document.getElementById('user-error').textContent = '';
         }
@@ -2324,82 +1956,54 @@
         async function doUserLogin() {
             var pass = document.getElementById('user-password').value;
             var errEl = document.getElementById('user-error');
-            const msgBuffer = new TextEncoder().encode(pass);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            const userPassHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('saad12345IF#'));
-            const userPassArray = Array.from(new Uint8Array(userPassHash));
-            const userPassHex = userPassArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            if (hashHex === userPassHex) {
+            if (!pass) { errEl.textContent = 'أدخل كلمة المرور'; return; }
+            const inputHash = await hashPassword(pass);
+            const correctHash = await hashPassword('saad12345IF#');
+            if (inputHash === correctHash) {
                 closeUserModal();
-                document.getElementById('userPanel').classList.add('active');
+                document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
             } else {
                 errEl.textContent = 'كلمة المرور غير صحيحة';
             }
         }
 
+        // ===== زر الإعدادات ⚙️ =====
         function openSettings() {
             _settingsOpen = true;
-            if (_authUser) {
-                // مسجل دخول - افتح الإعدادات مباشرة
-                document.getElementById('settingsPanel').classList.add('active');
-                document.getElementById('overlay').classList.add('active');
-            } else {
-                // غير مسجل - اعرض نافذة تسجيل الدخول فوراً بدون انتظار
-                var modal = document.getElementById('auth-modal');
-                modal.style.display = 'flex';
-                modal.style.position = 'fixed';
-                modal.style.top = '0';
-                modal.style.left = '0';
-                modal.style.right = '0';
-                modal.style.bottom = '0';
-                modal.style.width = '100%';
-                modal.style.height = '100%';
-                modal.style.alignItems = 'center';
-                modal.style.justifyContent = 'center';
-                modal.style.zIndex = '9999';
-            }
+            var modal = document.getElementById('auth-modal');
+            modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;';
+            document.getElementById('auth-password').value = '';
+            document.getElementById('auth-error').textContent = '';
         }
 
         function closeAuthModal() {
             document.getElementById('auth-modal').style.display = 'none';
             document.getElementById('auth-error').textContent = '';
-            document.getElementById('auth-email').value = '';
             document.getElementById('auth-password').value = '';
         }
 
         async function doLogin() {
-            let email = document.getElementById('auth-email').value.trim();
             let pass = document.getElementById('auth-password').value;
             let errEl = document.getElementById('auth-error');
             let btn = document.getElementById('auth-login-btn');
-
-            if (!email || !pass) {
-                errEl.textContent = 'أدخل الإيميل وكلمة المرور';
-                return;
-            }
-
+            if (!pass) { errEl.textContent = 'أدخل كلمة المرور'; return; }
             btn.textContent = 'جاري التحقق...';
             btn.disabled = true;
-
-            try {
-                await auth.signInWithEmailAndPassword(email, pass);
-                closeAuthModal();
-                document.getElementById('settingsPanel').classList.add('active');
-                document.getElementById('overlay').classList.add('active');
-            } catch(e) {
-                errEl.textContent = 'إيميل أو كلمة مرور غلط';
-            }
-
-            btn.textContent = 'دخول';
-            btn.disabled = false;
-        }
-
-        function doLogout() {
-            auth.signOut();
+            const inputHash = await hashPassword(pass);
+            // كلمة مرور الإدارة محفوظة في Firebase
+            database.ref('zamzam-company/adminAuth/passHash').once('value', snap => {
+                const storedHash = snap.val();
+                if (storedHash && inputHash === storedHash) {
+                    closeAuthModal();
+                    document.getElementById('settingsPanel').classList.add('active');
+                    document.getElementById('overlay').classList.add('active');
+                } else {
+                    errEl.textContent = 'كلمة المرور غير صحيحة';
+                }
+                btn.textContent = 'دخول';
+                btn.disabled = false;
+            });
         }
 
         function closeSettings() {
@@ -3947,12 +3551,8 @@
             <div style="font-size:28px;margin-bottom:8px;">🔐</div>
             <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
             <div style="color:#666;font-size:11px;margin-bottom:20px;">هذا القسم خاص بالإدارة فقط</div>
-
-            <input id="auth-email" type="email" placeholder="الإيميل" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;text-align:right;direction:rtl;">
             <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
-
             <div id="auth-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
-
             <button id="auth-login-btn" onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
             <button onclick="closeAuthModal()" style="width:100%;padding:10px;background:transparent;color:#666;font-size:13px;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
         </div>
