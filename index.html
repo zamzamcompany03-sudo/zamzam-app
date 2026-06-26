@@ -3287,7 +3287,68 @@
             });
         }
 
-        // ===== حاسبة الزكاة =====
+        // ===== تحويل الأرقام إلى كلمات عربية =====
+        function numberToArabicWords(n) {
+            n = Math.round(n);
+            if (n === 0) return 'صفر';
+
+            var ones = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة',
+                        'عشرة', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر', 'خمسة عشر',
+                        'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'];
+            var tens = ['', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
+            var hundreds = ['', 'مائة', 'مائتان', 'ثلاثمائة', 'أربعمائة', 'خمسمائة', 'ستمائة', 'سبعمائة', 'ثمانمائة', 'تسعمائة'];
+
+            function below1000(num) {
+                if (num === 0) return '';
+                var result = '';
+                var h = Math.floor(num / 100);
+                var remainder = num % 100;
+                if (h > 0) result += hundreds[h];
+                if (remainder > 0) {
+                    if (h > 0) result += ' و';
+                    if (remainder < 20) {
+                        result += ones[remainder];
+                    } else {
+                        var t = Math.floor(remainder / 10);
+                        var o = remainder % 10;
+                        if (o > 0) result += ones[o] + ' و' + tens[t];
+                        else result += tens[t];
+                    }
+                }
+                return result;
+            }
+
+            var result = '';
+            var billions = Math.floor(n / 1000000000);
+            var millions = Math.floor((n % 1000000000) / 1000000);
+            var thousands = Math.floor((n % 1000000) / 1000);
+            var remainder = n % 1000;
+
+            if (billions > 0) {
+                result += below1000(billions) + ' مليار';
+                if (millions > 0 || thousands > 0 || remainder > 0) result += ' و';
+            }
+            if (millions > 0) {
+                if (millions === 1) result += 'مليون';
+                else if (millions === 2) result += 'مليونان';
+                else result += below1000(millions) + ' ملايين';
+                if (thousands > 0 || remainder > 0) result += ' و';
+            }
+            if (thousands > 0) {
+                if (thousands === 1) result += 'ألف';
+                else if (thousands === 2) result += 'ألفان';
+                else if (thousands <= 10) result += below1000(thousands) + ' آلاف';
+                else result += below1000(thousands) + ' ألف';
+                if (remainder > 0) result += ' و';
+            }
+            if (remainder > 0) {
+                result += below1000(remainder);
+            }
+
+            return result + ' دينار عراقي';
+        }
+
+
         let _hawlPassed = null;
 
         function openZakatCalc() {
@@ -3375,8 +3436,17 @@
             else { el18.textContent = fmt(zakat18) + ' دينار'; el18.style.color = '#C0C0C0'; document.getElementById('zakat-18-note').textContent = 'خاضع للزكاة ✅'; }
 
             var totalEl = document.getElementById('zakat-total');
-            if (total === 0) { totalEl.textContent = 'لا زكاة واجبة'; totalEl.style.color = '#888'; }
-            else { totalEl.textContent = fmt(total) + ' دينار'; totalEl.style.color = '#4CAF50'; }
+            var totalWords = document.getElementById('zakat-total-words');
+            if (total === 0) {
+                totalEl.textContent = 'لا زكاة واجبة';
+                totalEl.style.color = '#888';
+                if (totalWords) totalWords.textContent = '';
+            } else {
+                var totalRounded = Math.round(total / 1000) * 1000;
+                totalEl.textContent = fmt(totalRounded) + ' دينار';
+                totalEl.style.color = '#4CAF50';
+                if (totalWords) totalWords.textContent = numberToArabicWords(totalRounded);
+            }
         }
 
 
@@ -4058,6 +4128,7 @@
             <div style="background:linear-gradient(135deg,#0d200d,#0a1a0a);border:2px solid #4CAF50;border-radius:16px;padding:18px;text-align:center;margin-bottom:16px;">
                 <div style="color:#888;font-size:12px;margin-bottom:6px;">💰 إجمالي الزكاة الواجبة</div>
                 <div id="zakat-total" style="color:#4CAF50;font-size:26px;font-weight:800;">--</div>
+                <div id="zakat-total-words" style="color:#4CAF50;font-size:12px;margin-top:6px;line-height:1.5;"></div>
                 <div style="color:#666;font-size:11px;margin-top:4px;">دينار عراقي</div>
             </div>
 
