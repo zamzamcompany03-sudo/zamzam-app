@@ -1809,6 +1809,7 @@
 
             // حفظ سعر الغرام للاستخدام في العروض
             localStorage.setItem('lastSellGram', sellGram);
+            window._buyGulfGramRaw = buyGulfGram; // للزكاة
             document.getElementById('buyGulf-gram').textContent = fmt(buyGulfGram);
             document.getElementById('buyGulf-mithqal').textContent = fmt(buyGulfMithqal);
             document.getElementById('buyIraqi-gram').textContent = fmt(buyIraqiGram);
@@ -3252,11 +3253,11 @@
             var yes = document.getElementById('hawl-yes');
             var no = document.getElementById('hawl-no');
             if (!yes || !no) return;
-            // إعادة تعيين
             yes.style.background = '#111'; yes.style.borderColor = '#333'; yes.style.color = '#666';
             no.style.background = '#111'; no.style.borderColor = '#333'; no.style.color = '#666';
             if (val === true) {
                 yes.style.background = '#1a4d1a'; yes.style.borderColor = '#4CAF50'; yes.style.color = '#4CAF50';
+                calcZakat();
             } else if (val === false) {
                 no.style.background = '#4d1a1a'; no.style.borderColor = '#f44336'; no.style.color = '#f44336';
             }
@@ -3264,120 +3265,57 @@
 
         function calcZakat() {
             var fmt = function(n) { return Math.round(n).toLocaleString('ar-IQ'); };
-
-            // جلب سعر شراء الخليجي من الشاشة
-            var buyGulfEl = document.getElementById('buyGulf-gram');
-            var buyGulfRaw = buyGulfEl ? buyGulfEl.textContent.replace(/[,،\s]/g, '') : '0';
-            var buyGulfPrice = parseFloat(buyGulfRaw) || 0;
-
-            if (buyGulfPrice === 0) {
-                alert('يرجى الانتظار حتى يتم تحميل أسعار الذهب');
-                return;
-            }
-
             var w24 = parseFloat(document.getElementById('zakat-24').value) || 0;
             var w21 = parseFloat(document.getElementById('zakat-21').value) || 0;
             var w18 = parseFloat(document.getElementById('zakat-18').value) || 0;
 
-            if (w24 === 0 && w21 === 0 && w18 === 0) {
-                alert('يرجى إدخال وزن واحد على الأقل');
-                return;
-            }
+            if (w24 === 0 && w21 === 0 && w18 === 0) { alert('يرجى إدخال وزن واحد على الأقل'); return; }
+            if (_hawlPassed === null) { alert('يرجى الإجابة على سؤال الحول أولاً'); return; }
 
-            if (_hawlPassed === null) {
-                alert('يرجى الإجابة على سؤال الحول أولاً');
-                return;
-            }
-
-            if (!_hawlPassed) {
-                document.getElementById('zakat-results').style.display = 'block';
-                ['24','21','18'].forEach(function(k) {
-                    document.getElementById('zakat-'+k+'-amount').textContent = 'لا زكاة';
-                    document.getElementById('zakat-'+k+'-note').textContent = 'لم يمر الحول بعد';
-                    document.getElementById('zakat-'+k+'-amount').style.color = '#888';
-                });
-                document.getElementById('zakat-total').textContent = 'لا زكاة واجبة';
-                document.getElementById('zakat-total').style.color = '#888';
-                return;
-            }
-
-            // المعادلات
-            var basePrice = buyGulfPrice + 1500;
-
-            // عيار 24
-            var price24 = basePrice / 0.875;
-            var zakat24 = 0;
-            var note24 = '';
-            if (w24 > 0) {
-                if (w24 >= 85) {
-                    zakat24 = (w24 * price24) / 1000000 * 25000;
-                    note24 = 'الوزن خاضع للزكاة ✅';
-                } else {
-                    note24 = 'الوزن أقل من النصاب (85 غرام) — غير خاضع للزكاة ❌';
-                }
-            }
-
-            // عيار 21
-            var price21 = basePrice;
-            var zakat21 = 0;
-            var note21 = '';
-            if (w21 > 0) {
-                if (w21 >= 100) {
-                    zakat21 = (w21 * price21) / 1000000 * 25000;
-                    note21 = 'الوزن خاضع للزكاة ✅';
-                } else {
-                    note21 = 'الوزن أقل من النصاب (100 غرام) — غير خاضع للزكاة ❌';
-                }
-            }
-
-            // عيار 18
-            var price18 = basePrice / 0.750;
-            var zakat18 = 0;
-            var note18 = '';
-            if (w18 > 0) {
-                if (w18 >= 100) {
-                    zakat18 = (w18 * price18) / 1000000 * 25000;
-                    note18 = 'الوزن خاضع للزكاة ✅';
-                } else {
-                    note18 = 'الوزن أقل من النصاب (100 غرام) — غير خاضع للزكاة ❌';
-                }
-            }
-
-            var total = zakat24 + zakat21 + zakat18;
-
-            // عرض النتائج
             document.getElementById('zakat-results').style.display = 'block';
 
-            // عيار 24
-            var el24 = document.getElementById('zakat-24-amount');
-            if (w24 === 0) { el24.textContent = 'لم يُدخل وزن'; el24.style.color = '#555'; }
-            else if (zakat24 === 0) { el24.textContent = 'غير خاضع للزكاة'; el24.style.color = '#f44336'; }
-            else { el24.textContent = fmt(zakat24) + ' دينار'; el24.style.color = '#FFD700'; }
-            document.getElementById('zakat-24-note').textContent = note24;
-
-            // عيار 21
-            var el21 = document.getElementById('zakat-21-amount');
-            if (w21 === 0) { el21.textContent = 'لم يُدخل وزن'; el21.style.color = '#555'; }
-            else if (zakat21 === 0) { el21.textContent = 'غير خاضع للزكاة'; el21.style.color = '#f44336'; }
-            else { el21.textContent = fmt(zakat21) + ' دينار'; el21.style.color = '#D4AF37'; }
-            document.getElementById('zakat-21-note').textContent = note21;
-
-            // عيار 18
-            var el18 = document.getElementById('zakat-18-amount');
-            if (w18 === 0) { el18.textContent = 'لم يُدخل وزن'; el18.style.color = '#555'; }
-            else if (zakat18 === 0) { el18.textContent = 'غير خاضع للزكاة'; el18.style.color = '#f44336'; }
-            else { el18.textContent = fmt(zakat18) + ' دينار'; el18.style.color = '#C0C0C0'; }
-            document.getElementById('zakat-18-note').textContent = note18;
-
-            // المجموع
-            var totalEl = document.getElementById('zakat-total');
-            if (total === 0) {
-                totalEl.textContent = 'لا زكاة واجبة';
-                totalEl.style.color = '#888';
-            } else {
-                totalEl.textContent = fmt(total) + ' دينار';
-                totalEl.style.color = '#4CAF50';
+            if (!_hawlPassed) {
+                ['24','21','18'].forEach(function(k) {
+                    var el = document.getElementById('zakat-'+k+'-amount');
+                    el.textContent = 'غير خاضع للزكاة'; el.style.color = '#888';
+                    document.getElementById('zakat-'+k+'-note').textContent = 'لم يمر الحول بعد';
+                });
+                var t = document.getElementById('zakat-total');
+                t.textContent = 'لا زكاة واجبة'; t.style.color = '#888';
+                return;
             }
+
+            var buyGulfPrice = window._buyGulfGramRaw || 0;
+            if (buyGulfPrice === 0) { alert('يرجى الانتظار حتى يتم تحميل أسعار الذهب'); return; }
+
+            var basePrice = buyGulfPrice + 1500;
+            var price24 = basePrice / 0.875;
+            var price21 = basePrice;
+            var price18 = basePrice / 0.750;
+
+            var zakat24 = (w24 >= 85) ? (w24 * price24) / 1000000 * 25000 : 0;
+            var zakat21 = (w21 >= 100) ? (w21 * price21) / 1000000 * 25000 : 0;
+            var zakat18 = (w18 >= 100) ? (w18 * price18) / 1000000 * 25000 : 0;
+            var total = zakat24 + zakat21 + zakat18;
+
+            var el24 = document.getElementById('zakat-24-amount');
+            if (w24 === 0) { el24.textContent = '—'; el24.style.color = '#444'; document.getElementById('zakat-24-note').textContent = 'لم يُدخل وزن'; }
+            else if (zakat24 === 0) { el24.textContent = 'غير خاضع للزكاة'; el24.style.color = '#f44336'; document.getElementById('zakat-24-note').textContent = 'أقل من النصاب (85 غ) ❌'; }
+            else { el24.textContent = fmt(zakat24) + ' دينار'; el24.style.color = '#FFD700'; document.getElementById('zakat-24-note').textContent = 'خاضع للزكاة ✅'; }
+
+            var el21 = document.getElementById('zakat-21-amount');
+            if (w21 === 0) { el21.textContent = '—'; el21.style.color = '#444'; document.getElementById('zakat-21-note').textContent = 'لم يُدخل وزن'; }
+            else if (zakat21 === 0) { el21.textContent = 'غير خاضع للزكاة'; el21.style.color = '#f44336'; document.getElementById('zakat-21-note').textContent = 'أقل من النصاب (100 غ) ❌'; }
+            else { el21.textContent = fmt(zakat21) + ' دينار'; el21.style.color = '#D4AF37'; document.getElementById('zakat-21-note').textContent = 'خاضع للزكاة ✅'; }
+
+            var el18 = document.getElementById('zakat-18-amount');
+            if (w18 === 0) { el18.textContent = '—'; el18.style.color = '#444'; document.getElementById('zakat-18-note').textContent = 'لم يُدخل وزن'; }
+            else if (zakat18 === 0) { el18.textContent = 'غير خاضع للزكاة'; el18.style.color = '#f44336'; document.getElementById('zakat-18-note').textContent = 'أقل من النصاب (100 غ) ❌'; }
+            else { el18.textContent = fmt(zakat18) + ' دينار'; el18.style.color = '#C0C0C0'; document.getElementById('zakat-18-note').textContent = 'خاضع للزكاة ✅'; }
+
+            var totalEl = document.getElementById('zakat-total');
+            if (total === 0) { totalEl.textContent = 'لا زكاة واجبة'; totalEl.style.color = '#888'; }
+            else { totalEl.textContent = fmt(total) + ' دينار'; totalEl.style.color = '#4CAF50'; }
         }
 
 
