@@ -1739,6 +1739,12 @@
         let database = firebase.database();
         let auth = firebase.auth();
 
+        // تحقق من المنتجات المنتهية عند فتح التطبيق وكل ساعة
+        setTimeout(function() {
+            checkExpiredProducts();
+            setInterval(checkExpiredProducts, 60 * 60 * 1000);
+        }, 3000);
+
         // علامات + أو - لكل قسم
         let signs = {
             'sell': '+',
@@ -2071,11 +2077,29 @@
         function setProductStatus(node, id, status) {
             if (!isAdmin()) return;
             if (status === 'sold' || status === 'reserved') {
-                database.ref('zamzam-company/' + node + '/' + id).update({ status: status });
-                setTimeout(function() { database.ref('zamzam-company/' + node + '/' + id).remove(); }, 6*60*60*1000);
+                var deleteAt = Date.now() + (6 * 60 * 60 * 1000);
+                database.ref('zamzam-company/' + node + '/' + id).update({ status: status, deleteAt: deleteAt });
             } else {
-                database.ref('zamzam-company/' + node + '/' + id).update({ status: 'available' });
+                database.ref('zamzam-company/' + node + '/' + id).update({ status: 'available', deleteAt: null });
             }
+        }
+
+        // تحقق من المنتجات المنتهية عند التحميل
+        function checkExpiredProducts() {
+            var now = Date.now();
+            var nodes = ['exclusive-offers', 'scrap-offers', 'silver-offers', 'watches-offers', 'glasses-offers'];
+            nodes.forEach(function(node) {
+                database.ref('zamzam-company/' + node).once('value', function(snap) {
+                    var data = snap.val();
+                    if (!data) return;
+                    Object.keys(data).forEach(function(id) {
+                        var p = data[id];
+                        if (p.deleteAt && now >= p.deleteAt) {
+                            database.ref('zamzam-company/' + node + '/' + id).remove();
+                        }
+                    });
+                });
+            });
         }
 
         function getStatusBadge(status) {
