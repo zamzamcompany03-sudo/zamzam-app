@@ -2127,6 +2127,7 @@
             if (expiry && Date.now() < parseInt(expiry)) {
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
+                startReviewNotifWatcher();
                 return;
             }
             var pass = prompt('أدخل كلمة المرور:');
@@ -2137,6 +2138,7 @@
                         sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
                         document.getElementById('settingsPanel').classList.add('active');
                         document.getElementById('overlay').classList.add('active');
+                        startReviewNotifWatcher();
                     } else {
                         alert('كلمة المرور غير صحيحة');
                     }
@@ -2709,7 +2711,10 @@
             let list = document.getElementById('reviews-list-settings');
             let arrow = document.getElementById('reviews-arrow');
             let isOpen = list.style.display !== 'none';
-            if (!isOpen) loadReviews();
+            if (!isOpen) {
+                loadReviews();
+                markReviewsAsSeen(); // علّم التقييمات كمشاهدة
+            }
             list.style.display = isOpen ? 'none' : 'block';
             arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
         }
@@ -3677,7 +3682,83 @@
             });
         }
 
-        // ===== Image previews =====
+        // ===== نظام تنبيه التقييمات الجديدة =====
+        let _reviewNotifInterval = null;
+        let _lastSeenReviewCount = parseInt(localStorage.getItem('zmzm_last_seen_reviews') || '0');
+        let _reviewsOpened = false;
+
+        function startReviewNotifWatcher() {
+            if (!isAdmin()) return;
+            checkNewReviews();
+            // كل 5 دقائق
+            _reviewNotifInterval = setInterval(function() {
+                if (!_reviewsOpened) checkNewReviews();
+            }, 5 * 60 * 1000);
+        }
+
+        function checkNewReviews() {
+            database.ref('zamzam-company/reviews').once('value', function(snap) {
+                var data = snap.val();
+                var count = data ? Object.keys(data).length : 0;
+                if (count > _lastSeenReviewCount) {
+                    var newCount = count - _lastSeenReviewCount;
+                    showReviewNotifModal(newCount);
+                }
+            });
+        }
+
+        function showReviewNotifModal(count) {
+            var existing = document.getElementById('review-notif-modal');
+            if (existing) existing.remove();
+
+            var modal = document.createElement('div');
+            modal.id = 'review-notif-modal';
+            modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.75);z-index:999999;display:flex;align-items:center;justify-content:center;direction:ltr;';
+            modal.innerHTML = '<div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:24px;width:88%;max-width:340px;text-align:center;direction:rtl;">'
+                + '<div style="font-size:36px;margin-bottom:10px;">⭐</div>'
+                + '<div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:6px;">تقييم جديد!</div>'
+                + '<div style="color:#aaa;font-size:13px;margin-bottom:20px;">لديك <span style="color:#FFD700;font-weight:800;">' + count + '</span> تقييم جديد لم تطلع عليه بعد</div>'
+                + '<div style="display:flex;gap:10px;">'
+                + '<button onclick="openReviewsFromNotif()" style="flex:1;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;border:none;border-radius:12px;cursor:pointer;font-size:13px;">عرض التقييمات</button>'
+                + '<button onclick="dismissReviewNotif()" style="flex:1;padding:12px;background:#222;color:#888;border:1px solid #333;border-radius:12px;cursor:pointer;font-size:13px;">لاحقاً</button>'
+                + '</div>'
+                + '</div>';
+            document.body.appendChild(modal);
+        }
+
+        function openReviewsFromNotif() {
+            dismissReviewNotif();
+            markReviewsAsSeen();
+            // افتح الإعدادات وانتقل لسجل التقييمات
+            document.getElementById('settingsPanel').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            setTimeout(function() {
+                var el = document.getElementById('reviews-list-settings');
+                if (el) {
+                    el.style.display = 'block';
+                    el.scrollIntoView({ behavior: 'smooth' });
+                    if (typeof loadReviews === 'function') loadReviews(el);
+                }
+            }, 300);
+        }
+
+        function dismissReviewNotif() {
+            var modal = document.getElementById('review-notif-modal');
+            if (modal) modal.remove();
+        }
+
+        function markReviewsAsSeen() {
+            _reviewsOpened = true;
+            database.ref('zamzam-company/reviews').once('value', function(snap) {
+                var count = snap.val() ? Object.keys(snap.val()).length : 0;
+                _lastSeenReviewCount = count;
+                localStorage.setItem('zmzm_last_seen_reviews', count);
+            });
+            // اعد التحقق بعد دقيقة
+            setTimeout(function() { _reviewsOpened = false; }, 60000);
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
             const ids = [
                 ['scrap-image', 'scrap-img-preview-el', 'scrap-image-preview'],
