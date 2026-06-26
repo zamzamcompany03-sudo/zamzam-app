@@ -837,8 +837,10 @@
             </div>
         </div>
 
-        <!-- زر مشاركة التطبيق - للجميع -->
+        <!-- زر مشاركة التطبيق + حاسبة الزكاة - للجميع -->
         <div style="background:linear-gradient(135deg,#1a1400,#2a2000);border:2px solid #D4AF37;border-radius:18px;padding:16px 20px;margin-bottom:16px;box-shadow:0 6px 20px rgba(212,175,55,0.2);">
+            
+            <!-- عنوان المشاركة -->
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
                 <div style="font-size:26px;">🔗</div>
                 <div>
@@ -846,12 +848,30 @@
                     <div style="color:#888;font-size:11px;margin-top:2px;">أرسل الرابط لأصدقائك أو احفظه على هاتفك</div>
                 </div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+            <!-- أزرار المشاركة -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
                 <button onclick="shareApp()" style="padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;">📤 مشاركة</button>
                 <button onclick="copyAppLink()" style="padding:12px;background:#111;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;line-height:1.4;">
                     ✨ اضغط لنسخ رابط التطبيق والصقه لمشاركته مع الآخرين
                 </button>
             </div>
+
+            <!-- فاصل -->
+            <div style="border-top:1px solid rgba(212,175,55,0.2);margin-bottom:14px;"></div>
+
+            <!-- زر حاسبة الزكاة -->
+            <div onclick="openZakatCalc()" style="background:linear-gradient(135deg,#0a1a0a,#0d1f0d);border:1px solid #4CAF50;border-radius:14px;padding:13px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-size:24px;">☪️</div>
+                    <div>
+                        <div style="color:#4CAF50;font-size:13px;font-weight:800;">احسب زكاة الذهب</div>
+                        <div style="color:#666;font-size:10px;margin-top:2px;">وفق المذهب الإسلامي — أهل السنة</div>
+                    </div>
+                </div>
+                <div style="color:#4CAF50;font-size:20px;">←</div>
+            </div>
+
         </div>
 
     </div>
@@ -3205,7 +3225,162 @@
             });
         }
 
-        // ===== إرسال ومشاركة التطبيق =====
+        // ===== حاسبة الزكاة =====
+        let _hawlPassed = null;
+
+        function openZakatCalc() {
+            var m = document.getElementById('zakat-modal');
+            m.style.display = 'block';
+            m.scrollTop = 0;
+        }
+
+        function closeZakatCalc() {
+            document.getElementById('zakat-modal').style.display = 'none';
+        }
+
+        function resetZakat() {
+            document.getElementById('zakat-24').value = '';
+            document.getElementById('zakat-21').value = '';
+            document.getElementById('zakat-18').value = '';
+            document.getElementById('zakat-results').style.display = 'none';
+            _hawlPassed = null;
+            setHawl(null);
+        }
+
+        function setHawl(val) {
+            _hawlPassed = val;
+            var yes = document.getElementById('hawl-yes');
+            var no = document.getElementById('hawl-no');
+            if (!yes || !no) return;
+            // إعادة تعيين
+            yes.style.background = '#111'; yes.style.borderColor = '#333'; yes.style.color = '#666';
+            no.style.background = '#111'; no.style.borderColor = '#333'; no.style.color = '#666';
+            if (val === true) {
+                yes.style.background = '#1a4d1a'; yes.style.borderColor = '#4CAF50'; yes.style.color = '#4CAF50';
+            } else if (val === false) {
+                no.style.background = '#4d1a1a'; no.style.borderColor = '#f44336'; no.style.color = '#f44336';
+            }
+        }
+
+        function calcZakat() {
+            var fmt = function(n) { return Math.round(n).toLocaleString('ar-IQ'); };
+
+            // جلب سعر شراء الخليجي من الشاشة
+            var buyGulfEl = document.getElementById('buyGulf-gram');
+            var buyGulfRaw = buyGulfEl ? buyGulfEl.textContent.replace(/[,،\s]/g, '') : '0';
+            var buyGulfPrice = parseFloat(buyGulfRaw) || 0;
+
+            if (buyGulfPrice === 0) {
+                alert('يرجى الانتظار حتى يتم تحميل أسعار الذهب');
+                return;
+            }
+
+            var w24 = parseFloat(document.getElementById('zakat-24').value) || 0;
+            var w21 = parseFloat(document.getElementById('zakat-21').value) || 0;
+            var w18 = parseFloat(document.getElementById('zakat-18').value) || 0;
+
+            if (w24 === 0 && w21 === 0 && w18 === 0) {
+                alert('يرجى إدخال وزن واحد على الأقل');
+                return;
+            }
+
+            if (_hawlPassed === null) {
+                alert('يرجى الإجابة على سؤال الحول أولاً');
+                return;
+            }
+
+            if (!_hawlPassed) {
+                document.getElementById('zakat-results').style.display = 'block';
+                ['24','21','18'].forEach(function(k) {
+                    document.getElementById('zakat-'+k+'-amount').textContent = 'لا زكاة';
+                    document.getElementById('zakat-'+k+'-note').textContent = 'لم يمر الحول بعد';
+                    document.getElementById('zakat-'+k+'-amount').style.color = '#888';
+                });
+                document.getElementById('zakat-total').textContent = 'لا زكاة واجبة';
+                document.getElementById('zakat-total').style.color = '#888';
+                return;
+            }
+
+            // المعادلات
+            var basePrice = buyGulfPrice + 1500;
+
+            // عيار 24
+            var price24 = basePrice / 0.875;
+            var zakat24 = 0;
+            var note24 = '';
+            if (w24 > 0) {
+                if (w24 >= 85) {
+                    zakat24 = (w24 * price24) / 1000000 * 25000;
+                    note24 = 'الوزن خاضع للزكاة ✅';
+                } else {
+                    note24 = 'الوزن أقل من النصاب (85 غرام) — غير خاضع للزكاة ❌';
+                }
+            }
+
+            // عيار 21
+            var price21 = basePrice;
+            var zakat21 = 0;
+            var note21 = '';
+            if (w21 > 0) {
+                if (w21 >= 100) {
+                    zakat21 = (w21 * price21) / 1000000 * 25000;
+                    note21 = 'الوزن خاضع للزكاة ✅';
+                } else {
+                    note21 = 'الوزن أقل من النصاب (100 غرام) — غير خاضع للزكاة ❌';
+                }
+            }
+
+            // عيار 18
+            var price18 = basePrice / 0.750;
+            var zakat18 = 0;
+            var note18 = '';
+            if (w18 > 0) {
+                if (w18 >= 100) {
+                    zakat18 = (w18 * price18) / 1000000 * 25000;
+                    note18 = 'الوزن خاضع للزكاة ✅';
+                } else {
+                    note18 = 'الوزن أقل من النصاب (100 غرام) — غير خاضع للزكاة ❌';
+                }
+            }
+
+            var total = zakat24 + zakat21 + zakat18;
+
+            // عرض النتائج
+            document.getElementById('zakat-results').style.display = 'block';
+
+            // عيار 24
+            var el24 = document.getElementById('zakat-24-amount');
+            if (w24 === 0) { el24.textContent = 'لم يُدخل وزن'; el24.style.color = '#555'; }
+            else if (zakat24 === 0) { el24.textContent = 'غير خاضع للزكاة'; el24.style.color = '#f44336'; }
+            else { el24.textContent = fmt(zakat24) + ' دينار'; el24.style.color = '#FFD700'; }
+            document.getElementById('zakat-24-note').textContent = note24;
+
+            // عيار 21
+            var el21 = document.getElementById('zakat-21-amount');
+            if (w21 === 0) { el21.textContent = 'لم يُدخل وزن'; el21.style.color = '#555'; }
+            else if (zakat21 === 0) { el21.textContent = 'غير خاضع للزكاة'; el21.style.color = '#f44336'; }
+            else { el21.textContent = fmt(zakat21) + ' دينار'; el21.style.color = '#D4AF37'; }
+            document.getElementById('zakat-21-note').textContent = note21;
+
+            // عيار 18
+            var el18 = document.getElementById('zakat-18-amount');
+            if (w18 === 0) { el18.textContent = 'لم يُدخل وزن'; el18.style.color = '#555'; }
+            else if (zakat18 === 0) { el18.textContent = 'غير خاضع للزكاة'; el18.style.color = '#f44336'; }
+            else { el18.textContent = fmt(zakat18) + ' دينار'; el18.style.color = '#C0C0C0'; }
+            document.getElementById('zakat-18-note').textContent = note18;
+
+            // المجموع
+            var totalEl = document.getElementById('zakat-total');
+            if (total === 0) {
+                totalEl.textContent = 'لا زكاة واجبة';
+                totalEl.style.color = '#888';
+            } else {
+                totalEl.textContent = fmt(total) + ' دينار';
+                totalEl.style.color = '#4CAF50';
+            }
+        }
+
+
         let APP_URL = 'https://zamzamcompany03-sudo.github.io/zamzam-company-/';
 
         function copyAppMessage() {
@@ -3785,6 +3960,114 @@
         </div>
     </div>
     <div id="toast-msg">✅ تم النسخ بنجاح</div>
+
+<!-- نافذة حاسبة الزكاة -->
+<div id="zakat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.92);z-index:99999;overflow-y:auto;direction:ltr;">
+    <div style="max-width:420px;margin:0 auto;padding:16px;direction:rtl;">
+
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-top:8px;">
+            <div>
+                <div style="color:#4CAF50;font-size:17px;font-weight:800;">☪️ احسب زكاة الذهب</div>
+                <div style="color:#888;font-size:11px;margin-top:2px;">وفق المذهب الإسلامي — أهل السنة</div>
+            </div>
+            <button onclick="closeZakatCalc()" style="background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:36px;height:36px;color:#fff;font-size:18px;cursor:pointer;">✕</button>
+        </div>
+
+        <!-- حقول الإدخال -->
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+
+            <div style="background:#0d0d0d;border:1px solid #333;border-radius:14px;padding:14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <div style="color:#666;font-size:10px;">النصاب: 85 غرام فأكثر</div>
+                    <div style="color:#FFD700;font-size:13px;font-weight:700;">عيار 24 — ذهب خالص</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#888;font-size:12px;">غرام</span>
+                    <input type="number" id="zakat-24" placeholder="0" min="0" inputmode="decimal" style="flex:1;padding:10px 12px;background:#111;border:1px solid #444;border-radius:10px;color:#fff;font-size:16px;text-align:center;">
+                </div>
+            </div>
+
+            <div style="background:#0d0d0d;border:1px solid #333;border-radius:14px;padding:14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <div style="color:#666;font-size:10px;">النصاب: 100 غرام فأكثر</div>
+                    <div style="color:#D4AF37;font-size:13px;font-weight:700;">عيار 21</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#888;font-size:12px;">غرام</span>
+                    <input type="number" id="zakat-21" placeholder="0" min="0" inputmode="decimal" style="flex:1;padding:10px 12px;background:#111;border:1px solid #444;border-radius:10px;color:#fff;font-size:16px;text-align:center;">
+                </div>
+            </div>
+
+            <div style="background:#0d0d0d;border:1px solid #333;border-radius:14px;padding:14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <div style="color:#666;font-size:10px;">النصاب: 100 غرام فأكثر</div>
+                    <div style="color:#C0C0C0;font-size:13px;font-weight:700;">عيار 18</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#888;font-size:12px;">غرام</span>
+                    <input type="number" id="zakat-18" placeholder="0" min="0" inputmode="decimal" style="flex:1;padding:10px 12px;background:#111;border:1px solid #444;border-radius:10px;color:#fff;font-size:16px;text-align:center;">
+                </div>
+            </div>
+        </div>
+
+        <!-- سؤال الحول -->
+        <div style="background:#0d150d;border:1px solid #4CAF50;border-radius:14px;padding:14px;margin-bottom:14px;">
+            <div style="color:#4CAF50;font-size:13px;font-weight:700;margin-bottom:10px;text-align:center;">📅 هل مرّ على هذا الذهب حول كامل (سنة هجرية)؟</div>
+            <div style="display:flex;gap:10px;">
+                <button id="hawl-yes" onclick="setHawl(true)" style="flex:1;padding:12px;background:#111;border:2px solid #333;border-radius:10px;color:#666;font-weight:800;font-size:13px;cursor:pointer;">✅ نعم، مرّ الحول</button>
+                <button id="hawl-no" onclick="setHawl(false)" style="flex:1;padding:12px;background:#111;border:2px solid #333;border-radius:10px;color:#666;font-weight:800;font-size:13px;cursor:pointer;">❌ لا</button>
+            </div>
+        </div>
+
+        <!-- زر الحساب -->
+        <button onclick="calcZakat()" style="width:100%;padding:15px;background:linear-gradient(135deg,#2d7a2d,#1a5c1a);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:16px;">☪️ احسب الزكاة</button>
+
+        <!-- النتائج -->
+        <div id="zakat-results" style="display:none;">
+            <div style="background:#0d0d0d;border-radius:14px;padding:14px;margin-bottom:8px;border-right:4px solid #FFD700;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                    <span style="color:#FFD700;font-size:13px;font-weight:700;">عيار 24</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="zakat-24-amount" style="color:#FFD700;font-size:18px;font-weight:800;">--</span>
+                    <span id="zakat-24-note" style="color:#666;font-size:11px;text-align:left;max-width:55%;"></span>
+                </div>
+            </div>
+
+            <div style="background:#0d0d0d;border-radius:14px;padding:14px;margin-bottom:8px;border-right:4px solid #D4AF37;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                    <span style="color:#D4AF37;font-size:13px;font-weight:700;">عيار 21</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="zakat-21-amount" style="color:#D4AF37;font-size:18px;font-weight:800;">--</span>
+                    <span id="zakat-21-note" style="color:#666;font-size:11px;text-align:left;max-width:55%;"></span>
+                </div>
+            </div>
+
+            <div style="background:#0d0d0d;border-radius:14px;padding:14px;margin-bottom:14px;border-right:4px solid #C0C0C0;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                    <span style="color:#C0C0C0;font-size:13px;font-weight:700;">عيار 18</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="zakat-18-amount" style="color:#C0C0C0;font-size:18px;font-weight:800;">--</span>
+                    <span id="zakat-18-note" style="color:#666;font-size:11px;text-align:left;max-width:55%;"></span>
+                </div>
+            </div>
+
+            <!-- المجموع -->
+            <div style="background:linear-gradient(135deg,#0d200d,#0a1a0a);border:2px solid #4CAF50;border-radius:16px;padding:18px;text-align:center;margin-bottom:16px;">
+                <div style="color:#888;font-size:12px;margin-bottom:6px;">💰 إجمالي الزكاة الواجبة</div>
+                <div id="zakat-total" style="color:#4CAF50;font-size:26px;font-weight:800;">--</div>
+                <div style="color:#666;font-size:11px;margin-top:4px;">دينار عراقي</div>
+            </div>
+
+            <!-- زر إعادة الحساب -->
+            <button onclick="resetZakat()" style="width:100%;padding:12px;background:transparent;border:1px solid #333;border-radius:12px;color:#666;font-size:13px;cursor:pointer;margin-bottom:16px;">🔄 إعادة الحساب</button>
+        </div>
+
+    </div>
+</div>
 
 <div id="user-modal" style="display:none;">
     <div style="background:#1a1a1a;border:2px solid #60a5fa;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
