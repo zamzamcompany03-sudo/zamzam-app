@@ -3291,7 +3291,7 @@
             var basePrice = buyGulfPrice + 1500;
             var price24 = basePrice / 0.875;
             var price21 = basePrice;
-            var price18 = basePrice / 0.750;
+            var price18 = basePrice * 18 / 21;
 
             var zakat24 = (w24 >= 85) ? (w24 * price24) / 1000000 * 25000 : 0;
             var zakat21 = (w21 >= 100) ? (w21 * price21) / 1000000 * 25000 : 0;
