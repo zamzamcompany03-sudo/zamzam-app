@@ -2301,6 +2301,7 @@
         }
 
         function loadScrap() {
+            checkExpiredProducts();
             let grid = document.getElementById('scrap-grid');
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
 
@@ -2596,6 +2597,7 @@
         }
 
         function loadOffers() {
+            checkExpiredProducts();
             let grid = document.getElementById('offers-grid');
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
 
@@ -3000,6 +3002,7 @@
         }
 
         function loadSilver() {
+            checkExpiredProducts();
             let grid = document.getElementById('silver-grid');
             if (!grid) return;
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
@@ -3043,6 +3046,7 @@
         }
 
         function loadWatchItems(type) {
+            checkExpiredProducts();
             let grid = document.getElementById(type + '-grid');
             if (!grid) return;
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
