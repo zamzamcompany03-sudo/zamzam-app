@@ -658,6 +658,23 @@
             direction: ltr !important;
             transform: none !important;
         }
+
+        /* تحسين أداء النوافذ */
+        #scrap-modal, #product-modal, #watch-modal, #zakat-modal {
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+        }
+        #scrap-modal > div, #product-modal > div, #watch-modal > div {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* تسريع التطبيق */
+        * { -webkit-tap-highlight-color: transparent; }
+        img { loading: lazy; }
     </style>
 </head>
 <body>
@@ -1206,7 +1223,7 @@
     </div>
 
     <!-- صفحة العروض الحصرية -->
-    <div id="page-offers" style="display:none; width:100%;padding:12px;padding-bottom:120px;box-sizing:border-box;">
+    <div id="page-offers" style="display:none; width:100%;padding:12px;padding-bottom:20px;box-sizing:border-box;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;">
             <button onclick="showPage('store')" style="background:none;border:1px solid #D4AF37;color:#D4AF37;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px;">← رجوع</button>
             <h2 style="color:#D4AF37;font-size:16px;">✨ العروض الحصرية</h2>
@@ -1214,10 +1231,11 @@
         <div id="offers-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>
         </div>
+        <button onclick="showPage('store')" style="width:100%;padding:14px;background:rgba(212,175,55,0.1);border:2px solid #D4AF37;color:#D4AF37;border-radius:14px;cursor:pointer;margin-top:20px;margin-bottom:100px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
     </div>
 
     <!-- صفحة الكسر النضيف -->
-    <div id="page-scrap" style="display:none; width:100%;padding:12px;padding-bottom:120px;box-sizing:border-box;">
+    <div id="page-scrap" style="display:none; width:100%;padding:12px;padding-bottom:20px;box-sizing:border-box;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;">
             <button onclick="showPage('store')" style="background:none;border:1px solid #4CAF50;color:#4CAF50;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px;">← رجوع</button>
             <h2 style="color:#4CAF50;font-size:16px;">💎 الكسر النضيف</h2>
@@ -1225,21 +1243,24 @@
         <div id="scrap-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>
         </div>
+        <button onclick="showPage('store')" style="width:100%;padding:14px;background:rgba(76,175,80,0.1);border:2px solid #4CAF50;color:#4CAF50;border-radius:14px;cursor:pointer;margin-top:20px;margin-bottom:100px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
     </div>
 
     <!-- نافذة تفاصيل الكسر -->
-    <div id="scrap-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;">
-        <div style="width:100%;padding:12px;box-sizing:border-box;">
-            <button onclick="closeScrapModal()" style="background:none;border:1px solid #4CAF50;color:#4CAF50;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;">← رجوع</button>
-            <div id="scrap-modal-content"></div>
+    <div id="scrap-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <div style="width:100%;padding:12px;box-sizing:border-box;min-height:100%;display:flex;flex-direction:column;">
+            <button onclick="closeScrapModal()" style="background:none;border:1px solid #4CAF50;color:#4CAF50;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;align-self:flex-start;">← رجوع</button>
+            <div id="scrap-modal-content" style="flex:1;"></div>
+            <button onclick="closeScrapModal()" style="width:100%;padding:14px;background:rgba(76,175,80,0.1);border:2px solid #4CAF50;color:#4CAF50;border-radius:14px;cursor:pointer;margin-top:20px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
     </div>
 
     <!-- نافذة تفاصيل المنتج -->
-    <div id="product-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;">
-        <div style="width:100%;padding:12px;box-sizing:border-box;">
-            <button onclick="closeProductModal()" style="background:none;border:1px solid #D4AF37;color:#D4AF37;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;">← رجوع</button>
-            <div id="product-modal-content"></div>
+    <div id="product-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <div style="width:100%;padding:12px;box-sizing:border-box;min-height:100%;display:flex;flex-direction:column;">
+            <button onclick="closeProductModal()" style="background:none;border:1px solid #D4AF37;color:#D4AF37;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;align-self:flex-start;">← رجوع</button>
+            <div id="product-modal-content" style="flex:1;"></div>
+            <button onclick="closeProductModal()" style="width:100%;padding:14px;background:rgba(212,175,55,0.1);border:2px solid #D4AF37;color:#D4AF37;border-radius:14px;cursor:pointer;margin-top:20px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
     </div>
 
@@ -1348,10 +1369,11 @@
     </div>
 
     <!-- نافذة تفاصيل الفضيات/ساعات/نضارات -->
-    <div id="watch-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;">
-        <div style="width:100%;padding:12px;box-sizing:border-box;">
-            <button onclick="closeWatchModal()" style="background:none;border:1px solid #60a5fa;color:#60a5fa;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;">← رجوع</button>
-            <div id="watch-modal-content"></div>
+    <div id="watch-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <div style="width:100%;padding:12px;box-sizing:border-box;min-height:100%;display:flex;flex-direction:column;">
+            <button onclick="closeWatchModal()" style="background:none;border:1px solid #60a5fa;color:#60a5fa;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;align-self:flex-start;">← رجوع</button>
+            <div id="watch-modal-content" style="flex:1;"></div>
+            <button onclick="closeWatchModal()" style="width:100%;padding:14px;background:rgba(96,165,250,0.1);border:2px solid #60a5fa;color:#60a5fa;border-radius:14px;cursor:pointer;margin-top:20px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
     </div>
     <div class="overlay" id="overlay" onclick="closeSettings()"></div>
@@ -4140,7 +4162,7 @@
     <div id="toast-msg">✅ تم النسخ بنجاح</div>
 
 <!-- نافذة حاسبة الزكاة -->
-<div id="zakat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.92);z-index:99999;overflow-y:auto;direction:ltr;">
+<div id="zakat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;overflow-y:auto;-webkit-overflow-scrolling:touch;direction:ltr;">
     <div style="max-width:420px;margin:0 auto;padding:16px;direction:rtl;">
 
         <!-- Header -->
@@ -4242,7 +4264,8 @@
             </div>
 
             <!-- زر إعادة الحساب -->
-            <button onclick="resetZakat()" style="width:100%;padding:12px;background:transparent;border:1px solid #333;border-radius:12px;color:#666;font-size:13px;cursor:pointer;margin-bottom:16px;">🔄 إعادة الحساب</button>
+            <button onclick="resetZakat()" style="width:100%;padding:12px;background:transparent;border:1px solid #333;border-radius:12px;color:#666;font-size:13px;cursor:pointer;margin-bottom:8px;">🔄 إعادة الحساب</button>
+            <button onclick="closeZakatCalc()" style="width:100%;padding:14px;background:rgba(76,175,80,0.1);border:2px solid #4CAF50;color:#4CAF50;border-radius:14px;cursor:pointer;margin-bottom:16px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
 
     </div>
