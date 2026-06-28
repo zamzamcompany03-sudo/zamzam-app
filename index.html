@@ -2383,6 +2383,7 @@
 
                 window._scrapData = {};
                 products.forEach(p => window._scrapData[p.id] = p);
+                window._scrapKeys = products.map(p => p.id);
             });
         }
 
@@ -2391,6 +2392,11 @@
             let p = window._scrapData[id];
             if (!p) return;
 
+            // تحديث الـ index
+            let keys = window._scrapKeys;
+            let idx = keys.indexOf(id);
+            if (idx !== -1) window._scrapIdx = idx;
+
             let fmt = n => Math.round(n).toLocaleString('ar-IQ');
             let remaining = Math.ceil((p.expiresAt - Date.now()) / (1000 * 60 * 60 * 24));
 
@@ -2398,7 +2404,15 @@
                 `مرحباً 👋\nأنا مهتم بهذه القطعة:\n\n📦 الوصف: ${p.desc}\n⚖️ الوزن: ${p.weight} غرام\n💰 السعر الكلي: ${fmt(p.price)} دينار\n🖼️ صورة القطعة: ${p.imageUrl}\n\nأرجو التواصل معي للاستفسار عن هذه القطعة`
             );
 
+            let navHtml = keys.length > 1 ? `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0 10px;">
+                <button onclick="(() => { window._scrapIdx=(window._scrapIdx+1)%window._scrapKeys.length; openScrapModal(window._scrapKeys[window._scrapIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid #4CAF50;color:#4CAF50;width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">‹</button>
+                <span style="color:#4CAF50;font-weight:700;">${window._scrapIdx+1}</span><span style="color:#555;font-size:13px;"> / ${keys.length}</span>
+                <button onclick="(() => { window._scrapIdx=(window._scrapIdx-1+window._scrapKeys.length)%window._scrapKeys.length; openScrapModal(window._scrapKeys[window._scrapIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid #4CAF50;color:#4CAF50;width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">›</button>
+            </div>` : '';
+
             document.getElementById('scrap-modal-content').innerHTML = `
+                ${navHtml}
                 <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:15px;">
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #4CAF50;">
@@ -2427,6 +2441,107 @@
         function closeScrapModal() {
             document.getElementById('scrap-modal').style.display = 'none';
         }
+
+        // ===== نظام التنقل بالسحب (Swipe) =====
+        window._swipeState = {};
+
+        function initSwipe(modalEl, prevFn, nextFn) {
+            let startX = 0, startY = 0, moved = false;
+            modalEl.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                moved = false;
+            }, { passive: true });
+            modalEl.addEventListener('touchmove', e => {
+                moved = true;
+            }, { passive: true });
+            modalEl.addEventListener('touchend', e => {
+                if (!moved) return;
+                let dx = e.changedTouches[0].clientX - startX;
+                let dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
+                if (dx > 0) nextFn();   // سحب يمين = سابق (RTL)
+                else prevFn();          // سحب يسار = تالي (RTL)
+            }, { passive: true });
+        }
+
+        function buildNavArrows(color, prevFn, nextFn, getIdx, getTotal) {
+            return `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 12px;">
+                <button onclick="(${nextFn})()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+                <span id="modal-counter" style="color:#888;font-size:13px;"></span>
+                <button onclick="(${prevFn})()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
+            </div>`;
+        }
+
+        function updateModalCounter(current, total, color) {
+            let el = document.getElementById('modal-counter');
+            if (el) el.innerHTML = `<span style="color:${color};font-weight:700;">${current+1}</span><span style="color:#555;"> / ${total}</span>`;
+        }
+
+        // ===== Scrap Swipe =====
+        window._scrapKeys = [];
+        window._scrapIdx = 0;
+        (function() {
+            let modal = document.getElementById('scrap-modal');
+            initSwipe(modal,
+                () => { // السابق
+                    let keys = window._scrapKeys;
+                    if (!keys.length) return;
+                    window._scrapIdx = (window._scrapIdx - 1 + keys.length) % keys.length;
+                    openScrapModal(keys[window._scrapIdx]);
+                },
+                () => { // التالي
+                    let keys = window._scrapKeys;
+                    if (!keys.length) return;
+                    window._scrapIdx = (window._scrapIdx + 1) % keys.length;
+                    openScrapModal(keys[window._scrapIdx]);
+                }
+            );
+        })();
+
+        // ===== Product Swipe =====
+        window._productKeys = [];
+        window._productIdx = 0;
+        (function() {
+            let modal = document.getElementById('product-modal');
+            initSwipe(modal,
+                () => {
+                    let keys = window._productKeys;
+                    if (!keys.length) return;
+                    window._productIdx = (window._productIdx - 1 + keys.length) % keys.length;
+                    openProductModal(keys[window._productIdx]);
+                },
+                () => {
+                    let keys = window._productKeys;
+                    if (!keys.length) return;
+                    window._productIdx = (window._productIdx + 1) % keys.length;
+                    openProductModal(keys[window._productIdx]);
+                }
+            );
+        })();
+
+        // ===== Watch Swipe =====
+        window._watchKeys = [];
+        window._watchTypes = [];
+        window._watchIdx = 0;
+        (function() {
+            let modal = document.getElementById('watch-modal');
+            initSwipe(modal,
+                () => {
+                    let keys = window._watchKeys;
+                    if (!keys.length) return;
+                    window._watchIdx = (window._watchIdx - 1 + keys.length) % keys.length;
+                    openWatchModal(window._watchTypes[window._watchIdx], keys[window._watchIdx]);
+                },
+                () => {
+                    let keys = window._watchKeys;
+                    if (!keys.length) return;
+                    window._watchIdx = (window._watchIdx + 1) % keys.length;
+                    openWatchModal(window._watchTypes[window._watchIdx], keys[window._watchIdx]);
+                }
+            );
+        })();
 
         // PAGE NAVIGATION
         function showPage(page) {
@@ -2682,6 +2797,7 @@
                 // حفظ المنتجات للوصول لاحقاً
                 window._offersData = {};
                 products.forEach(p => window._offersData[p.id] = p);
+                window._productKeys = products.map(p => p.id);
             });
         }
 
@@ -2689,6 +2805,11 @@
             let p = window._offersData[id];
             if (!p) return;
             trackView('exclusive-offers', id);
+
+            // تحديث الـ index
+            let keys = window._productKeys;
+            let idx = keys.indexOf(id);
+            if (idx !== -1) window._productIdx = idx;
 
             let sellGram = parseFloat(localStorage.getItem('lastSellGram') || 0);
             let goldAmount = sellGram * p.weight;
@@ -2704,7 +2825,14 @@
             );
 
             let imgSrc = p.imageUrl || p.imageBase64 || '';
+            let navHtml = keys.length > 1 ? `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0 10px;">
+                <button onclick="(() => { window._productIdx=(window._productIdx+1)%window._productKeys.length; openProductModal(window._productKeys[window._productIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid #D4AF37;color:#D4AF37;width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">‹</button>
+                <span style="color:#D4AF37;font-weight:700;">${window._productIdx+1}</span><span style="color:#555;font-size:13px;"> / ${keys.length}</span>
+                <button onclick="(() => { window._productIdx=(window._productIdx-1+window._productKeys.length)%window._productKeys.length; openProductModal(window._productKeys[window._productIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid #D4AF37;color:#D4AF37;width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">›</button>
+            </div>` : '';
             document.getElementById('product-modal-content').innerHTML = `
+                ${navHtml}
                 <img src="${imgSrc}" style="width:100%;border-radius:14px;margin-bottom:15px;">
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #333;">
@@ -3116,11 +3244,23 @@
                 }).join('');
 
                 if (!window._watchData) window._watchData = {};
-                products.forEach(p => { window._watchData[p.id] = {...p, _type: type}; });
+                if (!window._watchKeys) window._watchKeys = [];
+                if (!window._watchTypes) window._watchTypes = [];
+                products.forEach(p => {
+                    window._watchData[p.id] = {...p, _type: type};
+                    if (!window._watchKeys.includes(p.id)) {
+                        window._watchKeys.push(p.id);
+                        window._watchTypes.push(type);
+                    }
+                });
             });
         }
 
         function openWatchModal(type, id) {
+            // تحديث الـ index
+            let keys = window._watchKeys;
+            let idx = keys.indexOf(id);
+            if (idx !== -1) window._watchIdx = idx;
             let node = type==='watches'?'watches-offers':(type==='glasses'?'glasses-offers':'silver-offers');
             trackView(node, id);
             let p, color, label, emoji;
@@ -3154,7 +3294,14 @@
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">المبلغ قبل الخصم</span><span style="color:${color};">${fmt(p.price)} دينار</span></div>`;
             }
 
+            let navHtmlW = keys.length > 1 ? `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0 10px;">
+                <button onclick="(() => { window._watchIdx=(window._watchIdx+1)%window._watchKeys.length; openWatchModal(window._watchTypes[window._watchIdx],window._watchKeys[window._watchIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">‹</button>
+                <span style="color:${color};font-weight:700;">${window._watchIdx+1}</span><span style="color:#555;font-size:13px;"> / ${keys.length}</span>
+                <button onclick="(() => { window._watchIdx=(window._watchIdx-1+window._watchKeys.length)%window._watchKeys.length; openWatchModal(window._watchTypes[window._watchIdx],window._watchKeys[window._watchIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">›</button>
+            </div>` : '';
             document.getElementById('watch-modal-content').innerHTML = `
+                ${navHtmlW}
                 <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:15px;">
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid ${color};">
                     <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;">${emoji} ${label} — تفاصيل المنتج</div>
