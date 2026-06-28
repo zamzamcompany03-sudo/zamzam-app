@@ -6,7 +6,7 @@
 <html lang="ar" style="width:100%;height:100%;margin:0;padding:0;" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>شركة زمزم</title>
     <!-- PWA & Share Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -665,13 +665,13 @@
         /* تحسين أداء النوافذ */
         #scrap-modal, #product-modal, #watch-modal, #zakat-modal {
             will-change: transform;
-            -webkit-overflow-scrolling: touch;
+            display: none;
+            flex-direction: column;
         }
         #scrap-modal > div, #product-modal > div, #watch-modal > div {
             max-width: 100% !important;
             width: 100% !important;
             margin: 0 !important;
-            min-height: 100vh;
             box-sizing: border-box;
         }
 
@@ -1249,20 +1249,24 @@
     </div>
 
     <!-- نافذة تفاصيل الكسر -->
-    <div id="scrap-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-        <div style="width:100%;padding:12px;box-sizing:border-box;min-height:100%;display:flex;flex-direction:column;">
-            <button onclick="closeScrapModal()" style="background:none;border:1px solid #4CAF50;color:#4CAF50;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;align-self:flex-start;">← رجوع</button>
-            <div id="scrap-modal-content" style="flex:1;"></div>
-            <button onclick="closeScrapModal()" style="width:100%;padding:14px;background:rgba(76,175,80,0.1);border:2px solid #4CAF50;color:#4CAF50;border-radius:14px;cursor:pointer;margin-top:20px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
+    <div id="scrap-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;flex-direction:column;">
+        <div style="width:100%;padding:12px 12px 0 12px;box-sizing:border-box;">
+            <button onclick="closeScrapModal()" style="background:none;border:1px solid #4CAF50;color:#4CAF50;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:10px;align-self:flex-start;">← رجوع</button>
+        </div>
+        <div id="scrap-modal-content" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 12px;box-sizing:border-box;"></div>
+        <div style="padding:12px;box-sizing:border-box;">
+            <button onclick="closeScrapModal()" style="width:100%;padding:14px;background:rgba(76,175,80,0.1);border:2px solid #4CAF50;color:#4CAF50;border-radius:14px;cursor:pointer;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
     </div>
 
     <!-- نافذة تفاصيل المنتج -->
-    <div id="product-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-        <div style="width:100%;padding:12px;box-sizing:border-box;min-height:100%;display:flex;flex-direction:column;">
-            <button onclick="closeProductModal()" style="background:none;border:1px solid #D4AF37;color:#D4AF37;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;align-self:flex-start;">← رجوع</button>
-            <div id="product-modal-content" style="flex:1;"></div>
-            <button onclick="closeProductModal()" style="width:100%;padding:14px;background:rgba(212,175,55,0.1);border:2px solid #D4AF37;color:#D4AF37;border-radius:14px;cursor:pointer;margin-top:20px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
+    <div id="product-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;flex-direction:column;">
+        <div style="width:100%;padding:12px 12px 0 12px;box-sizing:border-box;">
+            <button onclick="closeProductModal()" style="background:none;border:1px solid #D4AF37;color:#D4AF37;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:10px;align-self:flex-start;">← رجوع</button>
+        </div>
+        <div id="product-modal-content" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 12px;box-sizing:border-box;"></div>
+        <div style="padding:12px;box-sizing:border-box;">
+            <button onclick="closeProductModal()" style="width:100%;padding:14px;background:rgba(212,175,55,0.1);border:2px solid #D4AF37;color:#D4AF37;border-radius:14px;cursor:pointer;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
     </div>
 
@@ -1371,11 +1375,13 @@
     </div>
 
     <!-- نافذة تفاصيل الفضيات/ساعات/نضارات -->
-    <div id="watch-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-        <div style="width:100%;padding:12px;box-sizing:border-box;min-height:100%;display:flex;flex-direction:column;">
-            <button onclick="closeWatchModal()" style="background:none;border:1px solid #60a5fa;color:#60a5fa;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:15px;align-self:flex-start;">← رجوع</button>
-            <div id="watch-modal-content" style="flex:1;"></div>
-            <button onclick="closeWatchModal()" style="width:100%;padding:14px;background:rgba(96,165,250,0.1);border:2px solid #60a5fa;color:#60a5fa;border-radius:14px;cursor:pointer;margin-top:20px;font-size:15px;font-weight:700;">← رجوع للخلف</button>
+    <div id="watch-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:500;flex-direction:column;">
+        <div style="width:100%;padding:12px 12px 0 12px;box-sizing:border-box;">
+            <button onclick="closeWatchModal()" style="background:none;border:1px solid #60a5fa;color:#60a5fa;padding:8px 16px;border-radius:20px;cursor:pointer;margin-bottom:10px;align-self:flex-start;">← رجوع</button>
+        </div>
+        <div id="watch-modal-content" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 12px;box-sizing:border-box;"></div>
+        <div style="padding:12px;box-sizing:border-box;">
+            <button onclick="closeWatchModal()" style="width:100%;padding:14px;background:rgba(96,165,250,0.1);border:2px solid #60a5fa;color:#60a5fa;border-radius:14px;cursor:pointer;font-size:15px;font-weight:700;">← رجوع للخلف</button>
         </div>
     </div>
     <div class="overlay" id="overlay" onclick="closeSettings()"></div>
@@ -2412,7 +2418,7 @@
                 </div>
             `;
 
-            document.getElementById('scrap-modal').style.display = 'block';
+            document.getElementById('scrap-modal').style.display = 'flex';
             window.scrollTo({ top: 0, behavior: 'instant' });
             if(document.getElementById('wa-saif-link')) document.getElementById('wa-saif-link').href='https://wa.me/9647901196926?text='+waMsg;
             if(document.getElementById('wa-husam-link')) document.getElementById('wa-husam-link').href='https://wa.me/9647805747247?text='+waMsg;
@@ -2723,7 +2729,7 @@
                 </div>
             `;
 
-            document.getElementById('product-modal').style.display = 'block';
+            document.getElementById('product-modal').style.display = 'flex';
             window.scrollTo({ top: 0, behavior: 'instant' });
             if(document.getElementById('wa-saif-link')) document.getElementById('wa-saif-link').href='https://wa.me/9647901196926?text='+waMsg;
             if(document.getElementById('wa-husam-link')) document.getElementById('wa-husam-link').href='https://wa.me/9647805747247?text='+waMsg;
@@ -3166,7 +3172,7 @@
                     <a id="wa-husam-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
                 </div>`;
 
-            document.getElementById('watch-modal').style.display = 'block';
+            document.getElementById('watch-modal').style.display = 'flex';
             window.scrollTo({ top: 0, behavior: 'instant' });
             if(document.getElementById('wa-saif-link')) document.getElementById('wa-saif-link').href='https://wa.me/9647901196926?text='+waMsg;
             if(document.getElementById('wa-husam-link')) document.getElementById('wa-husam-link').href='https://wa.me/9647805747247?text='+waMsg;
