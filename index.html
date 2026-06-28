@@ -2445,102 +2445,46 @@
         // ===== نظام التنقل بالسحب (Swipe) =====
         window._swipeState = {};
 
-        function initSwipe(modalEl, prevFn, nextFn) {
-            let startX = 0, startY = 0, moved = false;
-            modalEl.addEventListener('touchstart', e => {
+        // ===== مفاتيح وفهارس المنتجات =====
+        window._scrapKeys = [];   window._scrapIdx = 0;
+        window._productKeys = []; window._productIdx = 0;
+        window._watchKeys = [];   window._watchTypes = []; window._watchIdx = 0;
+
+        // ===== نظام السحب الموحد على مستوى الصفحة =====
+        (function() {
+            let startX = 0, startY = 0, startTime = 0;
+            document.addEventListener('touchstart', e => {
                 startX = e.touches[0].clientX;
                 startY = e.touches[0].clientY;
-                moved = false;
+                startTime = Date.now();
             }, { passive: true });
-            modalEl.addEventListener('touchmove', e => {
-                moved = true;
-            }, { passive: true });
-            modalEl.addEventListener('touchend', e => {
-                if (!moved) return;
+            document.addEventListener('touchend', e => {
                 let dx = e.changedTouches[0].clientX - startX;
                 let dy = e.changedTouches[0].clientY - startY;
-                if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
-                if (dx > 0) nextFn();   // سحب يمين = سابق (RTL)
-                else prevFn();          // سحب يسار = تالي (RTL)
+                let dt = Date.now() - startTime;
+                if (dt > 500 || Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx) * 0.9) return;
+                let scrapOpen   = document.getElementById('scrap-modal').style.display === 'flex';
+                let productOpen = document.getElementById('product-modal').style.display === 'flex';
+                let watchOpen   = document.getElementById('watch-modal').style.display === 'flex';
+                if (!scrapOpen && !productOpen && !watchOpen) return;
+                let goNext = dx < 0; // سحب يسار = التالي (RTL)
+                if (scrapOpen) {
+                    let keys = window._scrapKeys;
+                    if (!keys.length) return;
+                    window._scrapIdx = goNext ? (window._scrapIdx+1)%keys.length : (window._scrapIdx-1+keys.length)%keys.length;
+                    openScrapModal(keys[window._scrapIdx]);
+                } else if (productOpen) {
+                    let keys = window._productKeys;
+                    if (!keys.length) return;
+                    window._productIdx = goNext ? (window._productIdx+1)%keys.length : (window._productIdx-1+keys.length)%keys.length;
+                    openProductModal(keys[window._productIdx]);
+                } else if (watchOpen) {
+                    let keys = window._watchKeys;
+                    if (!keys.length) return;
+                    window._watchIdx = goNext ? (window._watchIdx+1)%keys.length : (window._watchIdx-1+keys.length)%keys.length;
+                    openWatchModal(window._watchTypes[window._watchIdx], keys[window._watchIdx]);
+                }
             }, { passive: true });
-        }
-
-        function buildNavArrows(color, prevFn, nextFn, getIdx, getTotal) {
-            return `
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 12px;">
-                <button onclick="(${nextFn})()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-                <span id="modal-counter" style="color:#888;font-size:13px;"></span>
-                <button onclick="(${prevFn})()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-            </div>`;
-        }
-
-        function updateModalCounter(current, total, color) {
-            let el = document.getElementById('modal-counter');
-            if (el) el.innerHTML = `<span style="color:${color};font-weight:700;">${current+1}</span><span style="color:#555;"> / ${total}</span>`;
-        }
-
-        // ===== Scrap Swipe =====
-        window._scrapKeys = [];
-        window._scrapIdx = 0;
-        (function() {
-            let modal = document.getElementById('scrap-modal');
-            initSwipe(modal,
-                () => { // السابق
-                    let keys = window._scrapKeys;
-                    if (!keys.length) return;
-                    window._scrapIdx = (window._scrapIdx - 1 + keys.length) % keys.length;
-                    openScrapModal(keys[window._scrapIdx]);
-                },
-                () => { // التالي
-                    let keys = window._scrapKeys;
-                    if (!keys.length) return;
-                    window._scrapIdx = (window._scrapIdx + 1) % keys.length;
-                    openScrapModal(keys[window._scrapIdx]);
-                }
-            );
-        })();
-
-        // ===== Product Swipe =====
-        window._productKeys = [];
-        window._productIdx = 0;
-        (function() {
-            let modal = document.getElementById('product-modal');
-            initSwipe(modal,
-                () => {
-                    let keys = window._productKeys;
-                    if (!keys.length) return;
-                    window._productIdx = (window._productIdx - 1 + keys.length) % keys.length;
-                    openProductModal(keys[window._productIdx]);
-                },
-                () => {
-                    let keys = window._productKeys;
-                    if (!keys.length) return;
-                    window._productIdx = (window._productIdx + 1) % keys.length;
-                    openProductModal(keys[window._productIdx]);
-                }
-            );
-        })();
-
-        // ===== Watch Swipe =====
-        window._watchKeys = [];
-        window._watchTypes = [];
-        window._watchIdx = 0;
-        (function() {
-            let modal = document.getElementById('watch-modal');
-            initSwipe(modal,
-                () => {
-                    let keys = window._watchKeys;
-                    if (!keys.length) return;
-                    window._watchIdx = (window._watchIdx - 1 + keys.length) % keys.length;
-                    openWatchModal(window._watchTypes[window._watchIdx], keys[window._watchIdx]);
-                },
-                () => {
-                    let keys = window._watchKeys;
-                    if (!keys.length) return;
-                    window._watchIdx = (window._watchIdx + 1) % keys.length;
-                    openWatchModal(window._watchTypes[window._watchIdx], keys[window._watchIdx]);
-                }
-            );
         })();
 
         // PAGE NAVIGATION
