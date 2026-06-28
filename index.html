@@ -1750,7 +1750,6 @@
     <!-- ===== FIREBASE ===== -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js" crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" crossorigin="anonymous"></script>
 
     <script>
         let WORKER_URL = 'https://zamzam-company.saadzamzamcompany.workers.dev';
@@ -1767,7 +1766,6 @@
         };
         firebase.initializeApp(firebaseConfig);
         let database = firebase.database();
-        let auth = firebase.auth();
 
         // تحقق من المنتجات المنتهية عند فتح التطبيق وكل ساعة
         setTimeout(function() {
@@ -2333,9 +2331,16 @@
         function loadScrap() {
             checkExpiredProducts();
             let grid = document.getElementById('scrap-grid');
+            if (!grid) return;
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
+            let scrapTimeout = setTimeout(() => {
+                if (grid.innerHTML.includes('جاري التحميل')) {
+                    grid.innerHTML = '<div style="text-align:center;padding:40px;color:#888;grid-column:1/-1;">لا توجد قطع متاحة حالياً</div>';
+                }
+            }, 8000);
 
-            database.ref('zamzam-company/scrap-offers').on('value', snapshot => {
+            database.ref('zamzam-company/scrap-offers').once('value', snapshot => {
+                clearTimeout(scrapTimeout);
                 let data = snapshot.val();
                 let now = Date.now();
 
@@ -2688,9 +2693,16 @@
         function loadOffers() {
             checkExpiredProducts();
             let grid = document.getElementById('offers-grid');
+            if (!grid) return;
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
+            let offersTimeout = setTimeout(() => {
+                if (grid.innerHTML.includes('جاري التحميل')) {
+                    grid.innerHTML = '<div style="text-align:center;padding:40px;color:#888;grid-column:1/-1;">لا توجد عروض متاحة حالياً</div>';
+                }
+            }, 8000);
 
-            database.ref('zamzam-company/exclusive-offers').on('value', snapshot => {
+            database.ref('zamzam-company/exclusive-offers').once('value', snapshot => {
+                clearTimeout(offersTimeout);
                 let data = snapshot.val();
                 let now = Date.now();
 
@@ -3108,8 +3120,12 @@
             let grid = document.getElementById('silver-grid');
             if (!grid) return;
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
+            let silverTimeout = setTimeout(() => {
+                if (grid.innerHTML.includes('جاري التحميل')) grid.innerHTML = '<div style="text-align:center;padding:40px;color:#888;grid-column:1/-1;">لا توجد منتجات فضية حالياً</div>';
+            }, 8000);
 
-            database.ref('zamzam-company/silver-offers').on('value', snap => {
+            database.ref('zamzam-company/silver-offers').once('value', snap => {
+                clearTimeout(silverTimeout);
                 let data = snap.val();
                 let now = Date.now();
                 if (data) Object.entries(data).forEach(([id, p]) => {
@@ -3152,10 +3168,14 @@
             let grid = document.getElementById(type + '-grid');
             if (!grid) return;
             grid.innerHTML = '<div style="text-align:center;padding:40px;color:#555;grid-column:1/-1;">جاري التحميل...</div>';
+            let watchItemTimeout = setTimeout(() => {
+                if (grid.innerHTML.includes('جاري التحميل')) grid.innerHTML = '<div style="text-align:center;padding:40px;color:#888;grid-column:1/-1;">لا توجد منتجات حالياً</div>';
+            }, 8000);
             let dbPath = type === 'watches' ? 'watches-offers' : 'glasses-offers';
             let color = type === 'watches' ? '#60a5fa' : '#a78bfa';
 
-            database.ref('zamzam-company/' + dbPath).on('value', snap => {
+            database.ref('zamzam-company/' + dbPath).once('value', snap => {
+                clearTimeout(watchItemTimeout);
                 let data = snap.val();
                 let now = Date.now();
                 if (data) Object.entries(data).forEach(([id,p]) => {
@@ -3428,17 +3448,25 @@
 
         // ===== الزوار المتصلون الآن عبر Firebase Presence =====
         function trackOnlineUsers() {
-            let sessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
-            let userRef = database.ref('zamzam-company/online/' + sessionId);
+            try {
+                let sessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
+                let userRef = database.ref('zamzam-company/online/' + sessionId);
 
-            userRef.set(true);
-            userRef.onDisconnect().remove();
+                userRef.set(true).catch(() => {});
+                userRef.onDisconnect().remove().catch(() => {});
 
-            database.ref('zamzam-company/online').on('value', snap => {
-                let count = snap.numChildren();
+                database.ref('zamzam-company/online').on('value', snap => {
+                    let count = snap.numChildren();
+                    let el = document.getElementById('online-count');
+                    if (el) el.textContent = count + ' زائر';
+                }, err => {
+                    let el = document.getElementById('online-count');
+                    if (el) el.textContent = '1 زائر';
+                });
+            } catch(e) {
                 let el = document.getElementById('online-count');
-                if (el) el.textContent = count + ' زائر';
-            });
+                if (el) el.textContent = '1 زائر';
+            }
         }
 
         // ===== تحويل الأرقام إلى كلمات عربية =====
