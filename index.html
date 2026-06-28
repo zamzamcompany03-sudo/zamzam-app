@@ -605,8 +605,8 @@
         .contact-arrow { color: #D4AF37; font-size: 16px; opacity: 0.7; }
 
         @keyframes marquee {
-            0%   { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         @keyframes slideInRight {
             0% { transform: translateX(30px); opacity: 0; }
@@ -774,8 +774,8 @@
 
         <!-- نص متحرك -->
         <div style="overflow:hidden;margin-bottom:14px;background:rgba(0,100,255,0.05);border:1px solid rgba(0,150,255,0.2);border-radius:12px;padding:8px 0;">
-            <div id="marquee-text" style="white-space:nowrap;display:inline-block;animation:marquee 12s linear infinite;color:#60a5fa;font-size:13px;font-weight:600;">
-                &nbsp;&nbsp;&nbsp;&nbsp;❤️ الأسعار حقيقية خاصة بشركتنا &nbsp;&nbsp;&nbsp;❤️ الأسعار حقيقية خاصة بشركتنا &nbsp;&nbsp;&nbsp;❤️ الأسعار حقيقية خاصة بشركتنا&nbsp;&nbsp;&nbsp;
+            <div id="marquee-text" style="white-space:nowrap;display:inline-block;animation:marquee 20s linear infinite;color:#60a5fa;font-size:13px;font-weight:600;">
+                &nbsp;&nbsp;&nbsp;&nbsp;❤️ الأسعار حقيقية خاصة بشركتنا &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
 
@@ -1152,12 +1152,20 @@
             <h2 style="color:#D4AF37;font-size:16px;font-weight:800;">🏅 متجر البضاعة الذهبية المستوردة حديثاً والكسر</h2>
         </div>
 
-        <div style="background:linear-gradient(135deg,#1a1000,#2a1a00);border:2px solid #D4AF37;border-radius:16px;padding:14px 16px;margin-bottom:14px;box-shadow:0 0 18px rgba(212,175,55,0.2);">
-            <h3 onclick="toggleContact()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin:0;">
-                <span style="color:#D4AF37;font-size:14px;font-weight:800;text-shadow:0 0 10px rgba(212,175,55,0.4);">📲 تواصل معنا للاستفسار عن مايخص الذهب</span>
-                <span id="contact-arrow" style="color:#D4AF37;font-size:20px;transition:transform 0.3s;">▼</span>
-            </h3>
-            <div id="contact-list" style="display:none;">
+        <div style="display:flex;gap:8px;margin-bottom:14px;align-items:stretch;">
+            <!-- المستطيل المصغر -->
+            <div style="width:25%;background:linear-gradient(135deg,#1a1000,#2a1a00);border:2px solid #D4AF37;border-radius:16px;padding:10px 8px;box-shadow:0 0 12px rgba(212,175,55,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;" onclick="toggleContact()">
+                <span style="font-size:20px;">📲</span>
+                <span style="color:#D4AF37;font-size:9px;font-weight:800;text-align:center;line-height:1.3;">تواصل<br>معنا</span>
+                <span id="contact-arrow" style="color:#D4AF37;font-size:14px;transition:transform 0.3s;">▼</span>
+            </div>
+            <!-- زر للاستفسار -->
+            <div style="flex:1;background:linear-gradient(135deg,#1a1000,#2a1a00);border:2px solid #D4AF37;border-radius:16px;padding:14px 16px;box-shadow:0 0 12px rgba(212,175,55,0.2);cursor:pointer;" onclick="toggleContact()">
+                <div style="color:#D4AF37;font-size:14px;font-weight:800;margin-bottom:4px;">للاستفسار 💬</div>
+                <div style="color:#888;font-size:11px;">عن الذهب والمجوهرات</div>
+            </div>
+        </div>
+        <div id="contact-list" style="display:none;background:linear-gradient(135deg,#1a1000,#2a1a00);border:2px solid #D4AF37;border-radius:16px;padding:14px;margin-bottom:14px;">
 
             <a href="https://wa.me/9647901196926" target="_blank" class="contact-row">
                 <div class="contact-icon" style="background:#25D366;"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L.036 23.902l6.188-1.476A11.948 11.948 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.366l-.359-.214-3.724.888.935-3.618-.234-.372A9.818 9.818 0 1112 21.818z"/></svg></div>
@@ -1207,7 +1215,6 @@
                 <div class="contact-arrow">←</div>
             </a>
             </div><!-- end contact-list -->
-        </div>
 
         <!-- تابات الذهب -->
         <div style="display:flex;gap:6px;margin-bottom:16px;background:#0a0a0a;border-radius:16px;padding:5px;border:1px solid #2a2000;">
@@ -1280,15 +1287,22 @@
 
         <!-- تواصل اجتماعي - منسدل -->
         <div style="margin-bottom:12px;">
-            <div onclick="let s=this.nextElementSibling;let a=this.querySelector('.arrow-social');s.style.display=s.style.display==='none'?'flex':'none';a.style.transform=s.style.display==='flex'?'rotate(180deg)':'rotate(0deg)'"
-                style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#0a1a1a,#001827);border:2px solid #C0C0C0;border-radius:14px;padding:12px 16px;cursor:pointer;box-shadow:0 0 12px rgba(192,192,192,0.15);">
-                <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:stretch;">
+                <!-- المستطيل المصغر -->
+                <div onclick="let s=document.getElementById('watch-contact-list');let a=this.querySelector('.arrow-social');s.style.display=s.style.display==='none'?'flex':'none';a.style.transform=s.style.display==='flex'?'rotate(180deg)':'rotate(0deg)'"
+                    style="width:25%;background:linear-gradient(135deg,#0a1a1a,#001827);border:2px solid #C0C0C0;border-radius:14px;padding:10px 8px;cursor:pointer;box-shadow:0 0 12px rgba(192,192,192,0.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
                     <span style="font-size:18px;">📱</span>
-                    <span style="color:#C0C0C0;font-size:13px;font-weight:800;">تواصل معنا للاستفسار عن مايخص الفضيات والساعات والنضارات</span>
+                    <span style="color:#C0C0C0;font-size:9px;font-weight:800;text-align:center;line-height:1.3;">تواصل<br>معنا</span>
+                    <span class="arrow-social" style="color:#C0C0C0;font-size:14px;transition:transform 0.3s;">▼</span>
                 </div>
-                <span class="arrow-social" style="color:#C0C0C0;font-size:18px;transition:transform 0.3s;">▼</span>
+                <!-- زر للاستفسار -->
+                <div onclick="let s=document.getElementById('watch-contact-list');let a=document.querySelector('.arrow-social');s.style.display=s.style.display==='none'?'flex':'none';a.style.transform=s.style.display==='flex'?'rotate(180deg)':'rotate(0deg)'"
+                    style="flex:1;background:linear-gradient(135deg,#0a1a1a,#001827);border:2px solid #C0C0C0;border-radius:14px;padding:14px 16px;cursor:pointer;box-shadow:0 0 12px rgba(192,192,192,0.15);">
+                    <div style="color:#C0C0C0;font-size:14px;font-weight:800;margin-bottom:4px;">للاستفسار 💬</div>
+                    <div style="color:#888;font-size:11px;">عن الفضيات والساعات والنضارات</div>
+                </div>
             </div>
-            <div style="display:none;flex-direction:column;gap:8px;margin-top:8px;padding:0 4px;">
+            <div id="watch-contact-list" style="display:none;flex-direction:column;gap:8px;margin-top:8px;padding:0 4px;">
                 <!-- TikTok -->
                 <a href="https://www.tiktok.com/@z925_z?_r=1&_t=ZS-97OYme4L6E1" target="_blank"
                     style="display:flex;align-items:center;gap:12px;background:#0a0a0a;border:1px solid #333;border-radius:12px;padding:10px 14px;text-decoration:none;">
