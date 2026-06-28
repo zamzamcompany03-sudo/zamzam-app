@@ -2374,10 +2374,25 @@
                     window._productIdx = goNext ? (window._productIdx+1)%keys.length : (window._productIdx-1+keys.length)%keys.length;
                     openProductModal(keys[window._productIdx]);
                 } else if (watchOpen) {
-                    let keys = window._watchKeys;
-                    if (!keys.length) return;
-                    window._watchIdx = goNext ? (window._watchIdx+1)%keys.length : (window._watchIdx-1+keys.length)%keys.length;
-                    openWatchModal(window._watchTypes[window._watchIdx], keys[window._watchIdx]);
+                    // تحديد النوع الحالي من آخر modal مفتوح
+                    let curType = window._currentWatchType || 'silver';
+                    let keys, idx;
+                    if (curType === 'silver') {
+                        keys = window._silverKeys || [];
+                        if (!keys.length) return;
+                        window._silverIdx = goNext ? (window._silverIdx+1)%keys.length : (window._silverIdx-1+keys.length)%keys.length;
+                        openWatchModal('silver', keys[window._silverIdx]);
+                    } else if (curType === 'watches') {
+                        keys = window._watchesKeys || [];
+                        if (!keys.length) return;
+                        window._watchesIdx = goNext ? (window._watchesIdx+1)%keys.length : (window._watchesIdx-1+keys.length)%keys.length;
+                        openWatchModal('watches', keys[window._watchesIdx]);
+                    } else if (curType === 'glasses') {
+                        keys = window._glassesKeys || [];
+                        if (!keys.length) return;
+                        window._glassesIdx = goNext ? (window._glassesIdx+1)%keys.length : (window._glassesIdx-1+keys.length)%keys.length;
+                        openWatchModal('glasses', keys[window._glassesIdx]);
+                    }
                 }
             }, { passive: true });
         })();
@@ -3051,6 +3066,7 @@
                 }).join('');
                 window._silverData = {};
                 products.forEach(p => window._silverData[p.id] = p);
+                window._silverKeys = products.map(p => p.id);
             });
         }
 
@@ -3112,10 +3128,28 @@
         }
 
         function openWatchModal(type, id) {
-            // تحديث الـ index
-            let keys = window._watchKeys;
-            let idx = keys.indexOf(id);
-            if (idx !== -1) window._watchIdx = idx;
+            // حفظ النوع الحالي للسحب
+            window._currentWatchType = type;
+
+            // تحديث الـ index حسب النوع
+            let keys;
+            if (type === 'silver') {
+                keys = window._silverKeys || [];
+                let idx = keys.indexOf(id);
+                if (idx !== -1) window._silverIdx = idx;
+            } else if (type === 'watches') {
+                keys = window._watchesKeys || [];
+                let idx = keys.indexOf(id);
+                if (idx !== -1) window._watchesIdx = idx;
+            } else if (type === 'glasses') {
+                keys = window._glassesKeys || [];
+                let idx = keys.indexOf(id);
+                if (idx !== -1) window._glassesIdx = idx;
+            } else {
+                keys = [];
+            }
+
+            let curIdx = type === 'silver' ? window._silverIdx : type === 'watches' ? window._watchesIdx : window._glassesIdx;
             let node = type==='watches'?'watches-offers':(type==='glasses'?'glasses-offers':'silver-offers');
             trackView(node, id);
             let p, color, label, emoji;
@@ -3151,9 +3185,23 @@
 
             let navHtmlW = keys.length > 1 ? `
             <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0 10px;">
-                <button onclick="(() => { window._watchIdx=(window._watchIdx+1)%window._watchKeys.length; openWatchModal(window._watchTypes[window._watchIdx],window._watchKeys[window._watchIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">‹</button>
-                <span style="color:${color};font-weight:700;">${window._watchIdx+1}</span><span style="color:#555;font-size:13px;"> / ${keys.length}</span>
-                <button onclick="(() => { window._watchIdx=(window._watchIdx-1+window._watchKeys.length)%window._watchKeys.length; openWatchModal(window._watchTypes[window._watchIdx],window._watchKeys[window._watchIdx]); })()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">›</button>
+                <button onclick="(() => {
+                    let t=window._currentWatchType;
+                    let k=t==='silver'?window._silverKeys:t==='watches'?window._watchesKeys:window._glassesKeys;
+                    if(!k.length)return;
+                    if(t==='silver'){window._silverIdx=(window._silverIdx+1)%k.length;openWatchModal('silver',k[window._silverIdx]);}
+                    else if(t==='watches'){window._watchesIdx=(window._watchesIdx+1)%k.length;openWatchModal('watches',k[window._watchesIdx]);}
+                    else{window._glassesIdx=(window._glassesIdx+1)%k.length;openWatchModal('glasses',k[window._glassesIdx]);}
+                })()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">‹</button>
+                <span style="color:${color};font-weight:700;">${curIdx+1}</span><span style="color:#555;font-size:13px;"> / ${keys.length}</span>
+                <button onclick="(() => {
+                    let t=window._currentWatchType;
+                    let k=t==='silver'?window._silverKeys:t==='watches'?window._watchesKeys:window._glassesKeys;
+                    if(!k.length)return;
+                    if(t==='silver'){window._silverIdx=(window._silverIdx-1+k.length)%k.length;openWatchModal('silver',k[window._silverIdx]);}
+                    else if(t==='watches'){window._watchesIdx=(window._watchesIdx-1+k.length)%k.length;openWatchModal('watches',k[window._watchesIdx]);}
+                    else{window._glassesIdx=(window._glassesIdx-1+k.length)%k.length;openWatchModal('glasses',k[window._glassesIdx]);}
+                })()" style="background:rgba(0,0,0,0.4);border:1px solid ${color};color:${color};width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;">›</button>
             </div>` : '';
             document.getElementById('watch-modal-content').innerHTML = `
                 ${navHtmlW}
