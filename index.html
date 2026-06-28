@@ -1993,12 +1993,17 @@
 
         function setProductStatus(node, id, status) {
             if (!isAdmin()) return;
-            if (status === 'sold' || status === 'reserved') {
-                var deleteAt = Date.now() + (6 * 60 * 60 * 1000);
-                database.ref('zamzam-company/' + node + '/' + id).update({ status: status, deleteAt: deleteAt });
-            } else {
-                database.ref('zamzam-company/' + node + '/' + id).update({ status: 'available', deleteAt: null });
-            }
+            var update = status === 'sold' || status === 'reserved'
+                ? { status: status, deleteAt: Date.now() + (6 * 60 * 60 * 1000) }
+                : { status: 'available', deleteAt: null };
+            database.ref('zamzam-company/' + node + '/' + id).update(update).then(() => {
+                // إعادة تحميل القسم المناسب بعد تغيير الحالة
+                if (node === 'scrap-offers') loadScrap();
+                else if (node === 'exclusive-offers') loadOffers();
+                else if (node === 'silver-offers') loadSilver();
+                else if (node === 'watches-offers') loadWatchItems('watches');
+                else if (node === 'glasses-offers') loadWatchItems('glasses');
+            });
         }
 
         // تحقق من المنتجات المنتهية عند التحميل
@@ -3115,15 +3120,16 @@
                 }).join('');
 
                 if (!window._watchData) window._watchData = {};
-                if (!window._watchKeys) window._watchKeys = [];
-                if (!window._watchTypes) window._watchTypes = [];
                 products.forEach(p => {
                     window._watchData[p.id] = {...p, _type: type};
-                    if (!window._watchKeys.includes(p.id)) {
-                        window._watchKeys.push(p.id);
-                        window._watchTypes.push(type);
-                    }
                 });
+                if (type === 'watches') {
+                    window._watchesKeys = products.map(p => p.id);
+                    window._watchesIdx = 0;
+                } else if (type === 'glasses') {
+                    window._glassesKeys = products.map(p => p.id);
+                    window._glassesIdx = 0;
+                }
             });
         }
 
