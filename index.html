@@ -1473,7 +1473,10 @@
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
             <h2>⚙️ الإعدادات</h2>
-            <button class="close-btn" onclick="closeSettings()">✕</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <button onclick="doLogout()" style="background:rgba(255,107,107,0.1);border:1px solid #ff6b6b;color:#ff6b6b;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;cursor:pointer;">خروج</button>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
         </div>
         <div class="settings-body">
 
@@ -1833,6 +1836,7 @@
     <!-- ===== FIREBASE ===== -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" crossorigin="anonymous"></script>
 
     <script>
         let WORKER_URL = 'https://zamzam-company.saadzamzamcompany.workers.dev';
@@ -1849,6 +1853,8 @@
         };
         firebase.initializeApp(firebaseConfig);
         let database = firebase.database();
+        let auth = firebase.auth();
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
         // تحقق من المنتجات المنتهية عند فتح التطبيق وكل ساعة
         setTimeout(function() {
@@ -2114,17 +2120,11 @@
             }
         }
 
-        // SETTINGS - نظام SHA-256 بدون Firebase Auth
+        // SETTINGS - نظام Firebase Authentication حقيقي
         let _settingsOpen = false;
 
-        async function hashPassword(pass) {
-            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-        }
-
         function isAdmin() {
-            var expiry = sessionStorage.getItem('zmzm_auth_expiry');
-            return expiry && Date.now() < parseInt(expiry);
+            return auth.currentUser !== null;
         }
 
         function trackView(node, id) {
@@ -2308,29 +2308,17 @@
 
         function openSettings() {
             _settingsOpen = true;
-            var expiry = sessionStorage.getItem('zmzm_auth_expiry');
-            if (expiry && Date.now() < parseInt(expiry)) {
+            if (isAdmin()) {
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
                 startReviewNotifWatcher();
                 updateReviewsCount();
                 return;
             }
-            var pass = prompt('أدخل كلمة المرور:');
-            if (!pass) return;
-            hashPassword(pass).then(function(inputHash) {
-                hashPassword('saad12345IF#').then(function(correctHash) {
-                    if (inputHash === correctHash) {
-                        sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
-                        document.getElementById('settingsPanel').classList.add('active');
-                        document.getElementById('overlay').classList.add('active');
-                        startReviewNotifWatcher();
-                        updateReviewsCount();
-                    } else {
-                        alert('كلمة المرور غير صحيحة');
-                    }
-                });
-            });
+            document.getElementById('auth-error').textContent = '';
+            document.getElementById('auth-email').value = '';
+            document.getElementById('auth-password').value = '';
+            document.getElementById('auth-modal').style.display = 'flex';
         }
 
         // عرض عدد التقييمات بجانب عنوان القسم
@@ -2346,33 +2334,45 @@
             document.getElementById('auth-modal').style.display = 'none';
         }
 
-        function doLogin() {}
-        function doLogout() {}
-
-        function openUserLogin() {
-            var m = document.getElementById('user-modal');
-            m.style.display = 'flex';
-        }
-
-        function closeUserModal() {
-            document.getElementById('user-modal').style.display = 'none';
-        }
-
-        async function doUserLogin() {
-            var pass = document.getElementById('user-password').value;
-            var errEl = document.getElementById('user-error');
-            if (!pass) { errEl.textContent = 'أدخل كلمة المرور'; return; }
-            var inputHash = await hashPassword(pass);
-            var correctHash = await hashPassword('saad12345IF#');
-            if (inputHash === correctHash) {
-                closeUserModal();
-                sessionStorage.setItem('zmzm_auth_expiry', Date.now() + 86400000);
+        async function doLogin() {
+            var email = document.getElementById('auth-email').value.trim();
+            var pass = document.getElementById('auth-password').value;
+            var errEl = document.getElementById('auth-error');
+            errEl.textContent = '';
+            if (!email || !pass) { errEl.textContent = 'أدخل الإيميل وكلمة المرور'; return; }
+            var btn = document.getElementById('auth-login-btn');
+            btn.disabled = true;
+            btn.textContent = 'جاري الدخول...';
+            try {
+                await auth.signInWithEmailAndPassword(email, pass);
+                closeAuthModal();
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
-            } else {
-                errEl.textContent = 'كلمة المرور غير صحيحة';
+                startReviewNotifWatcher();
+                updateReviewsCount();
+            } catch (e) {
+                if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
+                    errEl.textContent = 'الإيميل أو كلمة المرور غير صحيحة';
+                } else if (e.code === 'auth/invalid-email') {
+                    errEl.textContent = 'صيغة الإيميل غير صحيحة';
+                } else if (e.code === 'auth/too-many-requests') {
+                    errEl.textContent = 'محاولات كثيرة، انتظر شوي وحاول مجددًا';
+                } else {
+                    errEl.textContent = 'خطأ: ' + e.message;
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'دخول';
             }
         }
+
+        function doLogout() {
+            auth.signOut().then(function() {
+                closeSettings();
+                showToast('✅ تم تسجيل الخروج');
+            });
+        }
+
 
         function closeSettings() {
             _settingsOpen = false;
@@ -4019,6 +4019,16 @@
             }
         }
 
+        function escapeHtml(str) {
+            if (str === undefined || str === null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         function loadReviews() {
             let container = document.getElementById('reviews-list-settings');
             container.innerHTML = '<div style="text-align:center;color:#555;padding:20px;">جاري التحميل...</div>';
@@ -4033,13 +4043,13 @@
                 container.innerHTML = reviews.map(r => `
                     <div style="background:#111;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #222;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                            <div style="font-size:13px;font-weight:700;color:#D4AF37;">${r.name}</div>
+                            <div style="font-size:13px;font-weight:700;color:#D4AF37;">${escapeHtml(r.name)}</div>
                             <div style="color:#FFD700;font-size:16px;">${'⭐'.repeat(r.stars)}</div>
                         </div>
-                        <div style="color:#ccc;font-size:13px;line-height:1.5;margin-bottom:8px;">"${r.msg}"</div>
+                        <div style="color:#ccc;font-size:13px;line-height:1.5;margin-bottom:8px;">"${escapeHtml(r.msg)}"</div>
                         <div style="display:flex;justify-content:space-between;">
-                            <div style="color:#555;font-size:11px;">${r.phone !== '---' ? '📱 ' + r.phone : ''}</div>
-                            <div style="color:#444;font-size:11px;">${r.date} - ${r.time}</div>
+                            <div style="color:#555;font-size:11px;">${r.phone !== '---' ? '📱 ' + escapeHtml(r.phone) : ''}</div>
+                            <div style="color:#444;font-size:11px;">${escapeHtml(r.date)} - ${escapeHtml(r.time)}</div>
                         </div>
                     </div>
                 `).join('');
@@ -4343,19 +4353,6 @@
         </div>
     </div>
 
-            <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
-            <div style="color:#666;font-size:11px;margin-bottom:20px;">هذا القسم خاص بالإدارة فقط</div>
-
-            <input id="auth-email" type="email" placeholder="الإيميل" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;text-align:right;direction:rtl;">
-            <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
-
-            <div id="auth-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
-
-            <button id="auth-login-btn" onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
-            <button onclick="closeAuthModal()" style="width:100%;padding:10px;background:transparent;color:#666;font-size:13px;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
-        </div>
-    </div>
-
     <!-- نافذة اختيار واتساب -->
     <div id="wa-chooser" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:flex-end;justify-content:center;">
         <div style="background:#1a1a1a;border:1px solid #25D366;border-radius:24px 24px 0 0;padding:24px 20px 36px;width:100%;max-width:500px;">
@@ -4624,21 +4621,12 @@
     </div>
 </div>
 
-<div id="user-modal" style="display:none;">
-    <div style="background:#1a1a1a;border:2px solid #60a5fa;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
-        <div style="font-size:28px;margin-bottom:8px;">👤</div>
-        <div style="color:#60a5fa;font-size:16px;font-weight:800;margin-bottom:4px;">دخول المستخدم</div>
-        <input id="user-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
-        <div id="user-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
-        <button onclick="doUserLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
-        <button onclick="closeUserModal()" style="width:100%;padding:10px;background:transparent;color:#666;font-size:13px;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
-    </div>
-</div>
-
 <div id="auth-modal" style="display:none;">
     <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
         <div style="font-size:28px;margin-bottom:8px;">🔐</div>
         <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
+        <div style="color:#666;font-size:11px;margin-bottom:20px;">هذا القسم خاص بالإدارة فقط</div>
+        <input id="auth-email" type="email" placeholder="الإيميل" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;text-align:right;direction:rtl;">
         <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
         <div id="auth-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
         <button id="auth-login-btn" onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
