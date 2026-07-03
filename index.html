@@ -231,9 +231,9 @@
 
         .price {
             font-size: 36px;
-            color: #D4AF37;
+            color: #ffffff;
             font-weight: 800;
-            text-shadow: 0 0 30px rgba(212,175,55,0.4);
+            text-shadow: 0 0 30px rgba(255,255,255,0.35);
             letter-spacing: -1px;
             line-height: 1;
             margin: 2px 0;
@@ -863,7 +863,7 @@
 
     </div>
     <!-- PRICE ALERT -->
-    <div id="price-alert"></div>
+    <!-- price-alert القديم حُذف، الشارة الحين داخل صندوق سعر الأونصة -->
     <!-- HEADER -->
     <div class="header" style="padding:10px 16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:10px;">
@@ -900,6 +900,7 @@
             <!-- يمين: العنوان والسعر -->
             <div style="text-align:right;flex:1;">
                 <div style="font-size:11px;color:#B8860B;margin-bottom:4px;">سعر الذهب العالمي (الأونصة)</div>
+                <div id="priceChangeBadge" style="display:none;align-items:center;gap:3px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-bottom:5px;width:fit-content;"></div>
                 <div class="price" id="goldPrice">جاري التحميل...</div>
             </div>
             <!-- يسار: التغيير والوقت والعداد -->
@@ -4069,9 +4070,14 @@
             }
             let up = newPrice > _lastAlertPrice;
             let diff = Math.abs(newPrice - _lastAlertPrice).toFixed(2);
-            let el = document.getElementById('price-alert');
-            el.textContent = up ? `📈 ارتفع السعر +$${diff}` : `📉 انخفض السعر -$${diff}`;
-            el.className = up ? 'up show' : 'down show';
+            let badge = document.getElementById('priceChangeBadge');
+            if (badge) {
+                badge.style.display = 'inline-flex';
+                badge.textContent = up ? `↗ ارتفع السعر +$${diff}` : `↘ انخفض السعر -$${diff}`;
+                badge.style.background = up ? '#0d2e0d' : '#2e0d0d';
+                badge.style.border = up ? '1px solid #4CAF50' : '1px solid #ff6b6b';
+                badge.style.color = up ? '#4CAF50' : '#ff6b6b';
+            }
             // صوت خفيف
             try {
                 let ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -4085,7 +4091,6 @@
                 osc.start();
                 osc.stop(ctx.currentTime + 0.3);
             } catch(e) {}
-            setTimeout(() => { el.classList.remove('show'); }, 3000);
             _lastAlertPrice = newPrice;
         }
 
