@@ -1469,6 +1469,18 @@
     </div>
     <div class="overlay" id="overlay" onclick="closeSettings()"></div>
 
+<div id="auth-modal" style="display:none;">
+    <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
+        <div style="font-size:28px;margin-bottom:8px;">🔐</div>
+        <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
+        <div style="color:#666;font-size:11px;margin-bottom:20px;">هذا القسم خاص بالإدارة فقط</div>
+        <input id="auth-email" type="email" placeholder="الإيميل" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;text-align:right;direction:rtl;">
+        <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
+        <div id="auth-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
+        <button id="auth-login-btn" onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
+        <button onclick="closeAuthModal()" style="width:100%;padding:10px;background:transparent;color:#666;font-size:13px;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
+    </div>
+
     <!-- SETTINGS PANEL -->
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
@@ -1832,6 +1844,7 @@
             </div>
 
         </div>
+    </div>
 
     <!-- ===== FIREBASE ===== -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" crossorigin="anonymous"></script>
@@ -4621,17 +4634,6 @@
     </div>
 </div>
 
-<div id="auth-modal" style="display:none;">
-    <div style="background:#1a1a1a;border:2px solid #D4AF37;border-radius:20px;padding:28px 24px;width:88%;max-width:340px;text-align:center;direction:rtl;">
-        <div style="font-size:28px;margin-bottom:8px;">🔐</div>
-        <div style="color:#D4AF37;font-size:16px;font-weight:800;margin-bottom:4px;">دخول الإعدادات</div>
-        <div style="color:#666;font-size:11px;margin-bottom:20px;">هذا القسم خاص بالإدارة فقط</div>
-        <input id="auth-email" type="email" placeholder="الإيميل" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;text-align:right;direction:rtl;">
-        <input id="auth-password" type="password" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:13px;margin-bottom:6px;box-sizing:border-box;text-align:right;direction:rtl;">
-        <div id="auth-error" style="color:#ff6b6b;font-size:11px;min-height:18px;margin-bottom:10px;"></div>
-        <button id="auth-login-btn" onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;font-weight:800;font-size:14px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;">دخول</button>
-        <button onclick="closeAuthModal()" style="width:100%;padding:10px;background:transparent;color:#666;font-size:13px;border:1px solid #333;border-radius:12px;cursor:pointer;">إلغاء</button>
-    </div>
 </div>
 
 <!-- ===== modal الاستفسار الشامل ===== -->
