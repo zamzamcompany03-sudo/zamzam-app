@@ -2090,19 +2090,10 @@
 
         function makeDeleteBtn(node, id) {
             if (!isAdmin()) return '';
-            var btn = document.createElement('div');
-            btn.style.cssText = 'position:absolute;top:8px;left:8px;display:flex;gap:4px;';
-            var b = document.createElement('button');
-            b.innerHTML = '🗑';
-            b.style.cssText = 'background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 6px;color:#fff;font-size:11px;cursor:pointer;';
-            b.onclick = function(e) { e.stopPropagation(); deleteProduct(node, id); };
-            var eb = document.createElement('button');
-            eb.innerHTML = '✏️';
-            eb.style.cssText = 'background:rgba(212,175,55,0.9);border:none;border-radius:8px;padding:4px 6px;color:#000;font-size:11px;cursor:pointer;';
-            eb.onclick = function(e) { e.stopPropagation(); openEditModal(node, id); };
-            btn.appendChild(eb);
-            btn.appendChild(b);
-            return btn.outerHTML;
+            return '<div style="position:absolute;top:8px;left:8px;display:flex;gap:4px;">' +
+                '<button onclick="event.stopPropagation();openEditModal(\'' + node + '\',\'' + id + '\')" style="background:rgba(212,175,55,0.9);border:none;border-radius:8px;padding:4px 6px;color:#000;font-size:11px;cursor:pointer;">✏️</button>' +
+                '<button onclick="event.stopPropagation();deleteProduct(\'' + node + '\',\'' + id + '\')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 6px;color:#fff;font-size:11px;cursor:pointer;">🗑</button>' +
+                '</div>';
         }
 
         function deleteProduct(node, id) {
