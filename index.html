@@ -1780,7 +1780,7 @@
 
             <div class="settings-section" style="margin-top:14px;">
                 <h3 onclick="toggleReviews()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;">
-                    <span>⭐ تقييمات الزوار</span>
+                    <span>⭐ تقييمات الزوار <span id="reviews-count" style="color:#888;font-size:12px;font-weight:600;"></span></span>
                     <span id="reviews-arrow" style="color:#D4AF37;font-size:22px;transition:transform 0.3s;">▼</span>
                 </h3>
                 <div id="reviews-list-settings" style="display:none;margin-top:14px;"></div>
@@ -2266,6 +2266,7 @@
                 document.getElementById('settingsPanel').classList.add('active');
                 document.getElementById('overlay').classList.add('active');
                 startReviewNotifWatcher();
+                updateReviewsCount();
                 return;
             }
             var pass = prompt('أدخل كلمة المرور:');
@@ -2277,10 +2278,20 @@
                         document.getElementById('settingsPanel').classList.add('active');
                         document.getElementById('overlay').classList.add('active');
                         startReviewNotifWatcher();
+                        updateReviewsCount();
                     } else {
                         alert('كلمة المرور غير صحيحة');
                     }
                 });
+            });
+        }
+
+        // عرض عدد التقييمات بجانب عنوان القسم
+        function updateReviewsCount() {
+            database.ref('zamzam-company/reviews').once('value', snap => {
+                let count = snap.val() ? Object.keys(snap.val()).length : 0;
+                let el = document.getElementById('reviews-count');
+                if (el) el.textContent = count > 0 ? `(${count.toLocaleString('ar-IQ')})` : '(0)';
             });
         }
 
