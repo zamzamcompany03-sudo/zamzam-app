@@ -2528,8 +2528,8 @@
 
             document.getElementById('scrap-modal-content').innerHTML = `
                 ${navHtml}
-                <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:6px;">
-                <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">‹ اسحب للتنقل بين المنتجات ›</div>
+                <img src="${p.imageUrl}" onclick="(() => { let ni=window._scrapIdx+1; if(ni<window._scrapKeys.length){window._scrapIdx=ni;openScrapModal(window._scrapKeys[ni]);} })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
+                <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">👆 اضغط على الصورة أو اسحب للتنقل بين المنتجات</div>
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #4CAF50;">
                     <div style="color:#4CAF50;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل القطعة</div>
@@ -2910,8 +2910,8 @@
             </div>` : '';
             document.getElementById('product-modal-content').innerHTML = `
                 ${navHtml}
-                <img src="${imgSrc}" style="width:100%;border-radius:14px;margin-bottom:6px;">
-                <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">‹ اسحب للتنقل بين المنتجات ›</div>
+                <img src="${imgSrc}" onclick="(() => { let ni=window._productIdx+1; if(ni<window._productKeys.length){window._productIdx=ni;openProductModal(window._productKeys[ni]);} })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
+                <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">👆 اضغط على الصورة أو اسحب للتنقل بين المنتجات</div>
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #333;">
                     <div style="color:#D4AF37;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل المنتج</div>
@@ -3422,8 +3422,15 @@
             </div>` : '';
             document.getElementById('watch-modal-content').innerHTML = `
                 ${navHtmlW}
-                <img src="${p.imageUrl}" style="width:100%;border-radius:14px;margin-bottom:6px;">
-                <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">‹ اسحب للتنقل بين المنتجات ›</div>
+                <img src="${p.imageUrl}" onclick="(() => {
+                    let t=window._currentWatchType;
+                    let k=t==='silver'?window._silverKeys:t==='watches'?window._watchesKeys:window._glassesKeys;
+                    if(!k.length)return;
+                    if(t==='silver'){let ni=window._silverIdx+1;if(ni<k.length){window._silverIdx=ni;openWatchModal('silver',k[ni]);}}
+                    else if(t==='watches'){let ni=window._watchesIdx+1;if(ni<k.length){window._watchesIdx=ni;openWatchModal('watches',k[ni]);}}
+                    else{let ni=window._glassesIdx+1;if(ni<k.length){window._glassesIdx=ni;openWatchModal('glasses',k[ni]);}}
+                })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
+                <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">👆 اضغط على الصورة أو اسحب للتنقل (داخل نفس القسم فقط)</div>
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid ${color};">
                     <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;">${emoji} ${label} — تفاصيل المنتج</div>
                     <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
