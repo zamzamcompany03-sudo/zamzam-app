@@ -2091,11 +2091,16 @@
         function makeDeleteBtn(node, id) {
             if (!isAdmin()) return '';
             var btn = document.createElement('div');
-            btn.style.cssText = 'position:absolute;top:8px;left:8px;';
+            btn.style.cssText = 'position:absolute;top:8px;left:8px;display:flex;gap:4px;';
             var b = document.createElement('button');
             b.innerHTML = '🗑';
             b.style.cssText = 'background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:4px 6px;color:#fff;font-size:11px;cursor:pointer;';
             b.onclick = function(e) { e.stopPropagation(); deleteProduct(node, id); };
+            var eb = document.createElement('button');
+            eb.innerHTML = '✏️';
+            eb.style.cssText = 'background:rgba(212,175,55,0.9);border:none;border-radius:8px;padding:4px 6px;color:#000;font-size:11px;cursor:pointer;';
+            eb.onclick = function(e) { e.stopPropagation(); openEditModal(node, id); };
+            btn.appendChild(eb);
             btn.appendChild(b);
             return btn.outerHTML;
         }
@@ -2104,6 +2109,111 @@
             if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
             if (!confirm('هل تريد حذف هذا المنتج؟')) return;
             database.ref('zamzam-company/' + node + '/' + id).remove();
+        }
+
+        // ===== تعديل منتج موجود (سعر/خصم/أجور) =====
+        var _editingNode = null, _editingId = null;
+
+        function getEditCacheProduct(node, id) {
+            if (node === 'exclusive-offers') return window._offersData && window._offersData[id];
+            if (node === 'scrap-offers') return window._scrapData && window._scrapData[id];
+            if (node === 'silver-offers') return window._silverData && window._silverData[id];
+            if (node === 'watches-offers' || node === 'glasses-offers') return window._watchData && window._watchData[id];
+            return null;
+        }
+
+        function editInputRow(label, id, value, unit) {
+            return '<div class="input-group"><label>' + label + '</label>' +
+                '<input type="number" id="' + id + '" value="' + value + '" style="width:100%;padding:12px;background:#0a130a;border:2px solid #2a2a2a;border-radius:12px;color:#fff;font-size:15px;text-align:center;">' +
+                (unit ? '<div style="font-size:11px;color:#666;margin-top:4px;text-align:center;">' + unit + '</div>' : '') +
+                '</div>';
+        }
+
+        function openEditModal(node, id) {
+            if (!isAdmin()) { alert('يجب الدخول بكلمة المرور أولاً'); return; }
+            var p = getEditCacheProduct(node, id);
+            if (!p) { alert('تعذر العثور على بيانات المنتج'); return; }
+            _editingNode = node;
+            _editingId = id;
+
+            var fieldsHtml = '';
+            if (node === 'exclusive-offers') {
+                fieldsHtml += editInputRow('أجور الغرام (دينار)', 'edit-wage', p.wage);
+                fieldsHtml += editInputRow('نسبة الخصم على الأجور (%)', 'edit-discount', p.discount || 0);
+            } else if (node === 'silver-offers') {
+                fieldsHtml += editInputRow('سعر الغرام قبل الخصم (دينار)', 'edit-priceGram', p.priceGram);
+                fieldsHtml += editInputRow('نسبة الخصم (%)', 'edit-discount', p.discount || 0);
+            } else if (node === 'watches-offers' || node === 'glasses-offers') {
+                fieldsHtml += editInputRow('المبلغ قبل الخصم (دينار)', 'edit-price', p.price);
+                fieldsHtml += editInputRow('نسبة الخصم (%)', 'edit-discount', p.discount || 0);
+            } else if (node === 'scrap-offers') {
+                fieldsHtml += editInputRow('السعر الكلي (دينار)', 'edit-price', p.price);
+            }
+
+            document.getElementById('edit-modal-fields').innerHTML = fieldsHtml;
+            document.getElementById('edit-modal-msg').style.display = 'none';
+            document.getElementById('edit-product-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-product-modal').style.display = 'none';
+            _editingNode = null;
+            _editingId = null;
+        }
+
+        function saveEditModal() {
+            if (!_editingNode || !_editingId) return;
+            var node = _editingNode, id = _editingId;
+            var updates = {};
+
+            if (node === 'exclusive-offers') {
+                var wage = parseFloat(document.getElementById('edit-wage').value);
+                var discount = parseFloat(document.getElementById('edit-discount').value) || 0;
+                if (!wage) { showEditMsg('❌ أدخل قيمة الأجور', 'red'); return; }
+                updates = { wage: wage, discount: discount };
+                // السعر النهائي للعروض الحصرية يُحسب لحظيًا بسعر الذهب الحالي، لا يُخزّن
+            } else if (node === 'silver-offers') {
+                var p = getEditCacheProduct(node, id);
+                var priceGram = parseFloat(document.getElementById('edit-priceGram').value);
+                var discount = parseFloat(document.getElementById('edit-discount').value) || 0;
+                if (!priceGram) { showEditMsg('❌ أدخل سعر الغرام', 'red'); return; }
+                var beforeDiscount = priceGram * p.weight;
+                var discountAmt = (discount / 100) * beforeDiscount;
+                var finalPrice = beforeDiscount - discountAmt;
+                updates = { priceGram: priceGram, discount: discount, beforeDiscount: beforeDiscount, discountAmt: discountAmt, finalPrice: finalPrice };
+            } else if (node === 'watches-offers' || node === 'glasses-offers') {
+                var price = parseFloat(document.getElementById('edit-price').value);
+                var discount = parseFloat(document.getElementById('edit-discount').value) || 0;
+                if (!price) { showEditMsg('❌ أدخل المبلغ', 'red'); return; }
+                var discountAmt = (discount / 100) * price;
+                var finalPrice = price - discountAmt;
+                updates = { price: price, discount: discount, discountAmt: discountAmt, finalPrice: finalPrice };
+            } else if (node === 'scrap-offers') {
+                var price = parseFloat(document.getElementById('edit-price').value);
+                if (!price) { showEditMsg('❌ أدخل السعر الكلي', 'red'); return; }
+                updates = { price: price };
+            }
+
+            database.ref('zamzam-company/' + node + '/' + id).update(updates).then(function() {
+                showEditMsg('✅ تم الحفظ بنجاح', '#4CAF50');
+                setTimeout(function() {
+                    closeEditModal();
+                    if (node === 'exclusive-offers') loadOffers();
+                    else if (node === 'scrap-offers') loadScrap();
+                    else if (node === 'silver-offers') loadSilver();
+                    else if (node === 'watches-offers') loadWatchItems('watches');
+                    else if (node === 'glasses-offers') loadWatchItems('glasses');
+                }, 600);
+            }).catch(function(e) {
+                showEditMsg('❌ خطأ: ' + e.message, 'red');
+            });
+        }
+
+        function showEditMsg(text, color) {
+            var msg = document.getElementById('edit-modal-msg');
+            msg.textContent = text;
+            msg.style.color = color;
+            msg.style.display = 'block';
         }
 
         function setProductStatus(node, id, status) {
@@ -4336,6 +4446,19 @@
     <div id="toast-msg">✅ تم النسخ بنجاح</div>
 
 <!-- نافذة حاسبة الزكاة -->
+<!-- نافذة تعديل المنتج (سعر/خصم/أجور) -->
+<div id="edit-product-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:99999;align-items:flex-end;justify-content:center;">
+    <div style="width:100%;max-height:85vh;background:#111;border-radius:24px 24px 0 0;padding:20px 16px 30px;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <span style="color:#D4AF37;font-size:16px;font-weight:800;">✏️ تعديل المنتج</span>
+            <button onclick="closeEditModal()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;">✕</button>
+        </div>
+        <div id="edit-modal-fields"></div>
+        <button onclick="saveEditModal()" style="width:100%;padding:14px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#0a0a0a;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;">💾 حفظ التعديل</button>
+        <div id="edit-modal-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
+    </div>
+</div>
+
 <div id="zakat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;overflow-y:auto;-webkit-overflow-scrolling:touch;direction:ltr;">
     <div style="max-width:420px;margin:0 auto;padding:16px;direction:rtl;">
 
