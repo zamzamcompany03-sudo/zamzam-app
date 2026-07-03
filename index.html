@@ -919,7 +919,7 @@
                             style="transition:stroke-dashoffset 1s linear;"/>
                         <text x="18" y="23" text-anchor="middle" fill="#D4AF37" font-size="11" font-weight="bold" id="countdown-text">10</text>
                     </svg>
-                    <span style="font-size:10px;color:#666;">ثانية للتحديث</span>
+                    <span style="font-size:10px;color:#666;">تحديث مستمر</span>
                 </div>
             </div>
         </div>
@@ -1952,15 +1952,64 @@
             document.getElementById('buyIraqi-mithqal').textContent = fmt(buyIraqiMithqal);
         }
 
-        // جلب سعر الذهب - مع مصادر احتياطية متعددة
+        // جلب سعر الذهب - من MetaApi (حساب Exness) حصرًا عبر الـ Worker
+        // تطبيق سعر جديد على الواجهة (تُستدعى من البث المباشر أو من REST الاحتياطي)
+        function applyGoldPrice(goldPrice) {
+            if (!goldPrice || goldPrice < 100) return;
+
+            let lastPrice = parseFloat(localStorage.getItem('lastGoldPrice') || goldPrice);
+            let change = (goldPrice - lastPrice).toFixed(2);
+            let changePercent = ((change / lastPrice) * 100).toFixed(2);
+
+            animateNumber('goldPrice', goldPrice, v => `$${v.toFixed(2)}`);
+            document.getElementById('priceChange').textContent = `${change > 0 ? '↑' : '↓'} $${Math.abs(change)}`;
+            document.getElementById('pricePercent').textContent = `(${changePercent}%)`;
+            document.getElementById('pricePercent').style.color = change >= 0 ? '#4CAF50' : '#ff6b6b';
+            document.getElementById('updateTime').textContent = `🔴 مباشر: ${new Date().toLocaleTimeString('ar-IQ')}`;
+
+            // حفظ سعر الأمس (مرة واحدة في اليوم)
+            let today = new Date().toDateString();
+            let savedDay = localStorage.getItem('goldPriceDay');
+            if (savedDay !== today) {
+                let prevPrice = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
+                if (prevPrice > 0) localStorage.setItem('yesterdayGoldPrice', prevPrice);
+                localStorage.setItem('goldPriceDay', today);
+            }
+
+            // عرض التغيير من الأمس
+            let yPrice = parseFloat(localStorage.getItem('yesterdayGoldPrice') || 0);
+            let yEl = document.getElementById('yesterdayChange');
+            if (yEl && yPrice > 0) {
+                let yDiff = (goldPrice - yPrice).toFixed(2);
+                let yPct = ((yDiff / yPrice) * 100).toFixed(2);
+                let yUp = yDiff >= 0;
+                yEl.innerHTML = `${yUp ? '📈' : '📉'} منذ الأمس: <span style="color:${yUp ? '#4CAF50' : '#ff6b6b'};font-weight:700;">${yUp ? '+' : ''}${yPct}%</span>`;
+            }
+
+            let _up = goldPrice >= lastPrice;
+            if (goldPrice !== lastPrice) {
+                showPriceAlert(goldPrice);
+                ['sell-gram','sell-mithqal','buyGulf-gram','buyGulf-mithqal','buyIraqi-gram','buyIraqi-mithqal'].forEach(id => {
+                    setTimeout(() => showRing(id, _up), 200);
+                });
+            }
+
+            localStorage.setItem('lastGoldPrice', goldPrice);
+            calculatePrices(goldPrice);
+
+            if (!window._welcomeShown) {
+                window._welcomeShown = true;
+                showWelcomeBack(goldPrice);
+            }
+        }
+
+        // احتياطي REST (يُستخدم فقط لو تعذر فتح اتصال البث المباشر)
         async function fetchGoldPrice() {
             let goldPrice = null;
-
-            // المصدر 1: Cloudflare Worker الخاص
             try {
                 let res = await Promise.race([
                     fetch(WORKER_URL),
-                    new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000))
+                    new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000))
                 ]);
                 let data = await res.json();
                 if (data && data.price && parseFloat(data.price) > 100) {
@@ -1968,106 +2017,19 @@
                 }
             } catch (e) {}
 
-            // المصدر 2: Metals.live (مجاني بدون مفتاح)
-            if (!goldPrice) {
-                try {
-                    let res = await Promise.race([
-                        fetch('https://api.metals.live/v1/spot/gold'),
-                        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000))
-                    ]);
-                    let data = await res.json();
-                    let price = Array.isArray(data) ? data[0]?.price : data?.price;
-                    if (price && parseFloat(price) > 100) {
-                        goldPrice = parseFloat(price);
-                    }
-                } catch (e) {}
-            }
-
-            // المصدر 3: Coinbase مباشرة
-            if (!goldPrice) {
-                try {
-                    let res = await Promise.race([
-                        fetch('https://api.coinbase.com/v2/prices/XAU-USD/spot'),
-                        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000))
-                    ]);
-                    let data = await res.json();
-                    let price = data?.data?.amount;
-                    if (price && parseFloat(price) > 100) {
-                        goldPrice = parseFloat(price);
-                    }
-                } catch (e) {}
-            }
-
-            // المصدر 4: Frankfurter XAU
-            if (!goldPrice) {
-                try {
-                    let res = await Promise.race([
-                        fetch('https://api.frankfurter.app/latest?from=XAU&to=USD'),
-                        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000))
-                    ]);
-                    let data = await res.json();
-                    let price = data?.rates?.USD;
-                    if (price && parseFloat(price) > 100) {
-                        goldPrice = parseFloat(price);
-                    }
-                } catch (e) {}
-            }
-
             if (goldPrice) {
-                let lastPrice = parseFloat(localStorage.getItem('lastGoldPrice') || goldPrice);
-                let change = (goldPrice - lastPrice).toFixed(2);
-                let changePercent = ((change / lastPrice) * 100).toFixed(2);
-
-                animateNumber('goldPrice', goldPrice, v => `$${v.toFixed(2)}`);
-                document.getElementById('priceChange').textContent = `${change > 0 ? '↑' : '↓'} $${Math.abs(change)}`;
-                document.getElementById('pricePercent').textContent = `(${changePercent}%)`;
-                document.getElementById('pricePercent').style.color = change >= 0 ? '#4CAF50' : '#ff6b6b';
-                document.getElementById('updateTime').textContent = `آخر تحديث: ${new Date().toLocaleTimeString('ar-IQ')}`;
-
-                // حفظ سعر الأمس (مرة واحدة في اليوم)
-                let today = new Date().toDateString();
-                let savedDay = localStorage.getItem('goldPriceDay');
-                if (savedDay !== today) {
-                    let prevPrice = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
-                    if (prevPrice > 0) localStorage.setItem('yesterdayGoldPrice', prevPrice);
-                    localStorage.setItem('goldPriceDay', today);
-                }
-
-                // عرض التغيير من الأمس
-                let yPrice = parseFloat(localStorage.getItem('yesterdayGoldPrice') || 0);
-                let yEl = document.getElementById('yesterdayChange');
-                if (yEl && yPrice > 0) {
-                    let yDiff = (goldPrice - yPrice).toFixed(2);
-                    let yPct = ((yDiff / yPrice) * 100).toFixed(2);
-                    let yUp = yDiff >= 0;
-                    yEl.innerHTML = `${yUp ? '📈' : '📉'} منذ الأمس: <span style="color:${yUp ? '#4CAF50' : '#ff6b6b'};font-weight:700;">${yUp ? '+' : ''}${yPct}%</span>`;
-                }
-
-                localStorage.setItem('lastGoldPrice', goldPrice);
-                showPriceAlert(goldPrice);
-                // تأثير الحلقات على كل الأسعار
-                let _up = goldPrice >= (parseFloat(localStorage.getItem('lastGoldPrice')) || goldPrice);
-                ['sell-gram','sell-mithqal','buyGulf-gram','buyGulf-mithqal','buyIraqi-gram','buyIraqi-mithqal'].forEach(id => {
-                    setTimeout(() => showRing(id, _up), 200);
-                });
-                calculatePrices(goldPrice);
-                startCountdown();
-
-                if (!window._welcomeShown) {
-                    window._welcomeShown = true;
-                    showWelcomeBack(goldPrice);
-                }
+                applyGoldPrice(goldPrice);
             } else {
-                // كل المصادر فشلت - استخدام آخر سعر محفوظ
                 let cached = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
                 if (cached) {
-                    document.getElementById('updateTime').textContent = `⚡ آخر سعر محفوظ`;
+                    document.getElementById('updateTime').textContent = `⚡ آخر سعر حقيقي محفوظ`;
                     calculatePrices(cached);
                 } else {
                     document.getElementById('goldPrice').textContent = `تعذّر التحميل`;
                     document.getElementById('updateTime').textContent = '⏳ جاري إعادة الاتصال...';
                 }
             }
+            startCountdown();
         }
 
         // TABS
@@ -3476,27 +3438,16 @@
             localStorage.setItem('lastVisitPrice', currentPrice);
         }
 
-        // ===== عداد التحديث =====
+        // ===== تحديث سريع كل ثانية (أقرب إحساس ممكن للبورصة الحية) =====
         let _countdownTimer = null;
         function startCountdown() {
-            // امسح العداد القديم
-            if (_countdownTimer) clearInterval(_countdownTimer);
-            let val = 10;
+            if (_countdownTimer) clearTimeout(_countdownTimer);
             let circle = document.getElementById('countdown-circle');
             let text = document.getElementById('countdown-text');
-            let total = 94.2;
-            if (text) text.textContent = val;
+            if (text) text.textContent = '●';
             if (circle) circle.style.strokeDashoffset = 0;
-            _countdownTimer = setInterval(() => {
-                val--;
-                if (val < 0) val = 0;
-                if (text) text.textContent = val;
-                if (circle) circle.style.strokeDashoffset = total - (total * val / 10);
-                if (val <= 0) {
-                    clearInterval(_countdownTimer);
-                    _countdownTimer = null;
-                    fetchGoldPrice();
-                }
+            _countdownTimer = setTimeout(() => {
+                fetchGoldPrice();
             }, 1000);
         }
 
@@ -4172,13 +4123,11 @@
         // INIT
         loadSettings();
         setInterval(loadSettings, 10000); // تحديث الإعدادات كل 10 ثواني
+        // استدعاء فوري عند فتح التطبيق (بدون انتظار)
         fetchGoldPrice();
-        // استدعاء فوري عند التحميل
-        window.addEventListener("load", fetchGoldPrice);
         checkVisitCount();
         trackAndShowViews();
         showTab('sell');
-        startCountdown();
         updateDateTime();
         setInterval(updateDateTime, 10000);
         checkMarketStatus();
