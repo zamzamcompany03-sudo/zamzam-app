@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ar" style="width:100%;height:100%;margin:0;padding:0;" dir="rtl">
 <head>
@@ -1108,7 +1109,7 @@
             <span id="total-views" style="font-size:13px;font-weight:800;color:#D4AF37;">--</span>
         </div>
         <div style="width:1px;height:20px;background:rgba(212,175,55,0.2);"></div>
-        <a href="https://maps.google.com/?q=33.429787,43.299812" target="_blank"
+        <a href="https://maps.google.com/?q=33.429787,43.299812" target="_blank" rel="noopener noreferrer"
             style="display:flex;align-items:center;gap:4px;text-decoration:none;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:20px;padding:3px 10px;">
             <span style="font-size:12px;">📍</span>
             <span style="font-size:9px;color:#D4AF37;font-weight:700;white-space:nowrap;">موقع شركة زمزم</span>
@@ -2428,7 +2429,7 @@
                 window.location.href = `geo:${lat},${lng}?q=${lat},${lng}(${encodeURIComponent(label)})`;
             } else {
                 // كمبيوتر: يفتح Google Maps في المتصفح
-                window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
+                window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank', 'noopener,noreferrer');
             }
         }
 
@@ -2554,7 +2555,7 @@
                     let adminBtns = makeDeleteBtn('scrap-offers', p.id);
                     return `
                     <div onclick="openScrapModal('${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #4CAF50;position:relative;">
-                        <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;">
+                        <img src="${escapeHtml(p.imageUrl)}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #4CAF50;border-radius:20px;padding:3px 8px;font-size:11px;color:#4CAF50;">⏰ ${remaining} يوم</div>
                         ${getStatusBadge(status)}
                         ${adminBtns}
@@ -2599,12 +2600,12 @@
 
             document.getElementById('scrap-modal-content').innerHTML = `
                 ${navHtml}
-                <img src="${p.imageUrl}" onclick="(() => { let ni=window._scrapIdx+1; if(ni<window._scrapKeys.length){window._scrapIdx=ni;openScrapModal(window._scrapKeys[ni]);} })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
+                <img src="${escapeHtml(p.imageUrl)}" onclick="(() => { let ni=window._scrapIdx+1; if(ni<window._scrapKeys.length){window._scrapIdx=ni;openScrapModal(window._scrapKeys[ni]);} })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
                 <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">👆 اضغط على الصورة أو اسحب للتنقل بين المنتجات</div>
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #4CAF50;">
                     <div style="color:#4CAF50;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل القطعة</div>
-                    <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
+                    <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${escapeHtml(p.desc)}</div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الوزن</span><span style="color:#fff;font-size:13px;">${p.weight} غرام</span></div>
                     <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #444;margin-top:4px;"><span style="color:#4CAF50;font-size:14px;font-weight:bold;">السعر الكلي</span><span style="color:#4CAF50;font-size:18px;font-weight:bold;">${fmt(p.price)} دينار</span></div>
                 </div>
@@ -2614,8 +2615,8 @@
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                    <a id="wa-saif-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 سيف</a>
-                    <a id="wa-husam-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
+                    <a id="wa-saif-link" href="#" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 سيف</a>
+                    <a id="wa-husam-link" href="#" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
                 </div>
             `;
 
@@ -2930,7 +2931,7 @@
                     let adminBtns = makeDeleteBtn('exclusive-offers', p.id);
                     return `
                     <div onclick="openProductModal('${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #333;position:relative;">
-                        <img src="${imgSrc}" style="width:100%;aspect-ratio:1;object-fit:cover;">
+                        <img src="${escapeHtml(imgSrc)}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #D4AF37;border-radius:20px;padding:3px 8px;font-size:11px;color:#D4AF37;">⏰ ${remaining} يوم</div>
                         ${getStatusBadge(status)}
                         ${adminBtns}
@@ -2981,12 +2982,12 @@
             </div>` : '';
             document.getElementById('product-modal-content').innerHTML = `
                 ${navHtml}
-                <img src="${imgSrc}" onclick="(() => { let ni=window._productIdx+1; if(ni<window._productKeys.length){window._productIdx=ni;openProductModal(window._productKeys[ni]);} })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
+                <img src="${escapeHtml(imgSrc)}" onclick="(() => { let ni=window._productIdx+1; if(ni<window._productKeys.length){window._productIdx=ni;openProductModal(window._productKeys[ni]);} })()" style="width:100%;max-height:280px;object-fit:contain;border-radius:14px;margin-bottom:6px;cursor:pointer;background:#0a0a0a;">
                 <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">👆 اضغط على الصورة أو اسحب للتنقل بين المنتجات</div>
 
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #333;">
                     <div style="color:#D4AF37;font-size:15px;font-weight:bold;margin-bottom:10px;">📋 تفاصيل المنتج</div>
-                    <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
+                    <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${escapeHtml(p.desc)}</div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الوزن</span><span style="color:#fff;font-size:13px;">${p.weight} غرام</span></div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">سعر الذهب</span><span style="color:#FFD700;font-size:13px;">${fmt(goldAmount)} دينار</span></div>
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">مبلغ الأجور</span><span style="color:#FFD700;font-size:13px;">${fmt(wagesAmount)} دينار</span></div>
@@ -3001,8 +3002,8 @@
 
                 <div style="color:#D4AF37;font-size:14px;font-weight:bold;margin-bottom:10px;text-align:center;">📲 تواصل معنا للاستفسار</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                    <a id="wa-saif-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 سيف</a>
-                    <a id="wa-husam-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
+                    <a id="wa-saif-link" href="#" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 سيف</a>
+                    <a id="wa-husam-link" href="#" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
                 </div>
             `;
 
@@ -3339,7 +3340,7 @@
                     let views = p.views || 0;
                     let adminBtns = makeDeleteBtn('silver-offers', p.id);
                     return `<div onclick="openWatchModal('silver','${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid #C0C0C0;position:relative;">
-                        <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;">
+                        <img src="${escapeHtml(p.imageUrl)}" style="width:100%;aspect-ratio:1;object-fit:cover;">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid #C0C0C0;border-radius:20px;padding:3px 8px;font-size:11px;color:#C0C0C0;">⏰ ${rem} يوم</div>
                         ${getStatusBadge(status)}
                         ${adminBtns}
@@ -3388,7 +3389,7 @@
                     let views = p.views || 0;
                     let adminBtns = makeDeleteBtn(dbPath, p.id);
                     return `<div onclick="openWatchModal('${type}','${p.id}')" style="cursor:pointer;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid ${color};position:relative;">
-                        <img src="${p.imageUrl}" style="width:100%;aspect-ratio:1;object-fit:cover;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/></svg>'">
+                        <img src="${escapeHtml(p.imageUrl)}" style="width:100%;aspect-ratio:1;object-fit:cover;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/></svg>'">
                         <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border:1px solid ${color};border-radius:20px;padding:3px 8px;font-size:11px;color:${color};">⏰ ${rem} يوم</div>
                         ${getStatusBadge(status)}
                         ${adminBtns}
@@ -3493,7 +3494,7 @@
             </div>` : '';
             document.getElementById('watch-modal-content').innerHTML = `
                 ${navHtmlW}
-                <img src="${p.imageUrl}" onclick="(() => {
+                <img src="${escapeHtml(p.imageUrl)}" onclick="(() => {
                     let t=window._currentWatchType;
                     let k=t==='silver'?window._silverKeys:t==='watches'?window._watchesKeys:window._glassesKeys;
                     if(!k.length)return;
@@ -3504,7 +3505,7 @@
                 <div style="text-align:center;color:#fff;font-size:11px;padding:6px 0 2px;">👆 اضغط على الصورة أو اسحب للتنقل (داخل نفس القسم فقط)</div>
                 <div style="background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid ${color};">
                     <div style="color:${color};font-size:15px;font-weight:bold;margin-bottom:10px;">${emoji} ${label} — تفاصيل المنتج</div>
-                    <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${p.desc}</div>
+                    <div style="color:#ccc;font-size:13px;line-height:1.6;margin-bottom:10px;">${escapeHtml(p.desc)}</div>
                     ${priceRows}
                     <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #222;"><span style="color:#888;font-size:12px;">الخصم (${p.discount}%)</span><span style="color:#ff6b6b;">- ${fmt(p.discountAmt || p.discountAmt)} دينار</span></div>
                     <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #444;margin-top:4px;"><span style="color:${color};font-size:14px;font-weight:bold;">السعر النهائي</span><span style="color:#4CAF50;font-size:18px;font-weight:bold;">${fmt(p.finalPrice)} دينار</span></div>
@@ -3514,8 +3515,8 @@
                 </div>
                 <div style="color:${color};font-size:14px;font-weight:bold;margin-bottom:10px;text-align:center;">📲 تواصل معنا للاستفسار</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                    <a id="wa-saif-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 سيف</a>
-                    <a id="wa-husam-link" href="#" target="_blank" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
+                    <a id="wa-saif-link" href="#" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 سيف</a>
+                    <a id="wa-husam-link" href="#" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#fff;padding:14px;border-radius:14px;text-align:center;text-decoration:none;font-size:14px;font-weight:800;">📞 حسام</a>
                 </div>`;
 
             document.getElementById('watch-modal').style.display = 'flex';
@@ -4358,7 +4359,7 @@
             </button>
 
             <!-- فتح واتساب -->
-            <button onclick="window.open('https://wa.me/');document.getElementById('send-link-modal').style.display='none';" style="width:100%;background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;border:none;padding:14px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">
+            <button onclick="window.open('https://wa.me/', '_blank', 'noopener,noreferrer');document.getElementById('send-link-modal').style.display='none';" style="width:100%;background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;border:none;padding:14px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">
                 💬 افتح واتساب واختر الزبون
             </button>
 
@@ -4375,13 +4376,13 @@
                 <div style="color:#888;font-size:11px;margin-top:4px;">سيتم إرسال تفاصيل المنتج تلقائياً</div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-                <a id="wa-saif-btn" href="#" target="_blank"
+                <a id="wa-saif-btn" href="#" target="_blank" rel="noopener noreferrer"
                     style="display:flex;flex-direction:column;align-items:center;gap:6px;background:linear-gradient(135deg,#075E54,#128C7E);border:none;border-radius:16px;padding:16px 10px;text-decoration:none;">
                     <span style="font-size:28px;">📞</span>
                     <span style="color:#fff;font-size:14px;font-weight:800;">سيف الفهداوي</span>
                     <span style="color:rgba(255,255,255,0.7);font-size:10px;">07901196926</span>
                 </a>
-                <a id="wa-husam-btn" href="#" target="_blank"
+                <a id="wa-husam-btn" href="#" target="_blank" rel="noopener noreferrer"
                     style="display:flex;flex-direction:column;align-items:center;gap:6px;background:linear-gradient(135deg,#075E54,#128C7E);border:none;border-radius:16px;padding:16px 10px;text-decoration:none;">
                     <span style="font-size:28px;">📞</span>
                     <span style="color:#fff;font-size:14px;font-weight:800;">حسام الفهداوي</span>
@@ -4703,31 +4704,31 @@
    <div class="oc-title">المصوغات</div>
    <div class="oc-sub">الذهبية</div>
   </div>
-  <a href="https://www.instagram.com/zamzm_gold?igsh=bTdnaTJ6aTFxc2Fv" target="_blank" class="orbit-node" style="--angle:0deg">
+  <a href="https://www.instagram.com/zamzm_gold?igsh=bTdnaTJ6aTFxc2Fv" target="_blank" rel="noopener noreferrer" class="orbit-node" style="--angle:0deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><defs><radialGradient id="ig1" cx="30%" cy="107%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="50" height="50" rx="12" fill="url(#ig1)"/><rect x="13" y="13" width="24" height="24" rx="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="25" cy="25" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="34" cy="16" r="1.8" fill="#fff"/></svg>
    </div>
    <div class="on-label">إنستغرام</div>
   </a>
-  <a href="https://www.tiktok.com/@zamzam_gold?_t=8olfxn9rfam" target="_blank" class="orbit-node" style="--angle:72deg">
+  <a href="https://www.tiktok.com/@zamzam_gold?_t=8olfxn9rfam" target="_blank" rel="noopener noreferrer" class="orbit-node" style="--angle:72deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><rect width="50" height="50" rx="12" fill="#010101"/><path d="M33 14c.6 3.8 3.2 6 6 6.8v4.5c-2.1-.2-4-.9-5.8-2v9c0 5-3.8 8.7-8.7 8.7-4.8 0-8.7-3.9-8.7-8.7s3.9-8.7 8.7-8.7c.4 0 .8 0 1.2.1v4.6c-.4-.1-.8-.1-1.2-.1-2.4 0-4.3 1.9-4.3 4.3s1.9 4.3 4.3 4.3 4.3-1.9 4.3-4.3V14H33z" fill="white"/><path d="M31 13c.6 3.8 3.2 6 6 6.8" stroke="#69C9D0" stroke-width="1.5" fill="none"/><path d="M31 13c.6 3.8 3.2 6 6 6.8v4.5c-2.1-.2-4-.9-5.8-2v9c0 5-3.8 8.7-8.7 8.7-4.8 0-8.7-3.9-8.7-8.7s3.9-8.7 8.7-8.7c.4 0 .8 0 1.2.1v4.6c-.4-.1-.8-.1-1.2-.1-2.4 0-4.3 1.9-4.3 4.3s1.9 4.3 4.3 4.3 4.3-1.9 4.3-4.3V13H31z" fill="#EE1D52"/></svg>
    </div>
    <div class="on-label">تيك توك</div>
   </a>
-  <a href="https://www.instagram.com/channel/AbZWyFVJrbD25AYN/" target="_blank" class="orbit-node" style="--angle:144deg">
+  <a href="https://www.instagram.com/channel/AbZWyFVJrbD25AYN/" target="_blank" rel="noopener noreferrer" class="orbit-node" style="--angle:144deg">
    <div class="on-img" style="background:#000;border:2px solid rgba(212,168,67,0.5);box-shadow:0 0 10px rgba(212,168,67,0.3)">
     <span style="font-size:22px">📿</span>
    </div>
    <div class="on-label">نماذج أسماء</div>
   </a>
-  <a href="https://snapchat.com/t/rPQBJ5uh" target="_blank" class="orbit-node" style="--angle:216deg">
+  <a href="https://snapchat.com/t/rPQBJ5uh" target="_blank" rel="noopener noreferrer" class="orbit-node" style="--angle:216deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><rect width="50" height="50" rx="12" fill="#FFFC00"/><path d="M25 10c-4.5 0-8 3.5-8 8v3l-2 1 1 2c2 0 2 2 1 3-1.5 1.5-4 2-5 2.5 0 1 1 1.5 2 1.5.5 0 1.5-.3 2.5-.5 0 0 1 4 8 4s8-4 8-4c1 .2 2 .5 2.5.5 1 0 2-.5 2-1.5-1-.5-3.5-1-5-2.5-1-1 0-3 1-3l1-2-2-1v-3c0-4.5-3.5-8-8-8z" fill="#fff"/></svg>
    </div>
    <div class="on-label">سناب</div>
   </a>
-  <a href="https://www.facebook.com/profile.php?id=61565555843892" target="_blank" class="orbit-node" style="--angle:288deg">
+  <a href="https://www.facebook.com/profile.php?id=61565555843892" target="_blank" rel="noopener noreferrer" class="orbit-node" style="--angle:288deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><rect width="50" height="50" rx="12" fill="#1877F2"/><path d="M32 25h-5v16h-6V25h-3v-6h3v-3c0-4 2-6.5 6.5-6.5H31v6h-2.5c-1 0-1.5.5-1.5 1.5V19h4.5L32 25z" fill="white"/></svg>
    </div>
@@ -4770,19 +4771,19 @@
    <div class="oc-title">الفضيات</div>
    <div class="oc-sub">والساعات</div>
   </div>
-  <a href="https://www.tiktok.com/@z925_z?_t=zs-906jcbfc6q4&_r=1" target="_blank" class="orbit-node orbit-node-s" style="--angle:270deg">
+  <a href="https://www.tiktok.com/@z925_z?_t=zs-906jcbfc6q4&_r=1" target="_blank" rel="noopener noreferrer" class="orbit-node orbit-node-s" style="--angle:270deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><rect width="50" height="50" rx="12" fill="#010101"/><path d="M33 14c.6 3.8 3.2 6 6 6.8v4.5c-2.1-.2-4-.9-5.8-2v9c0 5-3.8 8.7-8.7 8.7-4.8 0-8.7-3.9-8.7-8.7s3.9-8.7 8.7-8.7c.4 0 .8 0 1.2.1v4.6c-.4-.1-.8-.1-1.2-.1-2.4 0-4.3 1.9-4.3 4.3s1.9 4.3 4.3 4.3 4.3-1.9 4.3-4.3V14H33z" fill="white"/><path d="M31 13c.6 3.8 3.2 6 6 6.8" stroke="#69C9D0" stroke-width="1.5" fill="none"/><path d="M31 13c.6 3.8 3.2 6 6 6.8v4.5c-2.1-.2-4-.9-5.8-2v9c0 5-3.8 8.7-8.7 8.7-4.8 0-8.7-3.9-8.7-8.7s3.9-8.7 8.7-8.7c.4 0 .8 0 1.2.1v4.6c-.4-.1-.8-.1-1.2-.1-2.4 0-4.3 1.9-4.3 4.3s1.9 4.3 4.3 4.3 4.3-1.9 4.3-4.3V13H31z" fill="#EE1D52"/></svg>
    </div>
    <div class="on-label">تيك توك</div>
   </a>
-  <a href="https://www.instagram.com/zamzam__silver?igsh=emltbDkweHh3Z3M1" target="_blank" class="orbit-node orbit-node-s" style="--angle:30deg">
+  <a href="https://www.instagram.com/zamzam__silver?igsh=emltbDkweHh3Z3M1" target="_blank" rel="noopener noreferrer" class="orbit-node orbit-node-s" style="--angle:30deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><defs><radialGradient id="ig3" cx="30%" cy="107%"><stop offset="0%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="50" height="50" rx="12" fill="url(#ig3)"/><rect x="13" y="13" width="24" height="24" rx="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="25" cy="25" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="34" cy="16" r="1.8" fill="#fff"/></svg>
    </div>
    <div class="on-label">إنستغرام</div>
   </a>
-  <a href="https://www.facebook.com/share/19KdQ43U4w/" target="_blank" class="orbit-node orbit-node-s" style="--angle:150deg">
+  <a href="https://www.facebook.com/share/19KdQ43U4w/" target="_blank" rel="noopener noreferrer" class="orbit-node orbit-node-s" style="--angle:150deg">
    <div class="on-img">
     <svg viewBox="0 0 50 50" width="36" height="36"><rect width="50" height="50" rx="12" fill="#1877F2"/><path d="M32 25h-5v16h-6V25h-3v-6h3v-3c0-4 2-6.5 6.5-6.5H31v6h-2.5c-1 0-1.5.5-1.5 1.5V19h4.5L32 25z" fill="white"/></svg>
    </div>
@@ -4801,7 +4802,7 @@
   <div class="sl"></div>
  </div>
 
- <a href="https://maps.google.com/?q=33.429749,43.299900" class="btn bmap" style="margin-bottom:12px;text-decoration:none" target="_blank">
+ <a href="https://maps.google.com/?q=33.429749,43.299900" class="btn bmap" style="margin-bottom:12px;text-decoration:none" target="_blank" rel="noopener noreferrer">
   <div class="bstrip"></div>
   <div class="bbody">
    <div class="bico">📍</div>
@@ -4814,12 +4815,12 @@
  </a>
 
  <div class="wagrid">
-  <a href="https://wa.me/9647805747247" class="wacard" target="_blank">
+  <a href="https://wa.me/9647805747247" class="wacard" target="_blank" rel="noopener noreferrer">
    <div class="waico"><svg viewBox="0 0 40 40" width="28" height="28"><circle cx="20" cy="20" r="20" fill="#25D366"/><path d="M20 8C13.37 8 8 13.37 8 20c0 2.14.56 4.14 1.54 5.87L8 32l6.29-1.51A11.93 11.93 0 0 0 20 32c6.63 0 12-5.37 12-12S26.63 8 20 8zm5.9 16.42c-.25.7-1.47 1.34-2.03 1.42-.52.08-1.18.11-1.9-.12-.44-.14-1-.33-1.72-.65-3.02-1.3-4.99-4.35-5.14-4.55-.15-.2-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.6-.37.8-.37l.57.01c.18 0 .43-.07.67.51l.96 2.35c.08.19.04.42-.06.6l-.43.63c-.1.15-.2.31-.09.6.12.28.53 1.05 1.14 1.7.78.83 1.44 1.09 1.64 1.21.2.12.32.1.44-.06l.62-.73c.14-.17.28-.23.47-.14l2.27 1.07c.2.09.33.14.38.22.05.25-.1.95-.34 1.65z" fill="white"/></svg></div>
    <div class="waname">حسام</div>
    <div class="watag">WhatsApp</div>
   </a>
-  <a href="https://wa.me/9647901196926" class="wacard" target="_blank">
+  <a href="https://wa.me/9647901196926" class="wacard" target="_blank" rel="noopener noreferrer">
    <div class="waico"><svg viewBox="0 0 40 40" width="28" height="28"><circle cx="20" cy="20" r="20" fill="#25D366"/><path d="M20 8C13.37 8 8 13.37 8 20c0 2.14.56 4.14 1.54 5.87L8 32l6.29-1.51A11.93 11.93 0 0 0 20 32c6.63 0 12-5.37 12-12S26.63 8 20 8zm5.9 16.42c-.25.7-1.47 1.34-2.03 1.42-.52.08-1.18.11-1.9-.12-.44-.14-1-.33-1.72-.65-3.02-1.3-4.99-4.35-5.14-4.55-.15-.2-1.22-1.63-1.22-3.1s.77-2.2 1.05-2.5c.27-.3.6-.37.8-.37l.57.01c.18 0 .43-.07.67.51l.96 2.35c.08.19.04.42-.06.6l-.43.63c-.1.15-.2.31-.09.6.12.28.53 1.05 1.14 1.7.78.83 1.44 1.09 1.64 1.21.2.12.32.1.44-.06l.62-.73c.14-.17.28-.23.47-.14l2.27 1.07c.2.09.33.14.38.22.05.25-.1.95-.34 1.65z" fill="white"/></svg></div>
    <div class="waname">سيف</div>
    <div class="watag">WhatsApp</div>
