@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ar" style="width:100%;height:100%;margin:0;padding:0;" dir="rtl">
 <head>
@@ -1838,6 +1839,100 @@
                         <div id="glasses-progress-txt" style="text-align:center;font-size:13px;color:#a78bfa;"></div>
                     </div>
                     <div id="glasses-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
+                </div>
+            </div>
+
+            <!-- ==================== قسم: دليل الصياغ (سوق الرمادي) ==================== -->
+            <div class="settings-section" style="margin-top:14px;border-color:#1f9d5c;">
+                <h3 onclick="toggleSection('directory-all','directory-all-arrow'); loadDirectoryAdminList();" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#1f9d5c;">
+                    <span>📇 دليل الصياغ (سوق الرمادي)</span>
+                    <span id="directory-all-arrow" style="color:#1f9d5c;font-size:22px;transition:transform 0.3s;">▼</span>
+                </h3>
+                <div id="directory-all" style="display:none;margin-top:16px;">
+
+                    <div id="dir-form-title" style="color:#888;font-size:12px;margin-bottom:10px;">إضافة محل جديد للدليل</div>
+
+                    <div class="input-group">
+                        <label>اسم المحل / الشركة</label>
+                        <input type="text" id="dir-name" placeholder="مثال: محلات الأمانة للصياغة" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;">
+                    </div>
+
+                    <div class="input-group">
+                        <label>صورة المحل</label>
+                        <input type="file" id="dir-image" accept="image/*" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:13px;">
+                        <div id="dir-image-preview" style="margin-top:8px;border-radius:10px;overflow:hidden;display:none;">
+                            <img id="dir-img-preview-el" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;">
+                        </div>
+                    </div>
+
+                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:12px;border:1px solid #2a2a2a;">
+                        <div style="color:#1f9d5c;font-size:13px;font-weight:700;margin-bottom:10px;">📞 أرقام الهاتف (اسم الشخص + رقمه)</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                            <input type="text" id="dir-phone1-label" placeholder="مثال: حسام" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="tel" id="dir-phone1-num" placeholder="رقم الهاتف" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                            <input type="text" id="dir-phone2-label" placeholder="مثال: سيف" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="tel" id="dir-phone2-num" placeholder="رقم الهاتف" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                        </div>
+                    </div>
+
+                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:12px;border:1px solid #2a2a2a;">
+                        <div style="color:#25D366;font-size:13px;font-weight:700;margin-bottom:10px;">💬 واتساب (اسم + رابط)</div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-bottom:8px;">
+                            <input type="text" id="dir-wa1-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-wa1-url" placeholder="https://wa.me/..." style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;">
+                            <input type="text" id="dir-wa2-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-wa2-url" placeholder="https://wa.me/..." style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                    </div>
+
+                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:12px;border:1px solid #2a2a2a;">
+                        <div style="color:#d6249f;font-size:13px;font-weight:700;margin-bottom:10px;">📸 إنستغرام (اسم + رابط)</div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-bottom:8px;">
+                            <input type="text" id="dir-ig1-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-ig1-url" placeholder="رابط الإنستغرام" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;">
+                            <input type="text" id="dir-ig2-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-ig2-url" placeholder="رابط الإنستغرام" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                    </div>
+
+                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:12px;border:1px solid #2a2a2a;">
+                        <div style="color:#1877F2;font-size:13px;font-weight:700;margin-bottom:10px;">📘 فيسبوك (اسم + رابط)</div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-bottom:8px;">
+                            <input type="text" id="dir-fb1-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-fb1-url" placeholder="رابط الفيسبوك" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;">
+                            <input type="text" id="dir-fb2-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-fb2-url" placeholder="رابط الفيسبوك" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                    </div>
+
+                    <div style="background:#111;border-radius:12px;padding:12px;margin-bottom:16px;border:1px solid #2a2a2a;">
+                        <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:10px;">🎵 تيك توك (اسم + رابط)</div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-bottom:8px;">
+                            <input type="text" id="dir-tt1-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-tt1-url" placeholder="رابط التيك توك" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;">
+                            <input type="text" id="dir-tt2-label" placeholder="الاسم" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;">
+                            <input type="url" id="dir-tt2-url" placeholder="رابط التيك توك" style="padding:9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                        </div>
+                    </div>
+
+                    <button class="save-btn" id="dir-submit-btn" onclick="publishDirectoryShop()" style="background:linear-gradient(135deg,#1f9d5c,#167a48);color:#fff;">🚀 إضافة للدليل</button>
+                    <button class="save-btn" id="dir-cancel-btn" onclick="resetDirectoryForm()" style="display:none;background:#333;color:#aaa;margin-top:8px;">إلغاء التعديل</button>
+                    <div id="dir-msg" style="text-align:center;font-size:13px;margin-top:8px;display:none;"></div>
+
+                    <div style="border-top:1px solid #2a2a2a;margin:18px 0 12px;padding-top:14px;">
+                        <div style="color:#888;font-size:12px;margin-bottom:10px;">المحلات المضافة حاليًا بالدليل</div>
+                        <div id="directory-list"><div style="text-align:center;color:#555;padding:16px;">جاري التحميل...</div></div>
+                    </div>
                 </div>
             </div>
 
@@ -4159,7 +4254,8 @@
                 ['prod-image', 'prod-img-preview-el', 'prod-image-preview'],
                 ['silver-image', 'silver-img-preview-el', 'silver-image-preview'],
                 ['watch-image', 'watch-img-preview-el', 'watch-image-preview'],
-                ['glasses-image', 'glasses-img-preview-el', 'glasses-image-preview']
+                ['glasses-image', 'glasses-img-preview-el', 'glasses-image-preview'],
+                ['dir-image', 'dir-img-preview-el', 'dir-image-preview']
             ];
             ids.forEach(([inputId, previewImgId, previewDivId]) => {
                 let input = document.getElementById(inputId);
@@ -4306,6 +4402,147 @@
                 if (progress < 1) requestAnimationFrame(step);
             }
             requestAnimationFrame(step);
+        }
+
+        // ==================== دليل الصياغ ====================
+        let _dirEditingId = null;
+        let _dirEditingImageUrl = '';
+
+        function collectDirPair(labelId, urlId) {
+            const label = document.getElementById(labelId).value.trim();
+            const url = document.getElementById(urlId).value.trim();
+            return (label || url) ? { label, url } : null;
+        }
+
+        async function publishDirectoryShop() {
+            const name = document.getElementById('dir-name').value.trim();
+            const imageFile = document.getElementById('dir-image').files[0];
+            if (!name) { showDirMsg('❌ أدخل اسم المحل', 'red'); return; }
+
+            let imageUrl = _dirEditingImageUrl || '';
+            try {
+                if (imageFile) {
+                    const compressed = await compressImage(imageFile, 600, 0.5);
+                    const base64Data = compressed.split(',')[1];
+                    const formData = new FormData();
+                    formData.append('image', base64Data);
+                    formData.append('type', 'base64');
+                    const imgurRes = await fetch('https://api.imgur.com/3/image', {
+                        method: 'POST',
+                        headers: { 'Authorization': 'Client-ID 546c25a59c58ad7' },
+                        body: formData
+                    });
+                    const imgurData = await imgurRes.json();
+                    if (imgurData.success) imageUrl = imgurData.data.link;
+                }
+
+                const shop = {
+                    name, imageUrl,
+                    phones: [
+                        { label: document.getElementById('dir-phone1-label').value.trim(), number: document.getElementById('dir-phone1-num').value.trim() },
+                        { label: document.getElementById('dir-phone2-label').value.trim(), number: document.getElementById('dir-phone2-num').value.trim() }
+                    ],
+                    whatsapp:  [collectDirPair('dir-wa1-label','dir-wa1-url'),  collectDirPair('dir-wa2-label','dir-wa2-url')].filter(Boolean),
+                    instagram: [collectDirPair('dir-ig1-label','dir-ig1-url'), collectDirPair('dir-ig2-label','dir-ig2-url')].filter(Boolean),
+                    facebook:  [collectDirPair('dir-fb1-label','dir-fb1-url'), collectDirPair('dir-fb2-label','dir-fb2-url')].filter(Boolean),
+                    tiktok:    [collectDirPair('dir-tt1-label','dir-tt1-url'), collectDirPair('dir-tt2-label','dir-tt2-url')].filter(Boolean),
+                    updatedAt: Date.now()
+                };
+
+                if (_dirEditingId) {
+                    await database.ref('zamzam-company/goldsmiths-directory/' + _dirEditingId).update(shop);
+                    showDirMsg('✅ تم تحديث بيانات المحل', '#4CAF50');
+                } else {
+                    shop.createdAt = Date.now();
+                    await database.ref('zamzam-company/goldsmiths-directory').push(shop);
+                    showDirMsg('✅ تمت إضافة المحل للدليل', '#4CAF50');
+                }
+
+                resetDirectoryForm();
+                loadDirectoryAdminList();
+            } catch (err) {
+                showDirMsg('❌ خطأ: ' + err.message, 'red');
+            }
+        }
+
+        function showDirMsg(text, color) {
+            const msg = document.getElementById('dir-msg');
+            msg.textContent = text;
+            msg.style.color = color;
+            msg.style.display = 'block';
+            if (color === '#4CAF50') setTimeout(() => msg.style.display = 'none', 3000);
+        }
+
+        function resetDirectoryForm() {
+            _dirEditingId = null;
+            _dirEditingImageUrl = '';
+            document.getElementById('dir-name').value = '';
+            ['dir-phone1-label','dir-phone1-num','dir-phone2-label','dir-phone2-num'].forEach(id => document.getElementById(id).value = '');
+            ['wa','ig','fb','tt'].forEach(p => ['1','2'].forEach(n => {
+                document.getElementById('dir-'+p+n+'-label').value = '';
+                document.getElementById('dir-'+p+n+'-url').value = '';
+            }));
+            document.getElementById('dir-image').value = '';
+            document.getElementById('dir-image-preview').style.display = 'none';
+            document.getElementById('dir-form-title').textContent = 'إضافة محل جديد للدليل';
+            document.getElementById('dir-submit-btn').textContent = '🚀 إضافة للدليل';
+            document.getElementById('dir-cancel-btn').style.display = 'none';
+        }
+
+        function loadDirectoryAdminList() {
+            const list = document.getElementById('directory-list');
+            if (!list) return;
+            list.innerHTML = '<div style="text-align:center;color:#555;padding:16px;">جاري التحميل...</div>';
+            database.ref('zamzam-company/goldsmiths-directory').once('value', snap => {
+                const data = snap.val();
+                window._directoryCache = data || {};
+                if (!data) { list.innerHTML = '<div style="text-align:center;color:#555;padding:16px;">لا توجد محلات مضافة بعد</div>'; return; }
+                list.innerHTML = Object.entries(data).map(([id, s]) => `
+                    <div style="background:#111;border-radius:12px;padding:10px 12px;margin-bottom:8px;border:1px solid #2a2a2a;display:flex;align-items:center;gap:10px;">
+                        ${s.imageUrl ? `<img src="${escapeHtml(s.imageUrl)}" style="width:42px;height:42px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:42px;height:42px;border-radius:10px;background:#222;flex-shrink:0;"></div>'}
+                        <div style="flex:1;color:#fff;font-size:13px;font-weight:700;">${escapeHtml(s.name||'')}</div>
+                        <button onclick="editDirectoryShop('${id}')" style="background:rgba(212,175,55,0.9);border:none;border-radius:8px;padding:6px 10px;color:#000;font-size:11px;cursor:pointer;">✏️ تعديل</button>
+                        <button onclick="deleteDirectoryShop('${id}')" style="background:rgba(220,50,50,0.9);border:none;border-radius:8px;padding:6px 10px;color:#fff;font-size:11px;cursor:pointer;">🗑 حذف</button>
+                    </div>
+                `).join('');
+            });
+        }
+
+        function editDirectoryShop(id) {
+            const s = window._directoryCache && window._directoryCache[id];
+            if (!s) return;
+            _dirEditingId = id;
+            _dirEditingImageUrl = s.imageUrl || '';
+
+            document.getElementById('dir-name').value = s.name || '';
+            if (s.imageUrl) {
+                document.getElementById('dir-img-preview-el').src = s.imageUrl;
+                document.getElementById('dir-image-preview').style.display = 'block';
+            }
+            const p = s.phones || [];
+            document.getElementById('dir-phone1-label').value = p[0] ? (p[0].label||'') : '';
+            document.getElementById('dir-phone1-num').value   = p[0] ? (p[0].number||'') : '';
+            document.getElementById('dir-phone2-label').value = p[1] ? (p[1].label||'') : '';
+            document.getElementById('dir-phone2-num').value   = p[1] ? (p[1].number||'') : '';
+
+            const fillPair = (arr, prefix) => {
+                (arr || []).forEach((item, i) => {
+                    if (i > 1) return;
+                    document.getElementById('dir-'+prefix+(i+1)+'-label').value = item.label || '';
+                    document.getElementById('dir-'+prefix+(i+1)+'-url').value = item.url || '';
+                });
+            };
+            fillPair(s.whatsapp, 'wa'); fillPair(s.instagram, 'ig'); fillPair(s.facebook, 'fb'); fillPair(s.tiktok, 'tt');
+
+            document.getElementById('dir-form-title').textContent = 'تعديل بيانات: ' + (s.name || '');
+            document.getElementById('dir-submit-btn').textContent = '💾 حفظ التعديل';
+            document.getElementById('dir-cancel-btn').style.display = 'block';
+            document.getElementById('directory-all').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteDirectoryShop(id) {
+            if (!confirm('هل تريد حذف هذا المحل من الدليل؟')) return;
+            database.ref('zamzam-company/goldsmiths-directory/' + id).remove().then(loadDirectoryAdminList);
         }
 
         // INIT - تمرير لعرض المحتوى الرئيسي وسطاً
