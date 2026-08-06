@@ -3,7 +3,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="ar" style="width:100%;height:100%;margin:0;padding:0;" dir="rtl">
 <head>
@@ -2168,6 +2167,7 @@
 
         // احتياطي REST (يُستخدم فقط لو تعذر فتح اتصال البث المباشر)
         async function fetchGoldPrice() {
+            if (window._dirFormActive) { startCountdown(); return; } // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let goldPrice = null;
             try {
                 let res = await Promise.race([
@@ -3735,6 +3735,7 @@
 
         // ===== الوقت والتاريخ =====
         function updateDateTime() {
+            if (window._dirFormActive) return; // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let now = new Date();
             let days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
             let day = days[now.getDay()];
@@ -3746,6 +3747,7 @@
 
         // ===== حالة السوق =====
         function checkMarketStatus() {
+            if (window._dirFormActive) return; // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let now = new Date();
             let day = now.getDay(); // 5 = جمعة
             let h = now.getHours();
@@ -4544,6 +4546,20 @@
             if (!confirm('هل تريد حذف هذا المحل من الدليل؟')) return;
             database.ref('zamzam-company/goldsmiths-directory/' + id).remove().then(loadDirectoryAdminList);
         }
+
+        // إيقاف التحديثات المستمرة تلقائيًا أثناء الكتابة/اللصق داخل نموذج دليل الصياغ، وإعادة تشغيلها فور الخروج من الحقل
+        window._dirFormActive = false;
+        document.addEventListener('focusin', e => {
+            if (e.target.closest && e.target.closest('#directory-all')) window._dirFormActive = true;
+        });
+        document.addEventListener('focusout', e => {
+            if (e.target.closest && e.target.closest('#directory-all')) {
+                setTimeout(() => {
+                    let active = document.activeElement;
+                    window._dirFormActive = !!(active && active.closest && active.closest('#directory-all'));
+                }, 50);
+            }
+        });
 
         // INIT - تمرير لعرض المحتوى الرئيسي وسطاً
         window.addEventListener('load', () => {
