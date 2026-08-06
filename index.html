@@ -1851,6 +1851,8 @@
 
                     <div id="dir-form-title" style="color:#888;font-size:12px;margin-bottom:10px;">إضافة محل جديد للدليل</div>
 
+                    <button type="button" id="dir-pause-btn" onclick="toggleDirPause()" style="width:100%;padding:10px;background:#3a2a00;color:#D4AF37;border:1px solid #D4AF37;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;margin-bottom:14px;">⏸️ إيقاف التحديثات مؤقتًا للإدخال</button>
+
                     <div class="input-group">
                         <label>اسم المحل / الشركة</label>
                         <input type="text" id="dir-name" placeholder="مثال: محلات الأمانة للصياغة" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;">
@@ -2167,7 +2169,7 @@
 
         // احتياطي REST (يُستخدم فقط لو تعذر فتح اتصال البث المباشر)
         async function fetchGoldPrice() {
-            if (window._dirFormActive) { startCountdown(); return; } // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
+            if (window._dirFormActive || window._dirManualPause) { startCountdown(); return; } // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let goldPrice = null;
             try {
                 let res = await Promise.race([
@@ -3735,7 +3737,7 @@
 
         // ===== الوقت والتاريخ =====
         function updateDateTime() {
-            if (window._dirFormActive) return; // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
+            if (window._dirFormActive || window._dirManualPause) return; // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let now = new Date();
             let days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
             let day = days[now.getDay()];
@@ -3747,7 +3749,7 @@
 
         // ===== حالة السوق =====
         function checkMarketStatus() {
-            if (window._dirFormActive) return; // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
+            if (window._dirFormActive || window._dirManualPause) return; // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let now = new Date();
             let day = now.getDay(); // 5 = جمعة
             let h = now.getHours();
@@ -4489,6 +4491,8 @@
             document.getElementById('dir-form-title').textContent = 'إضافة محل جديد للدليل';
             document.getElementById('dir-submit-btn').textContent = '🚀 إضافة للدليل';
             document.getElementById('dir-cancel-btn').style.display = 'none';
+            window._dirManualPause = false; // رجّع التطبيق يشتغل طبيعي بعد الحفظ
+            setDirPauseBtnState();
         }
 
         function loadDirectoryAdminList() {
@@ -4545,6 +4549,24 @@
         function deleteDirectoryShop(id) {
             if (!confirm('هل تريد حذف هذا المحل من الدليل؟')) return;
             database.ref('zamzam-company/goldsmiths-directory/' + id).remove().then(loadDirectoryAdminList);
+        }
+
+        // إيقاف/تشغيل التحديثات المستمرة يدويًا بضغطة زر
+        window._dirManualPause = false;
+        function toggleDirPause() {
+            window._dirManualPause = !window._dirManualPause;
+            setDirPauseBtnState();
+        }
+        function setDirPauseBtnState() {
+            const btn = document.getElementById('dir-pause-btn');
+            if (!btn) return;
+            if (window._dirManualPause) {
+                btn.textContent = '▶️ تشغيل التحديثات مرة أخرى';
+                btn.style.background = '#2e0d0d'; btn.style.color = '#ff6b6b'; btn.style.borderColor = '#ff6b6b';
+            } else {
+                btn.textContent = '⏸️ إيقاف التحديثات مؤقتًا للإدخال';
+                btn.style.background = '#3a2a00'; btn.style.color = '#D4AF37'; btn.style.borderColor = '#D4AF37';
+            }
         }
 
         // إيقاف التحديثات المستمرة تلقائيًا أثناء الكتابة/اللصق داخل نموذج دليل الصياغ، وإعادة تشغيلها فور الخروج من الحقل
