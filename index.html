@@ -1843,7 +1843,7 @@
 
             <!-- ==================== قسم: دليل الصياغ (سوق الرمادي) ==================== -->
             <div class="settings-section" style="margin-top:14px;border-color:#1f9d5c;">
-                <h3 onclick="toggleSection('directory-all','directory-all-arrow'); loadDirectoryAdminList();" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#1f9d5c;">
+                <h3 onclick="toggleSection('directory-all','directory-all-arrow'); loadDirectoryAdminList(); loadMarketLocationAdmin();" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:0;color:#1f9d5c;">
                     <span>📇 دليل الصياغ (سوق الرمادي)</span>
                     <span id="directory-all-arrow" style="color:#1f9d5c;font-size:22px;transition:transform 0.3s;">▼</span>
                 </h3>
@@ -1961,6 +1961,19 @@
                     <div style="border-top:1px solid #2a2a2a;margin:18px 0 12px;padding-top:14px;">
                         <div style="color:#888;font-size:12px;margin-bottom:10px;">المحلات المضافة حاليًا بالدليل</div>
                         <div id="directory-list"><div style="text-align:center;color:#555;padding:16px;">جاري التحميل...</div></div>
+                    </div>
+
+                    <div style="border-top:2px solid #e8231a;margin:20px 0 0;padding-top:16px;">
+                        <div style="background:#1a0d0c;border-radius:12px;padding:12px;border:1px solid #e8231a;">
+                            <div style="color:#e8231a;font-size:13px;font-weight:700;margin-bottom:6px;">📍 موقع سوق الرمادي المركزي (عام)</div>
+                            <div style="font-size:10.5px;color:#999;margin-bottom:10px;">هذا الرابط عام لكل السوق (الشارع كامل) — يظهر كزر مستقل بأسفل تطبيق سوق الرمادي، بجانب زر دليل الصياغ. يُدخل مرة وحدة ويبقى محفوظ لجميع المحلات.</div>
+                            <div style="position:relative;margin-bottom:10px;">
+                                <input type="url" id="market-location-url" placeholder="الصق رابط موقع السوق هنا (Google Maps)" style="width:100%;box-sizing:border-box;padding:9px 40px 9px 9px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;direction:ltr;">
+                                <button type="button" onclick="pasteIntoField('market-location-url')" style="position:absolute;left:4px;top:50%;transform:translateY(-50%);background:#222;border:1px solid #444;border-radius:6px;width:28px;height:28px;font-size:13px;color:#D4AF37;cursor:pointer;">📋</button>
+                            </div>
+                            <button class="save-btn" onclick="saveMarketLocation()" style="background:#e8231a;color:#fff;margin-top:0;">💾 حفظ موقع السوق العام</button>
+                            <div id="market-location-msg" style="text-align:center;font-size:12px;margin-top:8px;display:none;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4191,7 +4204,7 @@
                     <div style="background:#111;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #222;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                             <div style="font-size:13px;font-weight:700;color:#D4AF37;">${escapeHtml(r.name)}</div>
-                            <div style="color:#FFD700;font-size:16px;">${'⭐'.repeat(r.stars)}</div>
+                            <div style="color:#FFD700;font-size:16px;">${'⭐'.repeat(Math.min(5, Math.max(0, parseInt(r.stars) || 0)))}</div>
                         </div>
                         <div style="color:#ccc;font-size:13px;line-height:1.5;margin-bottom:8px;">"${escapeHtml(r.msg)}"</div>
                         <div style="display:flex;justify-content:space-between;">
@@ -4570,6 +4583,29 @@
                     </div>
                 `).join('');
             });
+        }
+
+        // موقع سوق الرمادي المركزي (رابط عام واحد لكل السوق)
+        function saveMarketLocation() {
+            const url = document.getElementById('market-location-url').value.trim();
+            if (!url) { showMarketLocationMsg('❌ أدخل رابط الموقع أولاً', 'red'); return; }
+            database.ref('zamzam-company/market-location').set({ url, updatedAt: Date.now() })
+                .then(() => showMarketLocationMsg('✅ تم حفظ موقع السوق بنجاح', '#4CAF50'))
+                .catch(e => showMarketLocationMsg('❌ خطأ: ' + e.message, 'red'));
+        }
+        function loadMarketLocationAdmin() {
+            database.ref('zamzam-company/market-location').once('value', snap => {
+                const d = snap.val();
+                const el = document.getElementById('market-location-url');
+                if (el) el.value = (d && d.url) || '';
+            });
+        }
+        function showMarketLocationMsg(text, color) {
+            const msg = document.getElementById('market-location-msg');
+            msg.textContent = text;
+            msg.style.color = color;
+            msg.style.display = 'block';
+            if (color === '#4CAF50') setTimeout(() => msg.style.display = 'none', 3000);
         }
 
         function editDirectoryShop(id) {
