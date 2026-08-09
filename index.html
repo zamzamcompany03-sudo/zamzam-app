@@ -1,4 +1,4 @@
- 
+
 
 
 
@@ -2210,7 +2210,6 @@
 
         // احتياطي REST (يُستخدم فقط لو تعذر فتح اتصال البث المباشر)
         async function fetchGoldPrice() {
-            if (window._dirFormActive || window._dirManualPause) { startCountdown(); return; } // إيقاف مؤقت أثناء تعبئة نموذج دليل الصياغ
             let goldPrice = null;
             try {
                 let res = await Promise.race([
@@ -2225,10 +2224,11 @@
 
             if (goldPrice) {
                 applyGoldPrice(goldPrice);
+                database.ref('zamzam-company/livePrice').set({ price: goldPrice, updatedAt: Date.now() });
             } else {
                 let cached = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
                 if (cached) {
-                    document.getElementById('updateTime').textContent = `⚡ آخر سعر حقيقي محفوظ`;
+                    document.getElementById('goldPrice').textContent = `$${cached.toFixed(2)}`;
                     calculatePrices(cached);
                 } else {
                     document.getElementById('goldPrice').textContent = `تعذّر التحميل`;
