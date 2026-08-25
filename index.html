@@ -2208,27 +2208,48 @@
             }
         }
 
-        // احتياطي REST (يُستخدم فقط لو تعذر فتح اتصال البث المباشر)
+        // ===== جلب السعر بأقصى سرعة ممكنة، بدون تراكب أو تراجع بالسعر =====
+        let _fetchRequestId = 0;
+        let _fetchInFlight = false;
+        const FETCH_TIMEOUT_MS = 3000;   // أقصى انتظار لكل طلب
+
         async function fetchGoldPrice() {
+            // إذا في طلب شغال لسا، ما نرسل طلب جديد فوقه - نمنع التراكم
+            if (_fetchInFlight) { startCountdown(); return; }
+            _fetchInFlight = true;
+
+            let myRequestId = ++_fetchRequestId;
             let goldPrice = null;
+            let source = null;
+
             try {
                 let res = await Promise.race([
                     fetch(WORKER_URL),
-                    new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000))
+                    new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), FETCH_TIMEOUT_MS))
                 ]);
                 let data = await res.json();
                 if (data && data.price && parseFloat(data.price) > 100) {
                     goldPrice = parseFloat(data.price);
+                    source = data.source;
                 }
             } catch (e) {}
 
-            if (goldPrice) {
+            _fetchInFlight = false;
+
+            // نرفض أي رد وصل متأخر بعد ما صار طلب أحدث منه (يمنع تراجع السعر للخلف)
+            if (myRequestId !== _fetchRequestId) { startCountdown(); return; }
+
+            if (goldPrice && source === 'fallback') {
+                // مصدر احتياطي مختلف عن Exness المدفوع - ما نطبقه فوق السعر الحالي
+                document.getElementById('updateTime').textContent = '⚠️ إعادة اتصال بالمصدر الرئيسي...';
+            } else if (goldPrice) {
                 applyGoldPrice(goldPrice);
                 database.ref('zamzam-company/livePrice').set({ price: goldPrice, updatedAt: Date.now() });
             } else {
                 let cached = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
                 if (cached) {
                     document.getElementById('goldPrice').textContent = `$${cached.toFixed(2)}`;
+                    document.getElementById('updateTime').textContent = '⚠️ تعذر التحديث - آخر سعر محفوظ';
                     calculatePrices(cached);
                 } else {
                     document.getElementById('goldPrice').textContent = `تعذّر التحميل`;
@@ -3763,8 +3784,9 @@
             localStorage.setItem('lastVisitPrice', currentPrice);
         }
 
-        // ===== تحديث سريع كل ثانية (أقرب إحساس ممكن للبورصة الحية) =====
+        // ===== تحديث بأقصى سرعة (نص ثانية) - أقرب إحساس ممكن للبورصة الحية =====
         let _countdownTimer = null;
+        const FETCH_INTERVAL_MS = 500;
         function startCountdown() {
             if (_countdownTimer) clearTimeout(_countdownTimer);
             let circle = document.getElementById('countdown-circle');
@@ -3773,7 +3795,7 @@
             if (circle) circle.style.strokeDashoffset = 0;
             _countdownTimer = setTimeout(() => {
                 fetchGoldPrice();
-            }, 1000);
+            }, FETCH_INTERVAL_MS);
         }
 
         // ===== الوقت والتاريخ =====
