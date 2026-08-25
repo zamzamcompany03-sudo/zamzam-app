@@ -1994,7 +1994,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check-compat.js" crossorigin="anonymous"></script>
 
     <script>
         let WORKER_URL = 'https://zamzam-company.saadzamzamcompany.workers.dev';
@@ -2010,15 +2009,6 @@
             appId: "1:559764163886:web:cb441430ff69c888b57ebf"
         };
         firebase.initializeApp(firebaseConfig);
-
-        // تفعيل App Check - يحمي قاعدة البيانات من السكربتات والبوتات الآلية
-        // ملاحظة: هذا يعمل بجانب auth العادي، لا يغيّر أي شي بتسجيل دخول الأدمن
-        const appCheck = firebase.appCheck();
-        appCheck.activate(
-            new firebase.appCheck.ReCaptchaEnterpriseProvider('6LeyEpgtAAAAALZwAukXm8BLKG0GSKAld6hLWzFB'),
-            true // تجديد التوكن تلقائياً
-        );
-
         let database = firebase.database();
         let auth = firebase.auth();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
