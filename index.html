@@ -2015,7 +2015,7 @@
         // ملاحظة: هذا يعمل بجانب auth العادي، لا يغيّر أي شي بتسجيل دخول الأدمن
         const appCheck = firebase.appCheck();
         appCheck.activate(
-            '6LeyEpgtAAAAALZwAukXm8BLKG0GSKAld6hLWzFB',
+            new firebase.appCheck.ReCaptchaEnterpriseProvider('6LeyEpgtAAAAALZwAukXm8BLKG0GSKAld6hLWzFB'),
             true // تجديد التوكن تلقائياً
         );
 
