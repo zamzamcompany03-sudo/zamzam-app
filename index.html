@@ -2244,7 +2244,6 @@
                 document.getElementById('updateTime').textContent = '⚠️ إعادة اتصال بالمصدر الرئيسي...';
             } else if (goldPrice) {
                 applyGoldPrice(goldPrice);
-                database.ref('zamzam-company/livePrice').set({ price: goldPrice, updatedAt: Date.now() });
             } else {
                 let cached = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
                 if (cached) {
