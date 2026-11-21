@@ -2211,11 +2211,13 @@
         // ===== جلب السعر بأقصى سرعة ممكنة، بدون تراكب أو تراجع بالسعر =====
         let _fetchRequestId = 0;
         let _fetchInFlight = false;
-        const FETCH_TIMEOUT_MS = 3000;   // أقصى انتظار لكل طلب
+        const FETCH_TIMEOUT_MS = 6000;   // أقصى انتظار لكل طلب
 
         async function fetchGoldPrice() {
             // إذا في طلب شغال لسا، ما نرسل طلب جديد فوقه - نمنع التراكم
             if (_fetchInFlight) { startCountdown(); return; }
+            // الصفحة مخفية (تبويب خلفي/شاشة مقفلة): لا نستهلك طلبات الـ Worker
+            if (document.hidden) { startCountdown(); return; }
             _fetchInFlight = true;
 
             let myRequestId = ++_fetchRequestId;
@@ -2228,6 +2230,7 @@
                     new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), FETCH_TIMEOUT_MS))
                 ]);
                 let data = await res.json();
+                window._lastWorkerReply = data;
                 if (data && data.price && parseFloat(data.price) > 100) {
                     goldPrice = parseFloat(data.price);
                     source = data.source;
@@ -2244,6 +2247,12 @@
                 document.getElementById('updateTime').textContent = '⚠️ إعادة اتصال بالمصدر الرئيسي...';
             } else if (goldPrice) {
                 applyGoldPrice(goldPrice);
+                // السعر مخزّن (المصدر مفصول مؤقتاً أو السوق مغلق): نفس آخر سعر حقيقي لكل الأجهزة
+                if (window._lastWorkerReply && window._lastWorkerReply.source === 'backup') {
+                    document.getElementById('updateTime').textContent = '🟡 مصدر احتياطي: ' + new Date().toLocaleTimeString('ar-IQ');
+                } else if (window._lastWorkerReply && window._lastWorkerReply.stale) {
+                    document.getElementById('updateTime').textContent = '⏸ آخر سعر مسجّل (التحديث متوقف مؤقتاً)';
+                }
             } else {
                 let cached = parseFloat(localStorage.getItem('lastGoldPrice') || 0);
                 if (cached) {
@@ -3785,7 +3794,7 @@
 
         // ===== تحديث بأقصى سرعة (نص ثانية) - أقرب إحساس ممكن للبورصة الحية =====
         let _countdownTimer = null;
-        const FETCH_INTERVAL_MS = 500;
+        const FETCH_INTERVAL_MS = 2500;
         function startCountdown() {
             if (_countdownTimer) clearTimeout(_countdownTimer);
             let circle = document.getElementById('countdown-circle');
